@@ -32,6 +32,27 @@ int main(){
 
 ## 群友提交
 
+答题者：[**`andyli`**](https://github.com/Mq-b/Loser-HomeWork/blob/main/src/%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4/%E7%AC%AC%E4%B8%80%E9%A2%98/andyli.cpp)
+```cpp
+#include <algorithm>
+#include <vector>
+#include <functional>
+#include <iostream>
+
+template <typename R, typename F>
+auto operator|(R&& r, F&& f) {
+    for (auto&& x: r)
+        f(x);
+    return r;
+}
+int main() {
+    std::vector v{1, 2, 3};
+    std::function f{[](const int& i) { std::cout << i << ' '; }};
+    auto f2 = [](int& i) { i *= i; };
+    v | f2 | f;
+}
+```
+
 <br>
 
 ## 标准答案
