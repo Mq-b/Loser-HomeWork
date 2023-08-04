@@ -36,8 +36,39 @@ int main(){
 
 ## 标准答案
 
+```cpp
+template<typename U, typename F>
+	requires std::regular_invocable<F, U&>//可加可不加，不会就不加
+std::vector<U>& operator|(std::vector<U>& v1, F f) {
+	for (auto& i : v1) {
+		f(i);
+	}
+	return v1;
+}
+```
+**不使用模板**：
+```cpp
+std::vector<int>& operator|(std::vector<int>& v1, const std::function<void(int&)>& f) {
+	for (auto& i : v1) {
+		f(i);
+	}
+	return v1;
+}
+```
+不使用范围`for`，使用`C++20`简写函数模板：
+```cpp
+std::vector<int>& operator|(auto& v1, const auto& f) {
+	std::ranges::for_each(v1, f);
+	return v1;
+}
+```
+**各种范式无非就是这些改来改去了，没必要再写。**
 
-## `02`
+---
+
+<br>
+
+## `02`实现自定义字面量`_f`
 日期：**`2023/7/22`** 出题人：**`mq白`**
 
 给出代码：
@@ -62,8 +93,8 @@ int main(){
 6
 π：3.141593
 ```
-6为输入，决定π的小数点后的位数，可自行输入更大或更小数字。
-提示：C++11用户定义字面量，C++20format库。
+`6`为输入，决定`π`的小数点后的位数，可自行输入更大或更小数字。
+提示：`C++11用户定义字面量`，`C++20format库`。
 难度：**二星**
 
 ## 群友提交
@@ -72,3 +103,8 @@ int main(){
 
 ## 标准答案
 
+```cpp
+constexpr auto operator""_f(const char* fmt, size_t) {
+	return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
+}
+```
