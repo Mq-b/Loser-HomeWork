@@ -6,7 +6,7 @@
 
 你应当在`src\群友提交\第一题`中创建一个自己的`.md`或`.cpp`文件，**文件名以QQ群名命名**。
 
-运行的一般规则如下：
+答题的**一般要求**如下（题目额外要求也自行注意看）：
 
 1. 不更改`main`函数，不得使其不运行（意思别捞偏门）。
 2. 自行添加代码，在满足第一点的要求下，要能成功编译运行并与给出运行结果一致。
@@ -129,3 +129,30 @@ constexpr auto operator""_f(const char* fmt, size_t) {
 	return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
 }
 ```
+
+---
+
+<br>
+
+## `03`实现`print`以及特化`std::formatter`
+
+实现一个`print`，如果你做了上一个作业，我相信这很简单。
+要求调用形式为: 
+```cpp
+print(格式字符串，任意类型和个数的符合格式字符串要求的参数)
+```
+```cpp
+struct Frac {
+   int a, b;
+};
+```
+给出自定义类型`Frace`，要求支持
+```cpp
+Frac f{ 1,10 };
+print("{}", f);// 结果为1/10
+```
+禁止面相结果编程，使用宏等等方式，最多`B`（指评价），本作业主要考察和学习`format`库罢了。
+提示: **`std::formatter`**
+>提交代码最好是网上编译了三个平台的截图，如：
+
+![图片](image/第三题/01展示.jpg)
