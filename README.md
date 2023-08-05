@@ -397,16 +397,14 @@ int main() {
 
 ### 运行结果
 
-```
-X()
-~X()
-----------
-X()
-~X()
-----------
-X()
-~X()
-```
+    X()
+    ~X()
+    ----------
+    X()
+    ~X()
+    ----------
+    X()
+    ~X()
 
 ### 群友提交
 
@@ -427,15 +425,22 @@ struct scope_guard {
     scope_guard& operator=(const scope_guard&) = delete;
 };
 ```
+>其实大家也可以考虑直接用std::bind，开销没测过
+
 第一次构造是外面的默认构造；
+
 第二次构造是初始化 lambda 捕获时复制构造；
+
 第三次构造是从 lambda 初始化 `std::function` 时的移动构造；
+
 第四次构造是调用f的复制构造。
 
-第一个析构是 lambda 表达式的结果对象，里面因为 decay-copy 存了个 `X`。
-invoke 的东西是 `std::function` 初始化时，通过移动构造创建的副本。
+第一个析构是 lambda 表达式的结果对象，里面因为 `decay-copy` 存了个 `X`。
+`invoke` 的东西是 `std::function` 初始化时，通过移动构造创建的副本。
 
-**使用 `tuple`**：
+<br>
+
+**使用 `std::tuple`+`std::apply`**：
 ```cpp
 template<typename F, typename...Args>
     requires requires(F f, Args...args) { std::invoke(f, args...); }
@@ -451,7 +456,7 @@ struct scope_guard {
     scope_guard(const scope_guard&) = delete;
 };
 
-template<typename F, typename...Args>
+template<typename F, typename...Args>//推导指引非常重要
 scope_guard(F&&, Args&&...) -> scope_guard<std::decay_t<F>, std::decay_t<Args>...>;
 ```
 
@@ -466,7 +471,7 @@ int main() {
 }
 ```
 
-解释，为什么以上[代码](https://godbolt.org/z/sfEzP8136)在 C++17 后可以通过编译， C++17 前不行？
+解释，为什么以上[代码](https://godbolt.org/z/sfEzP8136)在 `C++17` 后可以通过编译， `C++17` 前不行？
 
 ### 群友提交
 
