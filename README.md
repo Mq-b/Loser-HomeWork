@@ -32,7 +32,7 @@ int main(){
 
 ## 群友提交
 
-答题者：[**`andyli`**](https://github.com/Mq-b/Loser-HomeWork/blob/main/src/%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4/%E7%AC%AC%E4%B8%80%E9%A2%98/andyli.cpp)
+答题者：[**`andyli`**](src\群友提交\第一题\andyli.cpp)
 ```cpp
 #include <algorithm>
 #include <vector>
@@ -52,6 +52,34 @@ int main() {
     v | f2 | f;
 }
 ```
+>很常规，没啥问题。
+
+答题者：[**`mq松鼠`**](src\群友提交\第一题\mq松鼠.cpp)
+```cpp
+#include<iostream>
+#include <vector>
+#include <functional>
+
+auto operator | (std::vector<int>&& v,std::function<void(const int&)> f){
+    for(auto&i:v){
+        f(i);
+    }
+    return v;
+}
+auto operator | (std::vector<int>& v,std::function<void(int&)> f){
+    for(auto&i:v){
+        f(i);
+    }
+    return v;
+}
+int main(){
+    std::vector v{1, 2, 3};
+    std::function f {[](const int& i) {std::cout << i << '\n'; } };
+    auto f2 = [](int& i) {i *= i; };
+    v | f2 | f;
+}
+```
+>评价：闲的没事多写个重载，裱起来。
 
 <br>
 
@@ -156,3 +184,29 @@ print("{}", f);// 结果为1/10
 >提交代码最好是网上编译了三个平台的截图，如：
 
 ![图片](image/第三题/01展示.jpg)
+
+### 群友提交
+
+<br>
+
+### 标准答案
+
+```cpp
+template<>
+struct std::formatter<Frac>:std::formatter<char>{
+	auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
+		return std::format_to(ctx.out(), "{}/{}", frac.a, frac.b);
+	}
+};
+void print(std::string_view fmt,auto&&...args){
+	std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
+}
+```
+
+我们只是非常简单的支持了**题目要求**的形式，给`std::formatter`进行特化，如果要支持比如那些`{:6}`之类的格式化的话，显然不行，这涉及到更多的操作。
+简单的特化以及`std::formatter`支持的形式可以参见[**文档**](https://zh.cppreference.com/w/cpp/utility/format/formatter)。
+一些复杂的特化，`up`之前也有写过，在[**`Cookbook`**](https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC)中；里面有对`std::ranges::range`，和`std::tuple`的特化，支持所有形式。
+
+---
+
+<br>
