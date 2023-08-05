@@ -320,3 +320,14 @@ int main()
 <br>
 
 ### 标准答案
+
+```cpp
+template<typename T>
+class Component : public ComponentBase{
+public:
+    static size_t component_type_id(){
+        static size_t ID = component_type_count++;
+        return ID;
+    }
+};
+```
