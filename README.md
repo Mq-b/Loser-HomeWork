@@ -270,7 +270,7 @@ void print(std::string_view fmt,auto&&...args){
 <br>
 
 ## `04`给定模板类修改，让其对每一个不同类型实例化有不同`ID`
-日期：**`2023/7/25`** 出题人：**`mq白`**
+日期：**`2023/7/25`** 出题人：**`Maxy`**
 ```cpp
 #include<iostream>
 class ComponentBase{
