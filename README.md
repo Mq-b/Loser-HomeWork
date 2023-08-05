@@ -1,6 +1,6 @@
 - [Loser-HomeWork](#loser-homework)
   - [`01`实现管道运算符](#01实现管道运算符)
-    - [运行结果：](#运行结果)
+    - [运行结果](#运行结果)
     - [群友提交](#群友提交)
     - [标准答案](#标准答案)
   - [`02`实现自定义字面量`_f`](#02实现自定义字面量_f)
@@ -8,14 +8,20 @@
     - [群友提交](#群友提交-1)
     - [标准答案](#标准答案-1)
   - [`03`实现`print`以及特化`std::formatter`](#03实现print以及特化stdformatter)
-    - [运行结果：](#运行结果-2)
+    - [运行结果](#运行结果-2)
     - [群友提交](#群友提交-2)
     - [标准答案](#标准答案-2)
   - [`04`给定模板类修改，让其对每一个不同类型实例化有不同`ID`](#04给定模板类修改让其对每一个不同类型实例化有不同id)
-    - [运行结果：](#运行结果-3)
+    - [运行结果](#运行结果-3)
     - [群友提交](#群友提交-3)
     - [标准答案](#标准答案-3)
-
+  - [`05`实现`scope_guard`类型](#05实现scope_guard类型)
+    - [运行结果](#运行结果-4)
+    - [群友提交](#群友提交-4)
+    - [标准答案](#标准答案-4)
+  - [`06`解释`std::atomic`初始化](#06解释stdatomic初始化)
+    - [群友提交](#群友提交-5)
+    - [标准答案](#标准答案-5)
 # Loser-HomeWork
 
 卢瑟们的作业展示
@@ -41,7 +47,7 @@ int main(){
     v | f2 | f;
 }
 ```
-### 运行结果：
+### 运行结果
 ```
 1 4 9
 ```
@@ -105,28 +111,28 @@ int main(){
 
 ```cpp
 template<typename U, typename F>
-	requires std::regular_invocable<F, U&>//可加可不加，不会就不加
+    requires std::regular_invocable<F, U&>//可加可不加，不会就不加
 std::vector<U>& operator|(std::vector<U>& v1, F f) {
-	for (auto& i : v1) {
-		f(i);
-	}
-	return v1;
+    for (auto& i : v1) {
+        f(i);
+    }
+    return v1;
 }
 ```
 **不使用模板**：
 ```cpp
 std::vector<int>& operator|(std::vector<int>& v1, const std::function<void(int&)>& f) {
-	for (auto& i : v1) {
-		f(i);
-	}
-	return v1;
+    for (auto& i : v1) {
+        f(i);
+    }
+    return v1;
 }
 ```
 不使用范围`for`，使用`C++20`简写函数模板：
 ```cpp
 std::vector<int>& operator|(auto& v1, const auto& f) {
-	std::ranges::for_each(v1, f);
-	return v1;
+    std::ranges::for_each(v1, f);
+    return v1;
 }
 ```
 **各种范式无非就是这些改来改去了，没必要再写。**
@@ -160,6 +166,7 @@ int main(){
 6
 π：3.141593
 ```
+
 `6`为输入，决定`π`的小数点后的位数，可自行输入更大或更小数字。
 提示：`C++11用户定义字面量`，`C++20format库`。
 难度：**二星**
@@ -206,7 +213,7 @@ int main() {
 
 ```cpp
 constexpr auto operator""_f(const char* fmt, size_t) {
-	return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
+    return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
 }
 ```
 
@@ -233,9 +240,11 @@ Frac f{ 1,10 };
 print("{}", f);// 结果为1/10
 ```
 
-### 运行结果：
+### 运行结果
 
-    1/10
+```
+1/10
+```
 
 禁止面相结果编程，使用宏等等方式，最多`B`（指评价），本作业主要考察和学习`format`库罢了。
 提示: **`std::formatter`**
@@ -252,12 +261,12 @@ print("{}", f);// 结果为1/10
 ```cpp
 template<>
 struct std::formatter<Frac>:std::formatter<char>{
-	auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
-		return std::format_to(ctx.out(), "{}/{}", frac.a, frac.b);
-	}
+    auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
+        return std::format_to(ctx.out(), "{}/{}", frac.a, frac.b);
+    }
 };
 void print(std::string_view fmt,auto&&...args){
-	std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
+    std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
 }
 ```
 
@@ -275,7 +284,7 @@ void print(std::string_view fmt,auto&&...args){
 #include<iostream>
 class ComponentBase{
 protected:
-	static inline size_t component_type_count = 0;
+    static inline size_t component_type_count = 0;
 };
 template
 class Component : public ComponentBase{
@@ -294,23 +303,25 @@ class C : public Component
 {};
 int main()
 {
-	std::cout << A::component_type_id() << std::endl;
-	std::cout << B::component_type_id() << std::endl;
-	std::cout << B::component_type_id() << std::endl;
-	std::cout << A::component_type_id() << std::endl;
-	std::cout << A::component_type_id() << std::endl;
-	std::cout << C::component_type_id() << std::endl;
+    std::cout << A::component_type_id() << std::endl;
+    std::cout << B::component_type_id() << std::endl;
+    std::cout << B::component_type_id() << std::endl;
+    std::cout << A::component_type_id() << std::endl;
+    std::cout << A::component_type_id() << std::endl;
+    std::cout << C::component_type_id() << std::endl;
 }
 ```
 
-### 运行结果：
+### 运行结果
 
-    0
-    1
-    1
-    0
-    0
-    2
+```
+0
+1
+1
+0
+0
+2
+```
 >提交应当给出多平台测试结果，如图：
 
 ![图片](image/第四题/01展示.png)
@@ -331,3 +342,134 @@ public:
     }
 };
 ```
+
+
+## `05`实现`scope_guard`类型
+日期：**`2023/7/29`** 出题人：**`mq白`**
+
+要求实现 scope_guard 类型 （ 即支恃传入任意可调用类型 , 析构的时候同时调用 ）。
+```cpp
+#include <cstdio>
+#include <iostream>
+#include <functional>
+
+struct X {
+    X() { puts("X()"); }
+    X(const X&) { puts("X(const X&)"); }
+    X(X&&) noexcept { puts("X(X&&)"); }
+    ~X() { puts("~X()"); }
+};
+
+int main() {
+    {
+        auto x = new X{};
+        auto guard = scope_guard([&] {
+            delete x;
+            x = nullptr;
+        });
+    }
+    puts("----------");
+    {
+        struct Test {
+            void operator()(X*& x) {
+                delete x;
+                x = nullptr;
+            }
+        };
+        auto x = new X{};
+        Test t;
+        auto guard = scope_guard(t, x);
+    }
+    puts("----------");
+    {
+        struct Test {
+            void f(X*& x) {
+                delete x;
+                x = nullptr;
+            }
+        };
+        auto x = new X{};
+        Test t;
+        auto guard = scope_guard{&Test::f, &t, x}; //error
+    }
+}
+```
+
+### 运行结果
+
+```
+X()
+~X()
+----------
+X()
+~X()
+----------
+X()
+~X()
+```
+
+### 群友提交
+
+<br>
+
+### 标准答案
+
+**使用类型擦除**：
+```cpp
+struct scope_guard {
+    std::function<void()>f;
+    template<typename Func, typename...Args>requires std::invocable<Func, Args...>
+    scope_guard(Func&& func, Args&&...args) :f{ [func = std::forward<Func>(func), ...args = std::forward<Args>(args)]() mutable {
+            std::invoke(std::forward<std::decay_t<Func>>(func), std::forward<Args>(args)...);
+        } }{}
+    ~scope_guard() { f(); }
+    scope_guard(const scope_guard&) = delete;
+    scope_guard& operator=(const scope_guard&) = delete;
+};
+```
+第一次构造是外面的默认构造；
+第二次构造是初始化 lambda 捕获时复制构造；
+第三次构造是从 lambda 初始化 `std::function` 时的移动构造；
+第四次构造是调用f的复制构造。
+
+第一个析构是 lambda 表达式的结果对象，里面因为 decay-copy 存了个 `X`。
+invoke 的东西是 `std::function` 初始化时，通过移动构造创建的副本。
+
+**使用 `tuple`**：
+```cpp
+template<typename F, typename...Args>
+    requires requires(F f, Args...args) { std::invoke(f, args...); }
+struct scope_guard {
+    F f;
+    std::tuple<Args...>values;
+
+    template<typename Fn, typename...Ts>
+    scope_guard(Fn&& func, Ts&&...args) :f{ std::forward<Fn>(func) }, values{ std::forward<Ts>(args)... } {}
+    ~scope_guard() {
+        std::apply(f, values);
+    }
+    scope_guard(const scope_guard&) = delete;
+};
+
+template<typename F, typename...Args>
+scope_guard(F&&, Args&&...) -> scope_guard<std::decay_t<F>, std::decay_t<Args>...>;
+```
+
+## `06`解释`std::atomic`初始化
+日期：**`2023/8/2`** 出题人：**`mq白`**
+
+```cpp
+#include <atomic>
+int main() {
+    std::atomic<int> n = 6;
+    std::cout << n << '\n';
+}
+```
+
+解释，为什么以上[代码](https://godbolt.org/z/sfEzP8136)在 C++17 后可以通过编译， C++17 前不行？
+
+### 群友提交
+
+<br>
+
+### 标准答案
