@@ -32,7 +32,7 @@ int main(){
 
 ## 群友提交
 
-答题者：[**`andyli`**](src\群友提交\第一题\andyli.cpp)
+答题者：[**`andyli`**](src/群友提交/第一题/andyli.cpp)
 ```cpp
 #include <algorithm>
 #include <vector>
@@ -54,7 +54,7 @@ int main() {
 ```
 >很常规，没啥问题。
 
-答题者：[**`mq松鼠`**](src\群友提交\第一题\mq松鼠.cpp)
+答题者：[**`mq松鼠`**](src/群友提交/第一题/mq松鼠.cpp)
 ```cpp
 #include<iostream>
 #include <vector>
