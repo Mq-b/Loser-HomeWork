@@ -22,6 +22,8 @@
   - [`06`解释`std::atomic`初始化](#06解释stdatomic初始化)
     - [群友提交](#群友提交-5)
     - [标准答案](#标准答案-5)
+  - [`07` `new MyException`](#07-new-myexception)
+    - [运行结果](#运行结果-5)
 # Loser-HomeWork
 
 卢瑟们的作业展示
@@ -247,6 +249,7 @@ print("{}", f);// 结果为1/10
 ```
 
 禁止面相结果编程，使用宏等等方式，最多`B`（指评价），本作业主要考察和学习`format`库罢了。
+
 提示: **`std::formatter`**
 >提交代码最好是网上编译了三个平台的截图，如：
 
@@ -342,7 +345,9 @@ public:
     }
 };
 ```
+---
 
+<br>
 
 ## `05`实现`scope_guard`类型
 日期：**`2023/7/29`** 出题人：**`mq白`**
@@ -460,6 +465,10 @@ template<typename F, typename...Args>//推导指引非常重要
 scope_guard(F&&, Args&&...) -> scope_guard<std::decay_t<F>, std::decay_t<Args>...>;
 ```
 
+---
+
+<br>
+
 ## `06`解释`std::atomic`初始化
 日期：**`2023/8/2`** 出题人：**`mq白`**
 
@@ -502,3 +511,40 @@ atomic( const atomic& ) = delete;
 `C++17`的改动是：**复制消除变为强制要求**。
 纯右值表达式作为构造对象的参数，不会再调用移动构造，也不会去检测，而是原位构造。
 >说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如`X x{X{}}`，即使移动/复制构造函数**都被delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
+
+---
+
+<br>
+
+## `07` `new MyException`
+
+日期：**`2023/8/6`** 出题人：**`mq白`**
+
+给出代码:
+```cpp
+struct MyException :std::exception {
+	const char* data{};
+	MyException(const char* s) :data(s) { puts("MyException()"); }
+	~MyException() { puts("~MyException()"); }
+	const char* what()const noexcept { return data; }
+};
+void f2() {
+	throw new MyException("new Exception异常....");
+}
+int main(){
+    f2();
+}
+```
+>灵感来源自 **`java`** 人写 **`C++`**
+
+要求在`main`函数中接取`f2()`函数抛出的异常。
+
+### 运行结果
+
+    MyException()
+    new Exception异常....
+    ~MyException()
+
+>某些IDE或者平台可能会将打印的异常信息标为红色放到第一行，即
+>new Exception异常.... 这句话也可能在第一行（一般终端运行不会，默认vs也无此功能）
+
