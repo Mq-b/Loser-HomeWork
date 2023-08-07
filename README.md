@@ -156,7 +156,7 @@ int main(){
     std::cout << '\n';
     int n{};
     std::cin >> n;
-    std::cout << "π：{:.{}f}\n"_f(std::numbers::pi_v, n);
+    std::cout << "π：{:.{}f}\n"_f(std::numbers::pi_v<double>, n);
 }
 ```
 ### 运行结果:
