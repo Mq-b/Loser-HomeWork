@@ -300,11 +300,11 @@ public:
     //则X::component_type_id()会得到一个独一无二的size_t类型的id（对于不同的X类型返回的值应不同）
     //要求：不能使用std::type_info（禁用typeid关键字），所有id从0开始连续。
 };
-class A : public Component
+class A : public Component<A>
 {};
-class B : public Component
+class B : public Component<B>
 {};
-class C : public Component
+class C : public Component<C>
 {};
 int main()
 {
