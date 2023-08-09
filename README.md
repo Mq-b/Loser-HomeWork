@@ -291,7 +291,7 @@ class ComponentBase{
 protected:
     static inline size_t component_type_count = 0;
 };
-template
+template<typename T>
 class Component : public ComponentBase{
 public:
     //todo...
