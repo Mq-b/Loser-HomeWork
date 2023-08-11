@@ -22,7 +22,7 @@
   - [`06`解释`std::atomic`初始化](#06解释stdatomic初始化)
     - [群友提交](#群友提交-5)
     - [标准答案](#标准答案-5)
-  - [`07` `new MyException`](#07-new-myexception)
+  - [`07` **`throw`** `new MyException`](#07-throw-new-myexception)
     - [运行结果](#运行结果-5)
     - [群友提交](#群友提交-6)
     - [标准答案](#标准答案-6)
@@ -519,7 +519,7 @@ atomic( const atomic& ) = delete;
 
 <br>
 
-## `07` `new MyException`
+## `07` **`throw`** `new MyException`
 
 日期：**`2023/8/6`** 出题人：**`mq白`**
 
