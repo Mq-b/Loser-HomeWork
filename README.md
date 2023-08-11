@@ -475,6 +475,7 @@ scope_guard(F&&, Args&&...) -> scope_guard<std::decay_t<F>, std::decay_t<Args>..
 日期：**`2023/8/2`** 出题人：**`mq白`**
 
 ```cpp
+#include <iostream>
 #include <atomic>
 int main() {
     std::atomic<int> n = 6;
