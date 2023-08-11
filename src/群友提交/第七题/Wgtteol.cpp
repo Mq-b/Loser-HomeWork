@@ -10,7 +10,7 @@ struct MyException: std::exception
 
 void f2() 
 {
-	throw new MyException("new Exception�쳣....");
+	throw new MyException("new Exception异常....");
 }
 
 int main() 
