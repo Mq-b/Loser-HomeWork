@@ -1,8 +1,23 @@
+<div align=center>
 <a href="https://www.bilibili.com/video/BV1Zj411r7eP/?spm_id_from=333.999.0.0"><img src="https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan"/></a>
 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue"/></a>
 <a href="https://www.zhihu.com/people/o4ze4r"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello"/></a>
+<a href="https://www.youtube.com/channel/UCey35Do4RGewqr-6EiaCJrg"><img src="https://img.shields.io/badge/video-YouTub-red"></a>
 
-<img src="image/cpp.svg" alt="I love csharp" height="64" width="64">
+<br>
+
+<img src="https://img.shields.io/badge/code-Modern%20C++-blue">
+<img src="https://img.shields.io/badge/std-C++20-yello">
+<img src="https://img.shields.io/badge/std-C++23-yello">
+<img src="https://img.shields.io/badge/compiler-GCC13-white">
+<img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white">
+
+
+</div>
+
+<div align=center>
+<img src="image/cpp.svg" height="64" width="64">
+</div>
 
 <details>
 <summary>目录</summary>
