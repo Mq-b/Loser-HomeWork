@@ -1,6 +1,8 @@
 <a href="https://www.bilibili.com/video/BV1Zj411r7eP/?spm_id_from=333.999.0.0"><img src="https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan"/></a>
 <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue"/></a>
 
+<img src="image/cpp.svg" alt="I love csharp" height="64" width="64">
+
 - [Loser-HomeWork](#loser-homework)
   - [前言](#前言)
   - [`01`实现管道运算符](#01实现管道运算符)
