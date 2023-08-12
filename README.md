@@ -7,7 +7,6 @@
 <details>
 <summary>目录</summary>
 <br>
-...
 
 - [Loser-HomeWork](#loser-homework)
   - [前言](#前言)
@@ -38,6 +37,10 @@
     - [运行结果](#运行结果-5)
     - [群友提交](#群友提交-6)
     - [标准答案](#标准答案-6)
+  - [`08`定义`array`推导指引](#08定义array推导指引)
+    - [运行结果：](#运行结果-6)
+    - [群友提交](#群友提交-7)
+    - [标准答案](#标准答案-7)
   
 </details>
 
@@ -583,3 +586,46 @@ int main(){
 <br>
 
 ### 标准答案
+
+---
+
+<br>
+
+## `08`定义`array`推导指引
+日期：**`2023/8/12`** 出题人：**`mq白`**
+
+给出代码:
+```cpp
+template<class Ty,size_t size>
+struct array {
+    Ty* begin() { return arr; };
+    Ty* end() { return arr + size; };
+    Ty arr[size];
+};
+int main() {
+    ::array arr{1, 2, 3, 4, 5};
+    for (const auto& i : arr) {
+        std::cout << i << ' ';
+    }
+}
+```
+
+要求**自定义推导指引**，不更改已给出代码，使得代码成功编译并满足运行结果。
+
+> 提示：可参考[`std::array`](https://zh.cppreference.com/w/cpp/container/array)
+
+### 运行结果：
+
+    1 2 3 4 5 
+
+- 难度:**三星**
+
+### 群友提交
+
+<br>
+
+### 标准答案
+
+---
+
+<br>
