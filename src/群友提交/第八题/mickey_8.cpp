@@ -1,4 +1,6 @@
+#include <concepts>
 #include <iostream>
+#include <type_traits>
 
 template <class Ty, size_t size>
 struct array
@@ -18,6 +20,10 @@ struct array
 // C++17 编译器对聚合初始化进行了增强 这里因为能够推导成功，聚合初始化直接给arr的每个元素赋值
 
 template <class T, class... U>
+concept same_type = (std::is_same_v<T, U> && ...);
+
+template <class T, class... U>
+    requires same_type<T, U...>
 array(T, U...) -> array<T, 1 + sizeof...(U)>;
 
 int main()
