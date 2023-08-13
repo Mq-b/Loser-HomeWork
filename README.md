@@ -22,11 +22,7 @@
 
 </div>
 
-<details>
-
-<summary style="font-size:25px">
-目录
-</summary>
+<details> <summary><h2>目录</h2></summary>
 
 
 <br>
