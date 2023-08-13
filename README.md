@@ -23,7 +23,39 @@
 </div>
 
 <details>
-<summary>目录</summary>
+<summary>
+
+<style>
+    summary {
+        font-size: 30px;
+        font-weight: 500;
+        animation: sc 5s infinite;
+        display:inline;
+    }
+
+    @keyframes  sc {
+    0% {
+        color: red;
+    }
+    25% {
+        color: green;
+    }
+    50% {
+        color: aqua;
+    }
+    75% {
+        color: red;
+    }
+    100% {
+        color: yellow;
+    }
+}
+</style>
+
+<wtf>目录</wtf>
+
+</summary>
+
 <br>
 
 - [Loser-HomeWork](#loser-homework)
@@ -70,7 +102,7 @@
 
 提交`pr`不应当更改当前`README`，请将作业提交到`src\群友提交`中，比如你要提交第一个作业：
 
-你应当在`src\群友提交\第一题`中创建一个自己的`.md`或`.cpp`文件，**文件名以QQ群名命名**。
+你应当在`src\群友提交\第一题`中创建一个自己的`.md`或`.cpp`文件，**文件名以自己交流群ID命名（或github都可，方便找到本人即可）**。
 
 答题的**一般要求**如下（题目额外要求也自行注意看）：
 
@@ -389,6 +421,42 @@ public:
     }
 };
 ```
+
+分析：
+
+我们需要实现`Component`的静态成员函数`component_type_id`。这是从给出代码得知的：
+```cpp
+class A : public Component<A>
+{};
+A::component_type_id()
+```
+题目要求是每一个自定义类类型（假设是X）继承`Component<X>`，调用`component_type_id()`返回的是自己独一无二的ID。其他的类型同理。
+
+解决题目之前我们需要强调一个知识点：
+>C++的模板不是具体类型，实例化之后才是，模板类的静态成员或静态成员函数也不属于模板我们可以用一段代码来展示结论：
+
+```cpp
+#include <iostream>
+
+template<typename T>
+struct Test{
+	inline static int n = 10;
+};
+
+int main(){
+	Test<int>::n = 1;
+	std::cout << Test<void>::n << '\n';//10
+	std::cout << Test<int>::n << '\n';//1
+}
+```
+
+这段代码很轻易的就展示了静态数据成员属于模板实例化后的具体类型
+`Test<void>::n` 和 `Test<int>::n`不是贡献的n，并且`Test<void>`和`Test<int>`也不是一种类型。
+
+（静态成员函数同理）
+
+所以我们的解法利用的是：不同的类型实例化`Component`类模板，也是不同的静态成员函数，静态成员函数里面的局部静态数据成员在第一次调用的时候才会初始化，后面就不会。
+
 ---
 
 <br>
@@ -476,7 +544,7 @@ struct scope_guard {
     scope_guard& operator=(const scope_guard&) = delete;
 };
 ```
->其实大家也可以考虑直接用std::bind，开销没测过
+>其实大家也可以考虑直接用std::bind，我这样用lambda有点复杂的过分了。
 
 第一次构造是外面的默认构造；
 
@@ -605,6 +673,23 @@ int main(){
 
 ### 标准答案
 
+```cpp
+int main() {
+    try{
+        f2();
+    }
+    catch (std::exception* e){
+        std::cerr << std::unique_ptr<std::exception>(e)->what() << '\n';
+    }
+}
+```
+
+实际上本题是用来讽刺将`java`的写法带入到其他语言中，也就是很经典的：
+**`java`人写什么都是`java`**。
+只是看我们这道题，实际上你非要说`new`有什么不好，倒也没什么非常不行的地方，只是，没有理由自己多写一个`delete`表达式（或者包个智能指针）。
+> 我希望不要有人开始幻想：`throw new MyException("new Exception异常....")`因为是`throw`一个指针类型，所以按指针传递，效率更高。不要让我看到这种逆天想法。如果你想到这一点，那不妨思考一下，构造临时对象的开销，以及使用`new`表达式？ 说实话挺无聊的问题，只是防止有人想到这些点，以及抬杠罢了。
+
+
 ---
 
 <br>
@@ -643,6 +728,19 @@ int main() {
 <br>
 
 ### 标准答案
+
+```cpp
+template<class Ty, class...Args>
+    requires (std::same_as<Ty, Args>&&...)//不会这个C++20约束以及里面折叠表达的用法也可以不用
+array(Ty, Args...) -> array<Ty, 1 + sizeof...(Args)>;
+```
+ 本题的目的如你所见主要考察的是 **`C++17`用户定义类模板推导指引**。但是我更多的其实我想表达的是：
+ 定义模板推导指引和构造函数没什么直接的关联；如题目所示，我们的`array`是一个聚合类型，压根没有显式的用户定义构造函数，**没有显示的构造函数并不影响我们使用自定义的用户推导指引**。
+ 
+ >如何强调只是因为大部分人对此有很多错误认知
+ 
+ 推导指引实际上是按照你构造器传入的东西，来进行的这种推导，我觉得我视频里说的已经很清楚了。
+ 
 
 ---
 
