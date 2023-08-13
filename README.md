@@ -23,38 +23,11 @@
 </div>
 
 <details>
-<summary>
 
-<style>
-    summary {
-        font-size: 30px;
-        font-weight: 500;
-        animation: sc 5s infinite;
-        display:inline;
-    }
-
-    @keyframes  sc {
-    0% {
-        color: red;
-    }
-    25% {
-        color: green;
-    }
-    50% {
-        color: aqua;
-    }
-    75% {
-        color: red;
-    }
-    100% {
-        color: yellow;
-    }
-}
-</style>
-
-<wtf>目录</wtf>
-
+<summary style="font-size:25px">
+目录
 </summary>
+
 
 <br>
 
