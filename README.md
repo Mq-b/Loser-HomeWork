@@ -5,18 +5,21 @@
 <a href="https://www.youtube.com/channel/UCey35Do4RGewqr-6EiaCJrg"><img src="https://img.shields.io/badge/video-YouTub-red"></a>
 
 <br>
-
+<a href="https://visualstudio.microsoft.com/zh-hans/">
 <img src="https://img.shields.io/badge/code-Modern%20C++-blue">
 <img src="https://img.shields.io/badge/std-C++20-yello">
 <img src="https://img.shields.io/badge/std-C++23-yello">
 <img src="https://img.shields.io/badge/compiler-GCC13-white">
-<img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white">
+<a href="https://visualstudio.microsoft.com/zh-hans/"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
 
 
 </div>
 
 <div align=center>
-<img src="image/cpp.svg" height="64" width="64">
+
+<a href="https://zh.cppreference.com/w/cpp">
+<img src="image/cpp.svg" height="64" width="64"></a>
+
 </div>
 
 <details>
