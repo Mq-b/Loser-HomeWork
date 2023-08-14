@@ -1,4 +1,34 @@
+<div align=center>
+<a href="https://www.bilibili.com/video/BV1Zj411r7eP/?spm_id_from=333.999.0.0"><img src="https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan"/></a>
+<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue"/></a>
+<a href="https://www.zhihu.com/people/o4ze4r"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello"/></a>
+<a href="https://www.youtube.com/channel/UCey35Do4RGewqr-6EiaCJrg"><img src="https://img.shields.io/badge/video-YouTube-red"></a>
+
+<br>
+<a href="https://visualstudio.microsoft.com/zh-hans/">
+<img src="https://img.shields.io/badge/code-Modern%20C++-blue">
+<img src="https://img.shields.io/badge/std-C++20-yello">
+<img src="https://img.shields.io/badge/std-C++23-yello">
+<img src="https://img.shields.io/badge/compiler-GCC13-white">
+<a href="https://visualstudio.microsoft.com/zh-hans/"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
+
+
+</div>
+
+<div align=center>
+
+<a href="https://zh.cppreference.com/w/cpp">
+<img src="image/cpp.svg" height="64" width="64"></a>
+
+</div>
+
+<details> <summary><h2>目录</h2></summary>
+
+
+<br>
+
 - [Loser-HomeWork](#loser-homework)
+  - [前言](#前言)
   - [`01`实现管道运算符](#01实现管道运算符)
     - [运行结果](#运行结果)
     - [群友提交](#群友提交)
@@ -22,20 +52,31 @@
   - [`06`解释`std::atomic`初始化](#06解释stdatomic初始化)
     - [群友提交](#群友提交-5)
     - [标准答案](#标准答案-5)
-  - [`07` `new MyException`](#07-new-myexception)
+  - [`07` **`throw`** `new MyException`](#07-throw-new-myexception)
     - [运行结果](#运行结果-5)
+    - [群友提交](#群友提交-6)
+    - [标准答案](#标准答案-6)
+  - [`08`定义`array`推导指引](#08定义array推导指引)
+    - [运行结果：](#运行结果-6)
+    - [群友提交](#群友提交-7)
+    - [标准答案](#标准答案-7)
+  
+</details>
+
 # Loser-HomeWork
 
-卢瑟们的作业展示
+## 前言
+
+**卢瑟们的作业展示。**
 
 提交`pr`不应当更改当前`README`，请将作业提交到`src\群友提交`中，比如你要提交第一个作业：
 
-你应当在`src\群友提交\第一题`中创建一个自己的`.md`或`.cpp`文件，**文件名以QQ群名命名**。
+你应当在`src\群友提交\第一题`中创建一个自己的`.md`或`.cpp`文件，**文件名以自己交流群ID命名（或github都可，方便找到本人即可）**。
 
 答题的**一般要求**如下（题目额外要求也自行注意看）：
 
 1. 不更改`main`函数，不得使其不运行（意思别捞偏门）。
-2. 自行添加代码，在满足第一点的要求下，要能成功编译运行并与给出运行结果一致。
+2. 自行添加代码，在满足第一点的要求下，要能成功编译运行并与 **给出运行结果一致**。
 
 ## `01`实现管道运算符
 日期：**`2023/7/21`** 出题人：**`mq白`**
@@ -54,7 +95,7 @@ int main(){
 1 4 9
 ```
 
-难度：**一星**
+- 难度：**一星**
 
 ### 群友提交
 
@@ -169,6 +210,8 @@ int main(){
 π：3.141593
 ```
 
+- 难度:**二星**
+
 `6`为输入，决定`π`的小数点后的位数，可自行输入更大或更小数字。
 提示：`C++11用户定义字面量`，`C++20format库`。
 难度：**二星**
@@ -244,9 +287,9 @@ print("{}", f);// 结果为1/10
 
 ### 运行结果
 
-```
-1/10
-```
+    1/10
+
+- 难度:**三星**
 
 禁止面相结果编程，使用宏等等方式，最多`B`（指评价），本作业主要考察和学习`format`库罢了。
 
@@ -289,7 +332,7 @@ class ComponentBase{
 protected:
     static inline size_t component_type_count = 0;
 };
-template
+template<typename T>
 class Component : public ComponentBase{
 public:
     //todo...
@@ -298,11 +341,11 @@ public:
     //则X::component_type_id()会得到一个独一无二的size_t类型的id（对于不同的X类型返回的值应不同）
     //要求：不能使用std::type_info（禁用typeid关键字），所有id从0开始连续。
 };
-class A : public Component
+class A : public Component<A>
 {};
-class B : public Component
+class B : public Component<B>
 {};
-class C : public Component
+class C : public Component<C>
 {};
 int main()
 {
@@ -317,14 +360,16 @@ int main()
 
 ### 运行结果
 
-```
-0
-1
-1
-0
-0
-2
-```
+
+    0
+    1
+    1
+    0
+    0
+    2
+
+- 难度:**一星**
+
 >提交应当给出多平台测试结果，如图：
 
 ![图片](image/第四题/01展示.png)
@@ -345,6 +390,42 @@ public:
     }
 };
 ```
+
+分析：
+
+我们需要实现`Component`的静态成员函数`component_type_id`。这是从给出代码得知的：
+```cpp
+class A : public Component<A>
+{};
+A::component_type_id()
+```
+题目要求是每一个自定义类类型（假设是X）继承`Component<X>`，调用`component_type_id()`返回的是自己独一无二的ID。其他的类型同理。
+
+解决题目之前我们需要强调一个知识点：
+>C++的模板不是具体类型，实例化之后才是，模板类的静态成员或静态成员函数也不属于模板我们可以用一段代码来展示结论：
+
+```cpp
+#include <iostream>
+
+template<typename T>
+struct Test{
+	inline static int n = 10;
+};
+
+int main(){
+	Test<int>::n = 1;
+	std::cout << Test<void>::n << '\n';//10
+	std::cout << Test<int>::n << '\n';//1
+}
+```
+
+这段代码很轻易的就展示了静态数据成员属于模板实例化后的具体类型
+`Test<void>::n` 和 `Test<int>::n`不是贡献的n，并且`Test<void>`和`Test<int>`也不是一种类型。
+
+（静态成员函数同理）
+
+所以我们的解法利用的是：不同的类型实例化`Component`类模板，也是不同的静态成员函数，静态成员函数里面的局部静态数据成员在第一次调用的时候才会初始化，后面就不会。
+
 ---
 
 <br>
@@ -352,7 +433,7 @@ public:
 ## `05`实现`scope_guard`类型
 日期：**`2023/7/29`** 出题人：**`mq白`**
 
-要求实现 scope_guard 类型 （ 即支恃传入任意可调用类型 , 析构的时候同时调用 ）。
+要求实现 **`scope_guard`** 类型 （ 即支恃传入任意可调用类型 , 析构的时候同时调用 ）。
 ```cpp
 #include <cstdio>
 #include <iostream>
@@ -395,7 +476,7 @@ int main() {
         };
         auto x = new X{};
         Test t;
-        auto guard = scope_guard{&Test::f, &t, x}; //error
+        auto guard = scope_guard{&Test::f, &t, x}; 
     }
 }
 ```
@@ -410,6 +491,8 @@ int main() {
     ----------
     X()
     ~X()
+
+- 难度:**四星**（完全满足要求的情况下）
 
 ### 群友提交
 
@@ -430,7 +513,7 @@ struct scope_guard {
     scope_guard& operator=(const scope_guard&) = delete;
 };
 ```
->其实大家也可以考虑直接用std::bind，开销没测过
+>其实大家也可以考虑直接用std::bind，我这样用lambda有点复杂的过分了。
 
 第一次构造是外面的默认构造；
 
@@ -473,6 +556,7 @@ scope_guard(F&&, Args&&...) -> scope_guard<std::decay_t<F>, std::decay_t<Args>..
 日期：**`2023/8/2`** 出题人：**`mq白`**
 
 ```cpp
+#include <iostream>
 #include <atomic>
 int main() {
     std::atomic<int> n = 6;
@@ -483,6 +567,8 @@ int main() {
 解释，为什么以上[代码](https://godbolt.org/z/sfEzP8136)在 `C++17` 后可以通过编译， `C++17` 前不行？
 
 ![图片](image/第六题/01展示.png)
+
+- 难度:**三星**
 
 ### 群友提交
 
@@ -516,7 +602,7 @@ atomic( const atomic& ) = delete;
 
 <br>
 
-## `07` `new MyException`
+## `07` **`throw`** `new MyException`
 
 日期：**`2023/8/6`** 出题人：**`mq白`**
 
@@ -545,6 +631,86 @@ int main(){
     new Exception异常....
     ~MyException()
 
+- 难度:**一星**
+
 >某些IDE或者平台可能会将打印的异常信息标为红色放到第一行，即
 >new Exception异常.... 这句话也可能在第一行（一般终端运行不会，默认vs也无此功能）
 
+### 群友提交
+
+<br>
+
+### 标准答案
+
+```cpp
+int main() {
+    try{
+        f2();
+    }
+    catch (std::exception* e){
+        std::cerr << std::unique_ptr<std::exception>(e)->what() << '\n';
+    }
+}
+```
+
+实际上本题是用来讽刺将`java`的写法带入到其他语言中，也就是很经典的：
+**`java`人写什么都是`java`**。
+只是看我们这道题，实际上你非要说`new`有什么不好，倒也没什么非常不行的地方，只是，没有理由自己多写一个`delete`表达式（或者包个智能指针）。
+> 我希望不要有人开始幻想：`throw new MyException("new Exception异常....")`因为是`throw`一个指针类型，所以按指针传递，效率更高。不要让我看到这种逆天想法。如果你想到这一点，那不妨思考一下，构造临时对象的开销，以及使用`new`表达式？ 说实话挺无聊的问题，只是防止有人想到这些点，以及抬杠罢了。
+
+
+---
+
+<br>
+
+## `08`定义`array`推导指引
+日期：**`2023/8/12`** 出题人：**`mq白`**
+
+给出代码:
+```cpp
+template<class Ty,size_t size>
+struct array {
+    Ty* begin() { return arr; };
+    Ty* end() { return arr + size; };
+    Ty arr[size];
+};
+int main() {
+    ::array arr{1, 2, 3, 4, 5};
+    for (const auto& i : arr) {
+        std::cout << i << ' ';
+    }
+}
+```
+
+要求**自定义推导指引**，不更改已给出代码，使得代码成功编译并满足运行结果。
+
+> 提示：可参考[`std::array`](https://zh.cppreference.com/w/cpp/container/array)
+
+### 运行结果：
+
+    1 2 3 4 5 
+
+- 难度:**三星**
+
+### 群友提交
+
+<br>
+
+### 标准答案
+
+```cpp
+template<class Ty, class...Args>
+    requires (std::same_as<Ty, Args>&&...)//不会这个C++20约束以及里面折叠表达的用法也可以不用
+array(Ty, Args...) -> array<Ty, 1 + sizeof...(Args)>;
+```
+ 本题的目的如你所见主要考察的是 **`C++17`用户定义类模板推导指引**。但是我更多的其实我想表达的是：
+ 定义模板推导指引和构造函数没什么直接的关联；如题目所示，我们的`array`是一个聚合类型，压根没有显式的用户定义构造函数，**没有显示的构造函数并不影响我们使用自定义的用户推导指引**。
+ 
+ >如何强调只是因为大部分人对此有很多错误认知
+ 
+ 推导指引实际上是按照你构造器传入的东西，来进行的这种推导，我觉得我视频里说的已经很清楚了。
+ 
+
+---
+
+<br>
