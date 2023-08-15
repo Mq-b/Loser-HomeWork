@@ -106,7 +106,7 @@ int main(){
 1 4 9
 ```
 
-- 难度：**一星**
+- 难度：**★☆☆☆☆**
 
 ### 群友提交
 
@@ -221,11 +221,11 @@ int main(){
 π：3.141593
 ```
 
-- 难度:**二星**
+- 难度:**★★☆☆☆**
 
 `6`为输入，决定`π`的小数点后的位数，可自行输入更大或更小数字。
 提示：`C++11用户定义字面量`，`C++20format库`。
-难度：**二星**
+难度：**★★☆☆☆**
 
 ### 群友提交
 
@@ -300,7 +300,7 @@ print("{}", f);// 结果为1/10
 
     1/10
 
-- 难度:**三星**
+- 难度:**★★★☆☆**
 
 禁止面相结果编程，使用宏等等方式，最多`B`（指评价），本作业主要考察和学习`format`库罢了。
 
@@ -379,7 +379,7 @@ int main()
     0
     2
 
-- 难度:**一星**
+- 难度:**★☆☆☆☆**
 
 >提交应当给出多平台测试结果，如图：
 
@@ -442,11 +442,14 @@ int main(){
 <br>
 
 ## `05`实现`scope_guard`类型
-日期：**`2023/7/29`** 出题人：**`mq白`**
+日期：**`2023/7/29`** 出题人：[Da'Inihlus](https://github.com/dynilath)
 
 要求实现 **`scope_guard`** 类型 （ 即支恃传入任意可调用类型 , 析构的时候同时调用 ）。
 ```cpp
 #include <cstdio>
+#include <cassert>
+
+#include <stdexcept>
 #include <iostream>
 #include <functional>
 
@@ -459,51 +462,62 @@ struct X {
 
 int main() {
     {
-        auto x = new X{};
-        auto guard = scope_guard([&] {
-            delete x;
-            x = nullptr;
-        });
+        // scope_guard的作用之一，是让各种C风格指针接口作为局部变量时也能得到RAII支持
+        // 这也是本题的基础要求
+        FILE * fp = nullptr;
+        try{
+            fp = fopen("test.txt","a");
+            auto guard = scope_guard([&] {
+                fclose(fp);
+                fp = nullptr;
+            });
+
+            throw std::runtime_error{"Test"};
+        } catch(std::exception & e){
+            puts(e.what());
+        }
+        assert(fp == nullptr);
     }
     puts("----------");
     {
+        // 附加要求1，支持函数对象调用
         struct Test {
-            void operator()(X*& x) {
+            void operator()(X* x) {
                 delete x;
-                x = nullptr;
             }
-        };
+        } t;
         auto x = new X{};
-        Test t;
         auto guard = scope_guard(t, x);
     }
     puts("----------");
     {
-        struct Test {
-            void f(X*& x) {
-                delete x;
-                x = nullptr;
-            }
-        };
+        // 附加要求2，支持成员函数和std::ref
         auto x = new X{};
-        Test t;
-        auto guard = scope_guard{&Test::f, &t, x}; 
+        {
+            struct Test {
+                void f(X*& px) {
+                    delete px;
+                    px = nullptr;
+                }
+            } t;
+            auto guard = scope_guard{&Test::f, &t, std::ref(x)};
+        }
+        assert(x == nullptr);
     }
 }
 ```
 
 ### 运行结果
-
-    X()
-    ~X()
-    ----------
-    X()
-    ~X()
-    ----------
-    X()
-    ~X()
-
-- 难度:**四星**（完全满足要求的情况下）
+```shell
+Test
+----------
+X()
+~X()
+----------
+X()
+~X()
+```
+- 难度:**★★★★☆**（完全满足要求的情况下）
 
 ### 群友提交
 
@@ -511,35 +525,21 @@ int main() {
 
 ### 标准答案
 
-**使用类型擦除**：
+* 使用std::function并擦除类型
 ```cpp
 struct scope_guard {
     std::function<void()>f;
-    template<typename Func, typename...Args>requires std::invocable<Func, Args...>
+    template<typename Func, typename...Args> requires std::invocable<Func, std::unwrap_reference_t<Args>...>
     scope_guard(Func&& func, Args&&...args) :f{ [func = std::forward<Func>(func), ...args = std::forward<Args>(args)]() mutable {
-            std::invoke(std::forward<std::decay_t<Func>>(func), std::forward<Args>(args)...);
+            std::invoke(std::forward<std::decay_t<Func>>(func), std::unwrap_reference_t<Args>(std::forward<Args>(args))...);
         } }{}
     ~scope_guard() { f(); }
     scope_guard(const scope_guard&) = delete;
     scope_guard& operator=(const scope_guard&) = delete;
 };
 ```
->其实大家也可以考虑直接用std::bind，我这样用lambda有点复杂的过分了。
 
-第一次构造是外面的默认构造；
-
-第二次构造是初始化 lambda 捕获时复制构造；
-
-第三次构造是从 lambda 初始化 `std::function` 时的移动构造；
-
-第四次构造是调用f的复制构造。
-
-第一个析构是 lambda 表达式的结果对象，里面因为 `decay-copy` 存了个 `X`。
-`invoke` 的东西是 `std::function` 初始化时，通过移动构造创建的副本。
-
-<br>
-
-**使用 `std::tuple`+`std::apply`**：
+* 使用 `std::tuple`+`std::apply`
 ```cpp
 template<typename F, typename...Args>
     requires requires(F f, Args...args) { std::invoke(f, args...); }
@@ -579,7 +579,7 @@ int main() {
 
 ![图片](image/第六题/01展示.png)
 
-- 难度:**三星**
+- 难度:**★★★☆☆**
 
 ### 群友提交
 
@@ -642,7 +642,7 @@ int main(){
     new Exception异常....
     ~MyException()
 
-- 难度:**一星**
+- 难度:**★☆☆☆☆**
 
 >某些IDE或者平台可能会将打印的异常信息标为红色放到第一行，即
 >new Exception异常.... 这句话也可能在第一行（一般终端运行不会，默认vs也无此功能）
@@ -701,7 +701,7 @@ int main() {
 
     1 2 3 4 5 
 
-- 难度:**三星**
+- 难度:**★★★☆☆**
 
 ### 群友提交
 
@@ -763,7 +763,7 @@ int main() {
     X
     全局
 
-- 难度:**三星**
+- 难度:**★★★☆☆**
 
 > 本问题堪称经典，**在某著名template书籍也有提过**（虽然它完全没有讲清楚）。
 > 并且从浅薄的角度来说，本题也可以让你向其他人证明加 **`this`** 访问类成员，和不加，是有很多区别的。
