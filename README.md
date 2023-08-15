@@ -13,6 +13,7 @@
 	<img src="https://img.shields.io/badge/std-C++20-yello">
 	<img src="https://img.shields.io/badge/std-C++23-yello">
 	<img src="https://img.shields.io/badge/compiler-GCC13-white">
+	<br/>
 	<a href="https://visualstudio.microsoft.com/zh-hans/"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
 	<br/>
 	<a href="https://zh.cppreference.com/w/cpp">
