@@ -1,16 +1,23 @@
 <div align=center>
-<a href="https://www.bilibili.com/video/BV1Zj411r7eP/?spm_id_from=333.999.0.0"><img src="https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan"/></a>
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue"/></a>
+<a href = "https://www.bilibili.com/video/BV1Zj411r7eP/?spm_id_from=333.999.0.0"><img src="https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan"/></a>
+<a target="_blank" href = "https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue"/></a>
 <a href="https://www.zhihu.com/people/o4ze4r"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello"/></a>
 <a href="https://www.youtube.com/channel/UCey35Do4RGewqr-6EiaCJrg"><img src="https://img.shields.io/badge/video-YouTube-red"></a>
 
 <br>
-<a href="https://visualstudio.microsoft.com/zh-hans/">
+
+<a href = "https://learn.microsoft.com/zh-cn/cpp/cpp/welcome-back-to-cpp-modern-cpp?view=msvc-170">
 <img src="https://img.shields.io/badge/code-Modern%20C++-blue"></a>
-<img src="https://img.shields.io/badge/std-C++20-yello">
-<img src="https://img.shields.io/badge/std-C++23-yello">
-<img src="https://img.shields.io/badge/compiler-GCC13-white">
-<a href="https://visualstudio.microsoft.com/zh-hans/"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
+
+<a href = "https://zh.cppreference.com/w/cpp/compiler_support/20">
+<img src="https://img.shields.io/badge/std-C++20-yello"></a>
+
+<a href = "https://zh.cppreference.com/w/cpp/compiler_support/23">
+<img src= "https://img.shields.io/badge/std-C++23-yello"></a>
+
+<a href= "https://gcc.gnu.org/onlinedocs/gcc-12.2.0/gcc/">
+<img src= "https://img.shields.io/badge/compiler-GCC13-white"></a>
+<a href = "https://learn.microsoft.com/zh-cn/cpp/cpp/?view=msvc-170"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
 
 
 </div>
@@ -69,7 +76,7 @@
 
 **卢瑟们的作业展示。**
 
-提交`pr`不应当更改当前`README`，请将作业提交到`src\群友提交`中，比如你要提交第一个作业：
+[提交`pr`](/Loser-HomeWork/提交pr教程.md)不应当更改当前`README`，请将作业提交到`src\群友提交`中，比如你要提交第一个作业：
 
 你应当在`src\群友提交\第一题`中创建一个自己的`.md`或`.cpp`文件，**文件名以自己交流群ID命名（或github都可，方便找到本人即可）**。
 
