@@ -67,6 +67,10 @@
     - [运行结果：](#运行结果-6)
     - [群友提交](#群友提交-7)
     - [标准答案](#标准答案-7)
+  - [`09`名字查找的问题](#09名字查找的问题)
+    - [运行结果](#运行结果-7)
+    - [群友提交](#群友提交-8)
+    - [标准答案](#标准答案-8)
   
 </details>
 
@@ -721,3 +725,53 @@ array(Ty, Args...) -> array<Ty, 1 + sizeof...(Args)>;
 ---
 
 <br>
+
+## `09`名字查找的问题
+日期：**`2023/8/15`** 出题人：**`mq白`**
+
+```cpp
+#include<iostream>
+
+template<class T>
+struct X {
+    void f()const { std::cout << "X\n"; }
+};
+
+void f() { std::cout << "全局\n"; }
+
+template<class T>
+struct Y : X<T> {
+    void t()const {
+        this->f();
+    }
+    void t2()const {
+        f();
+    }
+};
+
+int main() {
+    Y<void>y;
+    y.t();
+    y.t2();
+}
+```
+
+> 给出以上代码，要求解释其运行结果
+
+### 运行结果
+
+    X
+    全局
+
+- 难度:**三星**
+
+> 本问题堪称经典，**在某著名template书籍也有提过**（虽然它完全没有讲清楚）。
+> 并且从浅薄的角度来说，本题也可以让你向其他人证明加 **`this`** 访问类成员，和不加，是有很多区别的。
+
+提示：[**`名字查找`**](https://zh.cppreference.com/w/cpp/language/lookup)
+
+### 群友提交
+
+<br>
+
+### 标准答案
