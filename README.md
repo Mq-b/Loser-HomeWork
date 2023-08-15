@@ -1,16 +1,23 @@
 <div align=center>
-<a href="https://www.bilibili.com/video/BV1Zj411r7eP/?spm_id_from=333.999.0.0"><img src="https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan"/></a>
-<a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue"/></a>
+<a href = "https://www.bilibili.com/video/BV1Zj411r7eP/?spm_id_from=333.999.0.0"><img src="https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan"/></a>
+<a target="_blank" href = "https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue"/></a>
 <a href="https://www.zhihu.com/people/o4ze4r"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello"/></a>
 <a href="https://www.youtube.com/channel/UCey35Do4RGewqr-6EiaCJrg"><img src="https://img.shields.io/badge/video-YouTube-red"></a>
 
 <br>
-<a href="https://visualstudio.microsoft.com/zh-hans/">
-<img src="https://img.shields.io/badge/code-Modern%20C++-blue">
-<img src="https://img.shields.io/badge/std-C++20-yello">
-<img src="https://img.shields.io/badge/std-C++23-yello">
-<img src="https://img.shields.io/badge/compiler-GCC13-white">
-<a href="https://visualstudio.microsoft.com/zh-hans/"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
+
+<a href = "https://learn.microsoft.com/zh-cn/cpp/cpp/welcome-back-to-cpp-modern-cpp?view=msvc-170">
+<img src="https://img.shields.io/badge/code-Modern%20C++-blue"></a>
+
+<a href = "https://zh.cppreference.com/w/cpp/compiler_support/20">
+<img src="https://img.shields.io/badge/std-C++20-yello"></a>
+
+<a href = "https://zh.cppreference.com/w/cpp/compiler_support/23">
+<img src= "https://img.shields.io/badge/std-C++23-yello"></a>
+
+<a href= "https://gcc.gnu.org/onlinedocs/gcc-12.2.0/gcc/">
+<img src= "https://img.shields.io/badge/compiler-GCC13-white"></a>
+<a href = "https://learn.microsoft.com/zh-cn/cpp/cpp/?view=msvc-170"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
 
 
 </div>
@@ -60,6 +67,10 @@
     - [运行结果：](#运行结果-6)
     - [群友提交](#群友提交-7)
     - [标准答案](#标准答案-7)
+  - [`09`名字查找的问题](#09名字查找的问题)
+    - [运行结果](#运行结果-7)
+    - [群友提交](#群友提交-8)
+    - [标准答案](#标准答案-8)
   
 </details>
 
@@ -69,7 +80,7 @@
 
 **卢瑟们的作业展示。**
 
-提交`pr`不应当更改当前`README`，请将作业提交到`src\群友提交`中，比如你要提交第一个作业：
+[提交`pr`](提交pr教程.md)不应当更改当前`README`，请将作业提交到`src\群友提交`中，比如你要提交第一个作业：
 
 你应当在`src\群友提交\第一题`中创建一个自己的`.md`或`.cpp`文件，**文件名以自己交流群ID命名（或github都可，方便找到本人即可）**。
 
@@ -402,7 +413,7 @@ A::component_type_id()
 题目要求是每一个自定义类类型（假设是X）继承`Component<X>`，调用`component_type_id()`返回的是自己独一无二的ID。其他的类型同理。
 
 解决题目之前我们需要强调一个知识点：
->C++的模板不是具体类型，实例化之后才是，模板类的静态成员或静态成员函数也不属于模板我们可以用一段代码来展示结论：
+>C++的模板不是具体类型，实例化之后才是，模板类的静态成员或静态成员函数也**不属于模板**我们可以用一段代码来展示结论：
 
 ```cpp
 #include <iostream>
@@ -419,8 +430,8 @@ int main(){
 }
 ```
 
-这段代码很轻易的就展示了静态数据成员属于模板实例化后的具体类型
-`Test<void>::n` 和 `Test<int>::n`不是贡献的n，并且`Test<void>`和`Test<int>`也不是一种类型。
+这段代码很轻易的就展示了**静态数据成员属于模板实例化后的具体类型**
+`Test<void>::n` 和 `Test<int>::n`不是相同的n，并且`Test<void>`和`Test<int>`也不是一种类型。
 
 （静态成员函数同理）
 
@@ -704,9 +715,9 @@ template<class Ty, class...Args>
 array(Ty, Args...) -> array<Ty, 1 + sizeof...(Args)>;
 ```
  本题的目的如你所见主要考察的是 **`C++17`用户定义类模板推导指引**。但是我更多的其实我想表达的是：
- 定义模板推导指引和构造函数没什么直接的关联；如题目所示，我们的`array`是一个聚合类型，压根没有显式的用户定义构造函数，**没有显示的构造函数并不影响我们使用自定义的用户推导指引**。
+ 定义类模板推导指引和构造函数没什么直接的关联；如题目所示，我们的`array`是一个聚合类型，压根没有显式的用户定义构造函数，**没有显示的构造函数并不影响我们使用自定义的用户推导指引**。
  
- >如何强调只是因为大部分人对此有很多错误认知
+ >如此强调只是因为大部分人对此有很多错误认知
  
  推导指引实际上是按照你构造器传入的东西，来进行的这种推导，我觉得我视频里说的已经很清楚了。
  
@@ -714,3 +725,53 @@ array(Ty, Args...) -> array<Ty, 1 + sizeof...(Args)>;
 ---
 
 <br>
+
+## `09`名字查找的问题
+日期：**`2023/8/15`** 出题人：**`mq白`**
+
+```cpp
+#include<iostream>
+
+template<class T>
+struct X {
+    void f()const { std::cout << "X\n"; }
+};
+
+void f() { std::cout << "全局\n"; }
+
+template<class T>
+struct Y : X<T> {
+    void t()const {
+        this->f();
+    }
+    void t2()const {
+        f();
+    }
+};
+
+int main() {
+    Y<void>y;
+    y.t();
+    y.t2();
+}
+```
+
+> 给出以上代码，要求解释其运行结果
+
+### 运行结果
+
+    X
+    全局
+
+- 难度:**三星**
+
+> 本问题堪称经典，**在某著名template书籍也有提过**（虽然它完全没有讲清楚）。
+> 并且从浅薄的角度来说，本题也可以让你向其他人证明加 **`this`** 访问类成员，和不加，是有很多区别的。
+
+提示：[**`名字查找`**](https://zh.cppreference.com/w/cpp/language/lookup)
+
+### 群友提交
+
+<br>
+
+### 标准答案
