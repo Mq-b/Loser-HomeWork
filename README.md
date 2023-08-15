@@ -31,11 +31,9 @@
 
 <details> <summary><h2>目录</h2></summary>
 
-<br、>
+<br/>
 
-<!--ts-->
-<!--te-->
-
+<!-- toc -->
 </details>
 
 # Loser-HomeWork
@@ -384,13 +382,13 @@ A::component_type_id()
 
 template<typename T>
 struct Test{
-	inline static int n = 10;
+    inline static int n = 10;
 };
 
 int main(){
-	Test<int>::n = 1;
-	std::cout << Test<void>::n << '\n';//10
-	std::cout << Test<int>::n << '\n';//1
+    Test<int>::n = 1;
+    std::cout << Test<void>::n << '\n';//10
+    std::cout << Test<int>::n << '\n';//1
 }
 ```
 
@@ -584,13 +582,13 @@ atomic( const atomic& ) = delete;
 给出代码:
 ```cpp
 struct MyException :std::exception {
-	const char* data{};
-	MyException(const char* s) :data(s) { puts("MyException()"); }
-	~MyException() { puts("~MyException()"); }
-	const char* what()const noexcept { return data; }
+    const char* data{};
+    MyException(const char* s) :data(s) { puts("MyException()"); }
+    ~MyException() { puts("~MyException()"); }
+    const char* what()const noexcept { return data; }
 };
 void f2() {
-	throw new MyException("new Exception异常....");
+    throw new MyException("new Exception异常....");
 }
 int main(){
     f2();
