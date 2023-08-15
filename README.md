@@ -24,8 +24,7 @@
 
 <br/>
 
-<!--ts-->
-<!--te-->
+<!-- toc -->
 
 </details>
 
@@ -389,14 +388,14 @@ A::component_type_id()
 #include <iostream>
 
 template<typename T>
-struct Test{
- inline static int n = 10;
+struct Test {
+    inline static int n = 10;
 };
 
-int main(){
- Test<int>::n = 1;
- std::cout << Test<void>::n << '\n';//10
- std::cout << Test<int>::n << '\n';//1
+int main() {
+    Test<int>::n = 1;
+    std::cout << Test<void>::n << '\n';//10
+    std::cout << Test<int>::n << '\n';//1
 }
 ```
 
@@ -592,16 +591,16 @@ C++17 的改动是：**复制消除变为强制要求**。
 给出代码:
 
 ```cpp
-struct MyException :std::exception {
- const char* data{};
- MyException(const char* s) :data(s) { puts("MyException()"); }
- ~MyException() { puts("~MyException()"); }
- const char* what()const noexcept { return data; }
+struct MyException : std::exception {
+    const char* data{};
+    MyException(const char* s) :data(s) { puts("MyException()"); }
+    ~MyException() { puts("~MyException()"); }
+    const char* what()const noexcept { return data; }
 };
 void f2() {
- throw new MyException("new Exception异常....");
+    throw new MyException("new Exception异常....");
 }
-int main(){
+int main() {
     f2();
 }
 ```
