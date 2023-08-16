@@ -18,7 +18,7 @@ jobs:
       - name: Add TOC
         run: |
           markdown-toc -i README.md
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Git Commit Push Action
+        uses: GuillaumeFalourd/git-commit-push@v1.3
         with:
           commit_message: Auto update markdown TOC
-          commit_author: ''
