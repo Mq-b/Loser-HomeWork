@@ -13,7 +13,7 @@
 <a href= "https://gcc.gnu.org/onlinedocs/gcc-12.2.0/gcc/">
 <img src= "https://img.shields.io/badge/compiler-GCC13-white"></a>
 <a href = "https://learn.microsoft.com/zh-cn/cpp/cpp/?view=msvc-170"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
-
+<br>
 <a href="https://zh.cppreference.com/w/cpp">
 <img src="image/cpp.svg" height="64" width="64"></a>
 
