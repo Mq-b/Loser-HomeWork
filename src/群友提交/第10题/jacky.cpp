@@ -1,50 +1,47 @@
-// ConsoleApplication1.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
-//
-
 import std;
 
 struct init {
     template <typename T>
-    operator T() {}; // never defined
+    operator T();
 };
 
-template <unsigned I>
+template <size_t I>
 struct tag : tag<I - 1> { };
 
 template <>
 struct tag<0> { };
 
 template <typename T>
+    requires requires { T { init {}, init {}, init {}, init {} }; }
 constexpr auto size_(tag<4>)
-    -> decltype(T { init {}, init {}, init {}, init {} }, 0u)
 {
     return 4u;
 }
 
 template <typename T>
+    requires requires { T { init {}, init {}, init {} }; }
 constexpr auto size_(tag<3>)
-    -> decltype(T { init {}, init {}, init {} }, 0u)
 {
     return 3u;
 }
 
 template <typename T>
+    requires requires { T { init {}, init {} }; }
 constexpr auto size_(tag<2>)
-    -> decltype(T { init {}, init {} }, 0u)
 {
     return 2u;
 }
 
 template <typename T>
+    requires requires { T { init {} }; }
 constexpr auto size_(tag<1>)
-    -> decltype(T { init {} }, 0u)
 {
     return 1u;
 }
 
 template <typename T>
+    requires requires { T {}; }
 constexpr auto size_(tag<0>)
-    -> decltype(T {}, 0u)
 {
     return 0u;
 }
