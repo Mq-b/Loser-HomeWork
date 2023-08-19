@@ -820,6 +820,9 @@ this->f();
 1. `this->f()` **是待决名**，所以它的查找会推迟到得知它模板实参之时（即知道父类是谁，可以访问父类）。
 2. `f()` **是非待决名**，检查该模板的定义时将进行无限定的名字查找（不知道父类），按照正常的查看顺序，先类内（查找不到），然后全局（找到）。
 
+>补充：如果是 `msvc` 的某些早期版本，或者c++版本设置在c++20之前，会打印 `X` `X`。这是因为 `msvc`不支持 [`Two-phase name lookup`](https://learn.microsoft.com/zh-cn/archive/blogs/c/msvc%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81two-phase-name-lookup)。
+详细的可以看看文档。实测 `Microsoft Visual Studio 17.6.4` 设置 `C++20` 之前的版本都无法得到正确结果。
+
 ---
 
 ## `10` 遍历任意类数据成员
