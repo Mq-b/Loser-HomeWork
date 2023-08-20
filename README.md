@@ -1301,3 +1301,25 @@ int main(){
 ```
 
 </details>
+
+## '11' `emplace_back()` 的问题
+
+思考：以下代码为什么在 C++20 以下的版本中无法成功编译，而在 C++20 及以后却可以？
+
+```cpp
+#include <vector>
+
+struct Pos {
+    int x;
+    int y;
+};
+
+int main(){
+    std::vector<Pos> vec;
+    vec.emplace_back(1, 5);
+}
+```
+
+### 群友提交
+
+### 标准答案
