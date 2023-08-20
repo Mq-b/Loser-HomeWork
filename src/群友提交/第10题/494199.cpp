@@ -1,26 +1,52 @@
 #include <iostream>
+#include <utility>
+namespace {
+	struct _init {
+		template<class T>
+		operator T();
+	};
+
+	template<typename T, size_t... ints>
+	constexpr bool _can_size(std::integer_sequence<size_t, ints...> int_seq)
+	{
+		return (requires{
+			T{(ints, _init{})...};
+		});
+	}
+
+	//T{N个{}} 可以吗
+	template<typename T, size_t N>
+	constexpr bool can_size = _can_size<T>(std::make_integer_sequence<size_t, N>());
+
+	//T{N个{}} 正好可以吗
+	template<typename T, size_t N>
+	constexpr bool is_excat_size = can_size<T, N> && !can_size<T, N + 1>;
+
+
+	//从大到小循环到正好is_excat_size<T,n>是true
+	template<typename T, size_t N>
+	struct _size;
+
+	template<typename T>
+	struct _size<T, 0>
+	{
+		static constexpr size_t value = 0;
+	};
+
+	template<typename T, size_t N>
+	struct _size
+	{
+		static constexpr size_t value = is_excat_size<T, N> ? N : _size<T, N - 1>::value;
+	};
+}
+
+
 
 
 template<typename T>
 consteval size_t size()
 {
-	if constexpr (requires{T{{}, {}, {}, {}}; })
-	{
-		return 4;
-	}
-	if constexpr (requires{T{{}, {}, {}}; })
-	{
-		return 3;
-	}
-	if constexpr (requires{T{{}, {}}; })
-	{
-		return 2;
-	}
-	if constexpr (requires{T{{}}; })
-	{
-		return 1;
-	}
-	return 0;
+	return _size<T,100>::value;
 }
 
 template<class T>
@@ -55,7 +81,7 @@ int main() {
 
 	std::cout << size<X>() << '\n';
 	std::cout << size<Y>() << '\n';
-
+	
 	auto print = [](const auto& member) {
 		std::cout << member << ' ';
 	};
