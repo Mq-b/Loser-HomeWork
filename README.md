@@ -63,6 +63,8 @@
     - [运行结果](#运行结果-8)
     - [群友提交](#群友提交-9)
     - [标准答案](#标准答案-9)
+      - [`C++17` 写法](#c17-写法)
+      - [`C++20` 写法](#c20-写法)
 
 </details>
 
@@ -869,3 +871,240 @@ int main() {
 ### 群友提交
 
 ### 标准答案
+
+分为 **`C++20`** 的写法和 **`C++17`** 的写法。
+`C++20` 得益于 [**`requires`**](https://zh.cppreference.com/w/cpp/language/requires) 表达式，可以简化不少地方。主要在于获取聚合类型的成员个数，即 `size`函数的实现方式的不同。
+
+其他的没什么区别。
+
+我们统一先放标准答案的代码再一一讲解。
+
+#### `C++17` 写法
+
+```cpp
+#include <iostream>
+#include<type_traits>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的转换类在decltype之类的语境里使用
+};
+
+template<unsigned I>
+struct tag :tag<I - 1> {};//模板递归展开 继承 用来规定重载的匹配顺序 如果不这么写，匹配是无序的
+template<>
+struct tag<0> {};
+
+template <typename T>//SFIANE
+constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
+{
+	return 4u;
+}
+template <typename T>
+constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
+{
+	return 3u;
+}
+template <typename T>
+constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
+{
+	return 2u;
+}
+template <typename T>
+constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
+{
+	return 1u;
+}
+template <typename T>
+constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
+{
+	return 0u;
+}
+template <typename T>
+constexpr size_t size() {
+	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+	return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
+}
+
+template <typename T, typename F>
+void for_each_member(T const& v, F&& f) {
+	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+
+	if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
+		const auto& [m0, m1, m2, m3] = v;
+		f(m0); f(m1); f(m2); f(m3);
+	}
+	else if constexpr (size<T>() == 3u) {
+		const auto& [m0, m1, m2] = v;
+		f(m0); f(m1); f(m2);
+	}
+	else if constexpr (size<T>() == 2u) {
+		const auto& [m0, m1] = v;
+		f(m0); f(m1);
+	}
+	else if constexpr (size<T>() == 1u) {
+		const auto& [m0] = v;
+		f(m0);
+	}
+}
+
+int main() {
+	struct X { std::string s{ " " }; }x;
+	struct Y { double a{}, b{}, c{}, d{}; }y;
+	std::cout << size<X>() << '\n';
+	std::cout << size<Y>() << '\n';
+
+	auto print = [](const auto& member) {
+		std::cout << member << ' ';
+	};
+	for_each_member(x, print);
+	for_each_member(y, print);
+}
+```
+
+[代码运行](https://godbolt.org/z/3GY5ah88G)
+
+---
+
+#### `C++20` 写法
+
+```cpp
+#include <iostream>
+#include<type_traits>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的转换类在decltype之类的语境里使用
+};
+
+template<typename T>
+consteval size_t size(auto&&...Args) {
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
+}
+
+template <typename T, typename F>
+void for_each_member(T const& v, F&& f) {//和C++17的写法一毛一样
+	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+
+	if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
+		const auto& [m0, m1, m2, m3] = v;
+		f(m0); f(m1); f(m2); f(m3);
+	}
+	else if constexpr (size<T>() == 3u) {
+		const auto& [m0, m1, m2] = v;
+		f(m0); f(m1); f(m2);
+	}
+	else if constexpr (size<T>() == 2u) {
+		const auto& [m0, m1] = v;
+		f(m0); f(m1);
+	}
+	else if constexpr (size<T>() == 1u) {
+		const auto& [m0] = v;
+		f(m0);
+	}
+}
+
+int main() {
+	struct X { std::string s{ " " }; }x;
+	struct Y { double a{}, b{}, c{}, d{}; }y;
+	std::cout << size<X>() << '\n';
+	std::cout << size<Y>() << '\n';
+
+	auto print = [](const auto& member) {
+		std::cout << member << ' ';
+	};
+	for_each_member(x, print);
+	for_each_member(y, print);
+}
+```
+
+[代码运行](https://godbolt.org/z/dbTPGhvKd)
+
+我们来描述一下`size`模板函数的实现。
+>他的设计非常的巧妙，如你所见，它是一个递归函数，还是编译期的递归，使用到了 **编译期 `if`** ；并且这个函数是以 [`consteval`](https://zh.cppreference.com/w/cpp/language/consteval) 修饰 ，是立即函数，即必须在编译期执行，**产生编译时常量**。
+
+好，我们正式进入这个函数。首先看到函数前两行，模板和 `C++20` 简写模板，这是一个形参包，万能引用。`typename T` 的 `T` 是指代外部传入的，需要获取成员个数的聚合体类型。
+```cpp
+template<typename T>
+consteval size_t size(auto&&...Args)
+```
+
+然后是
+
+```cpp
+if constexpr (!requires{T{ Args... }; })
+```
+
+这句话表示的是：传入的聚合体类型如果可以 `T{ Args... }`这样构造，那就不进入分支。注意这个 **`!`**。
+
+我们先重复一下聚合体的匹配，假设有一个类型 `X`，如下所示：
+
+```cpp
+struct X{
+	int a,b,c;
+};
+```
+
+它支持几个参数的初始化呢？如下所示
+
+```cpp
+X x0{};        //ok
+X x1{1};       //ok
+X x2{1,2};     //ok
+X x3{1,2,3};   //ok
+X x4{1,2,3,4}; //error
+```
+
+**上面这段例子非常重要**。显然，只要传入的参数类型符合要求，并且**不超过其成员个数**即可。
+
+我们再给一段代码：
+
+```cpp
+#include <iostream>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的转换类
+};
+
+template<typename T>
+consteval size_t size(auto&&...Args) {
+	if constexpr (!requires{T{ Args... }; }) {
+		return sizeof...(Args) - 1;
+	}
+	else {
+		return size<T>(Args..., init{});
+	}
+}
+
+struct X{
+	int a,b,c;
+};
+
+int main(){
+	std::cout << size<X>() << '\n';//3
+}
+```
+
+我们一步一步带入解释，为什么会打印 **3**。
+
+1. 进入 `size` 函数，`T` 是 `X`类型，形参包 `Args` 为**空**。
+2. 编译期 `if` 中，条件表达式等价于 `! requires{ X{}; }` 。显然 `X{}` 符合语法，`requires` 表达式会返回 `true` 但是有 **`!`**，那就是  **`false`**。不进入这个分支。
+3. 进入 `else` ，直接相当于 `return size<X>(init{})` 。
+4. **第二次** 进入 `size` 函数，此时形参包 `Args` 有**一个**参数 `init`。
+5. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{} }; }`。显然 `X{ init{} }` 符合语法。同 `2` 返回 **`false`**，不进入分支。
+6. 进入 `else` ，直接相当于 `return size<X>(init{},init{})`。
+7. **第三次** 进入 `size` 函数，此时形参包 `Args` 有**两个**参数 `init`。
+8. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{} } }`。显然同 `2` `5` 返回 **`false`**，不进入分支。
+9. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{})`。
+10. **第四次** 进入 `size` 函数，此时形参包 `Args` 有**三个**参数 `init`。
+11.  编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
+12.  进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
+13. **第五次** 进入 `size` 函数，此时形参包 `Args` 有**四个**参数 `init`。（**注意，重点要来了，`X` 类型只有三个成员**）
+14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
+15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4` ，再 `-1`，也就是  **`3`**。**得到最终结果**。
