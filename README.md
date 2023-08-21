@@ -896,22 +896,22 @@ template<>
 struct tag<0> {};
 
 template <typename T>//SFIANE
-constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
+constexpr auto size_(tag<4>) -> decltype(T{ {init{}}, {init{}}, {init{}}, {init{}} }, 0u)
 {
 	return 4u;
 }
 template <typename T>
-constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
+constexpr auto size_(tag<3>) -> decltype(T{ {init{}}, {init{}}, {init{}} }, 0u)
 {
 	return 3u;
 }
 template <typename T>
-constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
+constexpr auto size_(tag<2>) -> decltype(T{ {init{}}, {init{}} }, 0u)
 {
 	return 2u;
 }
 template <typename T>
-constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
+constexpr auto size_(tag<1>) -> decltype(T{ {init{}} }, 0u)
 {
 	return 1u;
 }
@@ -962,7 +962,7 @@ int main() {
 }
 ```
 
-[代码运行](https://godbolt.org/z/3GY5ah88G)
+[代码运行](https://godbolt.org/z/M7zs8Gdq4)
 
 ---
 
@@ -979,7 +979,7 @@ struct init {
 
 template<typename T>
 consteval size_t size(auto&&...Args) {
-    if constexpr (!requires{T{ Args... }; }) {
+    if constexpr (!requires{T{ {Args}... }; }) {
         return sizeof...(Args) - 1;
     }
     else {
@@ -1023,7 +1023,7 @@ int main() {
 }
 ```
 
-[代码运行](https://godbolt.org/z/dbTPGhvKd)
+[代码运行](https://godbolt.org/z/s6h4ojcsj)
 
 我们来描述一下`size`模板函数的实现。
 >他的设计非常的巧妙，如你所见，它是一个递归函数，还是编译期的递归，使用到了 **编译期 `if`** ；并且这个函数是以 [`consteval`](https://zh.cppreference.com/w/cpp/language/consteval) 修饰 ，是立即函数，即必须在编译期执行，**产生编译时常量**。
@@ -1037,7 +1037,7 @@ consteval size_t size(auto&&...Args)
 然后是
 
 ```cpp
-if constexpr (!requires{T{ Args... }; })
+if constexpr (!requires{T{ {Args}... }; })
 ```
 
 这句话表示的是：传入的聚合体类型如果可以 `T{ Args... }`这样构造，那就不进入分支。注意这个 **`!`**。
@@ -1074,7 +1074,7 @@ struct init {
 
 template<typename T>
 consteval size_t size(auto&&...Args) {
-	if constexpr (!requires{T{ Args... }; }) {
+	if constexpr (!requires{T{ {Args}... }; }) {
 		return sizeof...(Args) - 1;
 	}
 	else {
@@ -1097,16 +1097,16 @@ int main(){
 2. 编译期 `if` 中，条件表达式等价于 `! requires{ X{}; }` 。显然 `X{}` 符合语法，`requires` 表达式会返回 `true` 但是有 **`!`**，那就是  **`false`**。不进入这个分支。
 3. 进入 `else` ，直接相当于 `return size<X>(init{})` 。
 4. **第二次** 进入 `size` 函数，此时形参包 `Args` 有**一个**参数 `init`。
-5. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{} }; }`。显然 `X{ init{} }` 符合语法。同 `2` 返回 **`false`**，不进入分支。
+5. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ {init{}} }; }`。显然 `X{ {init{}} }` 符合语法。同 `2` 返回 **`false`**，不进入分支。
 6. 进入 `else` ，直接相当于 `return size<X>(init{},init{})`。
 7. **第三次** 进入 `size` 函数，此时形参包 `Args` 有**两个**参数 `init`。
 8. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{} } }`。显然同 `2` `5` 返回 **`false`**，不进入分支。
 9. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{})`。
 10. **第四次** 进入 `size` 函数，此时形参包 `Args` 有**三个**参数 `init`。
-11.  编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
+11.  编译期 `if` 中，条件表达式等价于 `! requires{ X{ {init{}},{init{}},{init{}} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
 12.  进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
 13. **第五次** 进入 `size` 函数，此时形参包 `Args` 有**四个**参数 `init`。（**注意，重点要来了，`X` 类型只有三个成员**）
-14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
+14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ {init{}},{init{}},{init{}},{init{}} } }`，即 `X{ {init{}},{init{}},{init{}},{init{}} }`不符合语法（`X` 类型只有三个成员）。所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
 15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4` ，再 `-1`，也就是  **`3`**。**得到最终结果**。
 
 到此，我们介绍完了 `C++20`写法的 获取聚合类型的 `size` 函数。
