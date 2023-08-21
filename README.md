@@ -873,9 +873,9 @@ int main() {
 ### 标准答案
 
 分为 **`C++20`** 的写法和 **`C++17`** 的写法。
-`C++20` 得益于 [**`requires`**](https://zh.cppreference.com/w/cpp/language/requires) 表达式，可以简化不少地方。主要在于获取聚合类型的成员个数，即 `size`函数的实现方式的不同。
+`C++20` 得益于 [**`requires`**](https://zh.cppreference.com/w/cpp/language/requires) 表达式，可以简化不少地方。主要在于 **获取聚合类型的成员个数**，即 `size`函数的实现方式的不同。
 
-其他的没什么区别。
+其他的，诸如用于在不求值语境的 `init` 辅助类，或者用于遍历的 `for_each_member` 函数，在 `C++17` 和 `C++20` 没什么区别。
 
 我们统一先放标准答案的代码再一一讲解。
 
@@ -887,7 +887,7 @@ int main() {
 
 struct init {
 	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的转换类在decltype之类的语境里使用
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
 template<unsigned I>
@@ -974,7 +974,7 @@ int main() {
 
 struct init {
 	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的转换类在decltype之类的语境里使用
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
 template<typename T>
@@ -1042,7 +1042,7 @@ if constexpr (!requires{T{ Args... }; })
 
 这句话表示的是：传入的聚合体类型如果可以 `T{ Args... }`这样构造，那就不进入分支。注意这个 **`!`**。
 
-我们先重复一下聚合体的匹配，假设有一个类型 `X`，如下所示：
+我们先重复一下聚合体的匹配，假设有一个聚合类型 `X`，如下所示：
 
 ```cpp
 struct X{
@@ -1069,7 +1069,7 @@ X x4{1,2,3,4}; //error
 
 struct init {
 	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的转换类
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
 template<typename T>
@@ -1108,3 +1108,7 @@ int main(){
 13. **第五次** 进入 `size` 函数，此时形参包 `Args` 有**四个**参数 `init`。（**注意，重点要来了，`X` 类型只有三个成员**）
 14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
 15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4` ，再 `-1`，也就是  **`3`**。**得到最终结果**。
+
+到此，我们介绍完了 `C++20`写法的 获取聚合类型的 `size` 函数。
+
+至于 `for_each_member` 没必要再介绍，很普通简单的分支逻辑而已，只不过是用了编译期的分支。
