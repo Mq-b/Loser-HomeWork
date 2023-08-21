@@ -27,19 +27,19 @@ auto to_tuple(T&& object) noexcept {
 	using type = std::decay_t<T>;
 	if constexpr (is_braces_constructible<type, any_type, any_type, any_type, any_type>::value) {
 		auto&& [p1, p2, p3, p4] = object;
-		return std::make_tuple(p1, p2, p3, p4);
+		return std::forward_as_tuple(p1, p2, p3, p4);
 	}
 	else if constexpr (is_braces_constructible<type, any_type, any_type, any_type>::value) {
 		auto&& [p1, p2, p3] = object;
-		return std::make_tuple(p1, p2, p3);
+		return std::forward_as_tuple(p1, p2, p3);
 	}
 	else if constexpr (is_braces_constructible<type, any_type, any_type>::value) {
 		auto&& [p1, p2] = object;
-		return std::make_tuple(p1, p2);
+		return std::forward_as_tuple(p1, p2);
 	}
 	else if constexpr (is_braces_constructible<type, any_type>::value) {
 		auto&& [p1] = object;
-		return std::make_tuple(p1);
+		return std::forward_as_tuple(p1);
 	}
 	else {
 		return std::make_tuple();
