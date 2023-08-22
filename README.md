@@ -967,6 +967,73 @@ int main() {
 
 [代码运行](https://godbolt.org/z/3GY5ah88G)
 
+我们稍微聊一下那个模板类 `tag` 的作用，它那里是一个模板递归继承，注释也写了，用来规定重载决议匹配顺序，那么原理是什么呢？
+
+```cpp
+#include <iostream>
+
+struct X{};
+struct Y:X{};
+struct G:Y{};
+
+struct X2:X{};
+
+void f(X) { puts("X"); }
+void f(Y) { puts("Y"); }
+
+void f2(X) { puts("X"); }
+
+int main(){
+	f(G{});//G的父类是Y，重载决议优先选择f(Y)
+	f2(G{});//但是实际上使用X一样可以，当没有更匹配的重载，重载决议会选择到f2(X)
+}
+```
+
+[运行结果](https://godbolt.org/z/nGvjqo9bq)
+
+```
+X
+Y
+```
+
+我们继续看 `tag` 的代码
+
+```cpp
+
+template<unsigned I>
+struct tag :tag<I - 1> {};
+template<>
+struct tag<0> {};
+```
+
+假设我们实例化了 `tag<4>` ，那么相当于
+
+```cpp
+template<4>
+struct tag :tag<3> {};
+```
+
+然后递归，以此类推，最终到 `tag<0>` ，结束。
+
+也就是说 `tag<4>` 继承自 `tag<3>` ，`tag<2>` 继承自 `tag<1>` ，`tag<1>` 继承自 `tag<0>`。
+
+然后看到 `size_<T>(tag<4>{});` 以及 `size_` 模板的几个重载。
+
+结合我们之前说的，我们可以知道，这样就是约束匹配顺序从
+
+```cpp
+template <typename T>
+constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u);
+```
+开始，一直到
+
+```cpp
+template <typename T>
+constexpr auto size_(tag<0>) -> decltype(T{}, 0u);
+```
+
+也就是从大到小，获取传入的聚合类型的成员个数。
+
 ---
 
 #### `C++20` 写法
