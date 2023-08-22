@@ -65,6 +65,9 @@
     - [标准答案](#标准答案-9)
       - [`C++17` 写法](#c17-写法)
       - [`C++20` 写法](#c20-写法)
+      - [补充说明](#补充说明)
+        - [运行结果](#运行结果-9)
+        - [运行结果](#运行结果-10)
 
 </details>
 
@@ -850,7 +853,7 @@ int main() {
 ```
 
 要求自行实现 `for_each_member` 以及 `size` 模板函数。
-要求支持任意自定义类类型（**聚合体**）的数据成员遍历。
+要求支持任意自定义类类型（**聚合体**）的数据成员遍历（**聚合体中存储数组这种情况不需要处理，具体原因看最后的[补充说明](#补充说明)**）。
 这需要打表，那么我们的要求是支持聚合体拥有 `0` 到 `4` 个数据成员的遍历。
 >如果从来没有接触过，那这道题有相当的难度，可以等 **标准答案** 以及 **视频**。或者去网络上查找这方面的知识。
 
@@ -1112,3 +1115,122 @@ int main(){
 到此，我们介绍完了 `C++20`写法的 获取聚合类型的 `size` 函数。
 
 至于 `for_each_member` 没必要再介绍，很普通简单的分支逻辑而已，只不过是用了编译期的分支。
+
+---
+
+#### 补充说明
+
+我们给出的 `C++20` 或 `C++17` 的 `size` 的实现是有问题的，简单的说，**它没办法处理聚合类型存储数组的问题**。 在题目开头我们也说了。
+
+我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用 [`Boost1.82.0`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 版本。
+
+<details>
+<summary><h5>首先是 C++20 的写法结果的对比 </summary></h5>
+
+```cpp
+#include <iostream>
+#include<boost/pfr/functions_for.hpp>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template<typename T>
+consteval size_t size(auto&&...Args) {
+	if constexpr (!requires{T{ Args... }; }) {
+		return sizeof...(Args) - 1;
+	}
+	else {
+		return size<T>(Args..., init{});
+	}
+}
+struct X { int a{ 1 }, b{ 2 }, c[2]{ 3, 4 }; };
+
+int main(){
+	std::cout << size<X>() << '\n';
+    std::cout << boost::pfr::tuple_size_v<X> << '\n';//调pfr库
+
+	std::cout << std::is_aggregate_v<X> << '\n';
+}
+```
+
+##### [运行结果](https://godbolt.org/z/dWEK6beoK)
+
+```
+4
+4
+1
+```
+
+</details>
+
+
+
+<details>
+<summary><h5>C++17 的写法结果的对比 </summary></h5>
+
+```cpp
+#include <iostream>
+#include<boost/pfr/functions_for.hpp>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template<unsigned I>
+struct tag :tag<I - 1> {};//模板递归展开 继承 用来规定重载的匹配顺序 如果不这么写，匹配是无序的
+template<>
+struct tag<0> {};
+
+template <typename T>//SFIANE
+constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
+{
+	return 4u;
+}
+template <typename T>
+constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
+{
+	return 3u;
+}
+template <typename T>
+constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
+{
+	return 2u;
+}
+template <typename T>
+constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
+{
+	return 1u;
+}
+template <typename T>
+constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
+{
+	return 0u;
+}
+template <typename T>
+constexpr size_t size() {
+	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+	return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
+}
+
+struct X { int a{ 1 }, b{ 2 }, c[2]{ 3, 4 }; };
+
+int main(){
+	std::cout << size<X>() << '\n';
+    std::cout << boost::pfr::tuple_size_v<X> << '\n';
+
+	std::cout << std::is_aggregate_v<X> << '\n';
+}
+```
+
+##### [运行结果](https://godbolt.org/z/jc58bx399)
+
+```
+4
+4
+1
+```
+
+</details>
