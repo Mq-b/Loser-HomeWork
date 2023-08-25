@@ -6,7 +6,9 @@
 
 constexpr auto operator ""_f(const char* s, size_t l)
 {
-    return [s](auto&& ...vars){ return std::vformat(s, std::make_format_args(vars...)); };
+    //return [s](auto&& ...vars){ return std::vformat(s, std::make_format_args(vars...)); };
+    //改用完美转发
+    return [s](auto&& ...vars){ return std::vformat(s, std::make_format_args(std::forward<decltype(vars)>(vars)...)); };
 }
 
 int main()
