@@ -1337,9 +1337,11 @@ int main(){
 
 你在使用 `gcc` 并且设置标准在 C++20 之前，会得到[编译器的提示信息](https://godbolt.org/z/rdjjYEcje)
 
->error: new initializer expression list treated as compound expression [-fpermissive]
+```cpp
+error: new initializer expression list treated as compound expression [-fpermissive]
   187 |         { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
       |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
 
 实际上 `std::vector<T>::emplace_back()` 最终会使用类似如下的代码构造对象：
 
