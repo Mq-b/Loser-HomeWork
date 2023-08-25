@@ -1332,3 +1332,36 @@ int main(){
 ### [群友提交](src/群友提交/第11题)
 
 ### 标准答案
+
+
+
+你在使用 `gcc` 并且设置标准在 C++20 之前，会得到[编译器的提示信息](https://godbolt.org/z/rdjjYEcje)
+
+>error: new initializer expression list treated as compound expression [-fpermissive]
+  187 |         { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+实际上 `std::vector<T>::emplace_back()` 最终会使用类似如下的代码构造对象：
+
+```cpp
+::new (static_cast<void*>(p)) T(std::forward<Args>(args)...)//也就是完美转发+布置new
+```
+
+实际上是因为在 C++20 中增加了 “**括号形式的聚合初始化**”（用词并不准确，当字面意思凑合理解即可）。按照[文档](https://zh.cppreference.com/w/cpp/language/direct_initialization)的描述
+
+>如果目标类型是（可能有 cv 限定）的 **聚合类**，则 **按聚合初始化** 中所述进行初始化，但允许窄化转换，不允许指派初始化器，不延长引用所绑定到的临时量的生存期，不进行花括号消除，并值初始化任何无初始化器的元素。
+
+我们不需要关注那么多，我们用一段代码来演示：
+
+```cpp
+struct Pos {
+    int x;
+    int y;
+};
+
+int main(){
+    Pos p(0,0);//C++20起允许
+}
+```
+
+所以说白了，就是 `T(std::forward<Args>(args)...)` 这里用的小括号进行初始化，直到C++20才允许聚合类型使用小括号初始化。
