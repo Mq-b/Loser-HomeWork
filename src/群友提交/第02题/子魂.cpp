@@ -1,4 +1,3 @@
-#include <vcruntime.h>
 #include <format>
 #include <functional>
 #include <iostream>
