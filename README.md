@@ -63,6 +63,14 @@
     - [运行结果](#运行结果-8)
     - [群友提交](#群友提交-9)
     - [标准答案](#标准答案-9)
+      - [`C++17` 写法](#c17-写法)
+      - [`C++20` 写法](#c20-写法)
+      - [补充说明](#补充说明)
+        - [运行结果](#运行结果-9)
+        - [运行结果](#运行结果-10)
+  - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
+    - [群友提交](#群友提交-10)
+    - [标准答案](#标准答案-10)
 
 </details>
 
@@ -848,7 +856,7 @@ int main() {
 ```
 
 要求自行实现 `for_each_member` 以及 `size` 模板函数。
-要求支持任意自定义类类型（**聚合体**）的数据成员遍历。
+要求支持任意自定义类类型（**聚合体**）的数据成员遍历（**聚合体中存储数组这种情况不需要处理，具体原因看最后的[补充说明](#补充说明)**）。
 这需要打表，那么我们的要求是支持聚合体拥有 `0` 到 `4` 个数据成员的遍历。
 >如果从来没有接触过，那这道题有相当的难度，可以等 **标准答案** 以及 **视频**。或者去网络上查找这方面的知识。
 
@@ -865,6 +873,459 @@ int main() {
 > 第二个四星题目
 
 提示：[学习](https://akrzemi1.wordpress.com/2020/10/01/reflection-for-aggregates/)
+
+### 群友提交
+
+### 标准答案
+
+分为 **`C++20`** 的写法和 **`C++17`** 的写法。
+`C++20` 得益于 [**`requires`**](https://zh.cppreference.com/w/cpp/language/requires) 表达式，可以简化不少地方。主要在于 **获取聚合类型的成员个数**，即 `size`函数的实现方式的不同。
+
+其他的，诸如用于在不求值语境的 `init` 辅助类，或者用于遍历的 `for_each_member` 函数，在 `C++17` 和 `C++20` 没什么区别。
+
+我们统一先放标准答案的代码再一一讲解。
+
+#### `C++17` 写法
+
+```cpp
+#include <iostream>
+#include<type_traits>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template<unsigned I>
+struct tag :tag<I - 1> {};//模板递归展开 继承 用来规定重载的匹配顺序 如果不这么写，匹配是无序的
+template<>
+struct tag<0> {};
+
+template <typename T>//SFIANE
+constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
+{
+	return 4u;
+}
+template <typename T>
+constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
+{
+	return 3u;
+}
+template <typename T>
+constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
+{
+	return 2u;
+}
+template <typename T>
+constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
+{
+	return 1u;
+}
+template <typename T>
+constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
+{
+	return 0u;
+}
+template <typename T>
+constexpr size_t size() {
+	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+	return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
+}
+
+template <typename T, typename F>
+void for_each_member(T const& v, F&& f) {
+	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+
+	if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
+		const auto& [m0, m1, m2, m3] = v;
+		f(m0); f(m1); f(m2); f(m3);
+	}
+	else if constexpr (size<T>() == 3u) {
+		const auto& [m0, m1, m2] = v;
+		f(m0); f(m1); f(m2);
+	}
+	else if constexpr (size<T>() == 2u) {
+		const auto& [m0, m1] = v;
+		f(m0); f(m1);
+	}
+	else if constexpr (size<T>() == 1u) {
+		const auto& [m0] = v;
+		f(m0);
+	}
+}
+
+int main() {
+	struct X { std::string s{ " " }; }x;
+	struct Y { double a{}, b{}, c{}, d{}; }y;
+	std::cout << size<X>() << '\n';
+	std::cout << size<Y>() << '\n';
+
+	auto print = [](const auto& member) {
+		std::cout << member << ' ';
+	};
+	for_each_member(x, print);
+	for_each_member(y, print);
+}
+```
+
+[代码运行](https://godbolt.org/z/3GY5ah88G)
+
+我们稍微聊一下那个模板类 `tag` 的作用，它那里是一个模板递归继承，注释也写了，用来规定重载决议匹配顺序，那么原理是什么呢？
+
+```cpp
+#include <iostream>
+
+struct X{};
+struct Y:X{};
+struct G:Y{};
+
+struct X2:X{};
+
+void f(X) { puts("X"); }
+void f(Y) { puts("Y"); }
+
+void f2(X) { puts("X"); }
+
+int main(){
+	f(G{});//G的父类是Y，重载决议优先选择f(Y)
+	f2(G{});//但是实际上使用X一样可以，当没有更匹配的重载，重载决议会选择到f2(X)
+}
+```
+
+[运行结果](https://godbolt.org/z/nGvjqo9bq)
+
+```
+X
+Y
+```
+
+我们继续看 `tag` 的代码
+
+```cpp
+
+template<unsigned I>
+struct tag :tag<I - 1> {};
+template<>
+struct tag<0> {};
+```
+
+假设我们实例化了 `tag<4>` ，那么相当于
+
+```cpp
+template<4>
+struct tag :tag<3> {};
+```
+
+然后递归，以此类推，最终到 `tag<0>` ，结束。
+
+也就是说 `tag<4>` 继承自 `tag<3>` ，`tag<2>` 继承自 `tag<1>` ，`tag<1>` 继承自 `tag<0>`。
+
+然后看到 `size_<T>(tag<4>{});` 以及 `size_` 模板的几个重载。
+
+结合我们之前说的，我们可以知道，这样就是约束匹配顺序从
+
+```cpp
+template <typename T>
+constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u);
+```
+开始，一直到
+
+```cpp
+template <typename T>
+constexpr auto size_(tag<0>) -> decltype(T{}, 0u);
+```
+
+也就是从大到小，获取传入的聚合类型的成员个数。
+
+---
+
+#### `C++20` 写法
+
+```cpp
+#include <iostream>
+#include<type_traits>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template<typename T>
+consteval size_t size(auto&&...Args) {
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
+}
+
+template <typename T, typename F>
+void for_each_member(T const& v, F&& f) {//和C++17的写法一毛一样
+	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+
+	if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
+		const auto& [m0, m1, m2, m3] = v;
+		f(m0); f(m1); f(m2); f(m3);
+	}
+	else if constexpr (size<T>() == 3u) {
+		const auto& [m0, m1, m2] = v;
+		f(m0); f(m1); f(m2);
+	}
+	else if constexpr (size<T>() == 2u) {
+		const auto& [m0, m1] = v;
+		f(m0); f(m1);
+	}
+	else if constexpr (size<T>() == 1u) {
+		const auto& [m0] = v;
+		f(m0);
+	}
+}
+
+int main() {
+	struct X { std::string s{ " " }; }x;
+	struct Y { double a{}, b{}, c{}, d{}; }y;
+	std::cout << size<X>() << '\n';
+	std::cout << size<Y>() << '\n';
+
+	auto print = [](const auto& member) {
+		std::cout << member << ' ';
+	};
+	for_each_member(x, print);
+	for_each_member(y, print);
+}
+```
+
+[代码运行](https://godbolt.org/z/dbTPGhvKd)
+
+我们来描述一下`size`模板函数的实现。
+>他的设计非常的巧妙，如你所见，它是一个递归函数，还是编译期的递归，使用到了 **编译期 `if`** ；并且这个函数是以 [`consteval`](https://zh.cppreference.com/w/cpp/language/consteval) 修饰 ，是立即函数，即必须在编译期执行，**产生编译时常量**。
+
+好，我们正式进入这个函数。首先看到函数前两行，模板和 `C++20` 简写模板，这是一个形参包，万能引用。`typename T` 的 `T` 是指代外部传入的，需要获取成员个数的聚合体类型。
+```cpp
+template<typename T>
+consteval size_t size(auto&&...Args)
+```
+
+然后是
+
+```cpp
+if constexpr (!requires{T{ Args... }; })
+```
+
+这句话表示的是：传入的聚合体类型如果可以 `T{ Args... }`这样构造，那就不进入分支。注意这个 **`!`**。
+
+我们先重复一下聚合体的匹配，假设有一个聚合类型 `X`，如下所示：
+
+```cpp
+struct X{
+	int a,b,c;
+};
+```
+
+它支持几个参数的初始化呢？如下所示
+
+```cpp
+X x0{};        //ok
+X x1{1};       //ok
+X x2{1,2};     //ok
+X x3{1,2,3};   //ok
+X x4{1,2,3,4}; //error
+```
+
+**上面这段例子非常重要**。显然，只要传入的参数类型符合要求，并且**不超过其成员个数**即可。
+
+我们再给一段代码：
+
+```cpp
+#include <iostream>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template<typename T>
+consteval size_t size(auto&&...Args) {
+	if constexpr (!requires{T{ Args... }; }) {
+		return sizeof...(Args) - 1;
+	}
+	else {
+		return size<T>(Args..., init{});
+	}
+}
+
+struct X{
+	int a,b,c;
+};
+
+int main(){
+	std::cout << size<X>() << '\n';//3
+}
+```
+
+我们一步一步带入解释，为什么会打印 **3**。
+
+1. 进入 `size` 函数，`T` 是 `X`类型，形参包 `Args` 为**空**。
+2. 编译期 `if` 中，条件表达式等价于 `! requires{ X{}; }` 。显然 `X{}` 符合语法，`requires` 表达式会返回 `true` 但是有 **`!`**，那就是  **`false`**。不进入这个分支。
+3. 进入 `else` ，直接相当于 `return size<X>(init{})` 。
+4. **第二次** 进入 `size` 函数，此时形参包 `Args` 有**一个**参数 `init`。
+5. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{} }; }`。显然 `X{ init{} }` 符合语法。同 `2` 返回 **`false`**，不进入分支。
+6. 进入 `else` ，直接相当于 `return size<X>(init{},init{})`。
+7. **第三次** 进入 `size` 函数，此时形参包 `Args` 有**两个**参数 `init`。
+8. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{} } }`。显然同 `2` `5` 返回 **`false`**，不进入分支。
+9. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{})`。
+10. **第四次** 进入 `size` 函数，此时形参包 `Args` 有**三个**参数 `init`。
+11.  编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
+12.  进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
+13. **第五次** 进入 `size` 函数，此时形参包 `Args` 有**四个**参数 `init`。（**注意，重点要来了，`X` 类型只有三个成员**）
+14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
+15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4` ，再 `-1`，也就是  **`3`**。**得到最终结果**。
+
+到此，我们介绍完了 `C++20`写法的 获取聚合类型的 `size` 函数。
+
+至于 `for_each_member` 没必要再介绍，很普通简单的分支逻辑而已，只不过是用了编译期的分支。
+
+---
+
+#### 补充说明
+
+我们给出的 `C++20` 或 `C++17` 的 `size` 的实现是有问题的，简单的说，**它没办法处理聚合类型存储数组的问题**。 在题目开头我们也说了。
+
+我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用 [`Boost1.82.0`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 版本。
+
+<details>
+<summary><h5>首先是 C++20 的写法结果的对比 </summary></h5>
+
+```cpp
+#include <iostream>
+#include<boost/pfr/functions_for.hpp>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template<typename T>
+consteval size_t size(auto&&...Args) {
+	if constexpr (!requires{T{ Args... }; }) {
+		return sizeof...(Args) - 1;
+	}
+	else {
+		return size<T>(Args..., init{});
+	}
+}
+struct X { int a{ 1 }, b{ 2 }, c[2]{ 3, 4 }; };
+
+int main(){
+	std::cout << size<X>() << '\n';
+    std::cout << boost::pfr::tuple_size_v<X> << '\n';//调pfr库
+
+	std::cout << std::is_aggregate_v<X> << '\n';
+}
+```
+
+##### [运行结果](https://godbolt.org/z/dWEK6beoK)
+
+```
+4
+4
+1
+```
+
+</details>
+
+
+
+<details>
+<summary><h5>C++17 的写法结果的对比 </summary></h5>
+
+```cpp
+#include <iostream>
+#include<boost/pfr/functions_for.hpp>
+
+struct init {
+	template <typename T>
+	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template<unsigned I>
+struct tag :tag<I - 1> {};//模板递归展开 继承 用来规定重载的匹配顺序 如果不这么写，匹配是无序的
+template<>
+struct tag<0> {};
+
+template <typename T>//SFIANE
+constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
+{
+	return 4u;
+}
+template <typename T>
+constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
+{
+	return 3u;
+}
+template <typename T>
+constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
+{
+	return 2u;
+}
+template <typename T>
+constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
+{
+	return 1u;
+}
+template <typename T>
+constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
+{
+	return 0u;
+}
+template <typename T>
+constexpr size_t size() {
+	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+	return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
+}
+
+struct X { int a{ 1 }, b{ 2 }, c[2]{ 3, 4 }; };
+
+int main(){
+	std::cout << size<X>() << '\n';
+    std::cout << boost::pfr::tuple_size_v<X> << '\n';
+
+	std::cout << std::is_aggregate_v<X> << '\n';
+}
+```
+
+##### [运行结果](https://godbolt.org/z/jc58bx399)
+
+```
+4
+4
+1
+```
+
+</details>
+
+---
+
+## `11` `emplace_back()` 的问题
+
+日期：**`2023/8/20`** 出题人：[**`jacky`**](https://github.com/rsp4jack)
+
+思考：以下代码为什么在 `C++20` 以下的版本中无法成功编译，而在 `C++20` 及以后却可以？
+
+```cpp
+#include <vector>
+
+struct Pos {
+    int x;
+    int y;
+};
+
+int main(){
+    std::vector<Pos> vec;
+    vec.emplace_back(1, 5);
+}
+```
 
 ### 群友提交
 
