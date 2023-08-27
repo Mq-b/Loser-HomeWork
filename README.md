@@ -455,7 +455,7 @@ int main(){
 
 日期：**`2023/7/29`** 出题人：[Da'Inihlus](https://github.com/dynilath)
 
-要求实现 **`scope_guard`** 类型 （ 即支恃传入任意可调用类型 , 析构的时候同时调用 ）。
+要求实现 **`scope_guard`** 类型 （ 即支持传入任意可调用类型 , 析构的时候同时调用 ）。
 
 ```cpp
 #include <cstdio>
