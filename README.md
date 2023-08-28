@@ -1368,3 +1368,85 @@ int main(){
 
 所以说白了，就是 `T(std::forward<Args>(args)...)` 这里用的小括号进行初始化，直到C++20才允许聚合类型使用小括号初始化。
 
+---
+
+## `12` `make_vector()`
+
+日期：**`2023/8/28`** 出题人：[**`jacky`**](https://github.com/rsp4jack)
+
+<https://godbolt.org/z/qYn74qGee>
+
+请实现函数 `make_vector(...)`，使以下代码编译通过（**C++20**）：
+
+```cpp
+#include <cstdio>
+#include <vector>
+
+inline void dbg(const char* msg)
+{
+    std::puts(msg);
+    std::fflush(stdout);
+}
+
+struct X {
+    X() noexcept
+    {
+        dbg("X()");
+    };
+
+    ~X() noexcept
+    {
+        dbg("~X()");
+    };
+
+    X(const X&)
+    {
+        dbg("X(const X&)");
+    }
+
+    X(X&&) noexcept
+    {
+        dbg("X(X&&)");
+    }
+};
+
+void test()
+{
+    static_assert(requires {
+        {
+            make_vector(std::vector{1, 2, 3})
+        } -> std::same_as<std::vector<std::vector<int>>>;
+        {
+            make_vector(1, 2, 3)
+        } -> std::same_as<std::vector<int>>;
+        make_vector(1, 2, 3).size() == 3;
+    });
+    X    x1;
+    X    x2;
+    auto vec = make_vector(x1, std::move(x2));
+}
+
+int main()
+{
+    test();
+    dbg("test end");
+}
+```
+
+并输出：
+
+```
+X()
+X()
+X(const X&)
+X(X&&)
+X(const X&)
+X(const X&)
+~X()
+~X()
+~X()
+~X()
+~X()
+~X()
+test end
+```
