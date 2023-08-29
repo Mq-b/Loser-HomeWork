@@ -71,6 +71,10 @@
   - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
     - [群友提交](#群友提交-10)
     - [标准答案](#标准答案-10)
+  - [`12` 实现`make_vector()`](#12-实现make_vector)
+    - [运行结果](#运行结果-11)
+    - [群友提交](#群友提交-11)
+    - [标准答案](#标准答案-11)
 
 </details>
 
@@ -112,7 +116,7 @@ int main(){
 
 - 难度：**★☆☆☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第01题)
 
 答题者：[**`andyli`**](src/群友提交/第01题/andyli.cpp)
 
@@ -241,7 +245,7 @@ int main(){
 提示：C++11 用户定义字面量、C++20 format 库。
 难度：**★★☆☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第02题)
 
 答题者：[**`andyli`**](/src/群友提交/第02题/andyli.cpp)
 
@@ -325,7 +329,7 @@ print("{}", f);// 结果为1/10
 >
 > ![图片](image/第03题/01展示.jpg)
 
-### 群友提交
+### [群友提交](src/群友提交/第03题)
 
 ### 标准答案
 
@@ -400,7 +404,7 @@ int main()
 >
 > ![图片](image/第04题/01展示.png)
 
-### 群友提交
+### [群友提交](src/群友提交/第04题)
 
 ### 标准答案
 
@@ -455,7 +459,7 @@ int main(){
 
 日期：**`2023/7/29`** 出题人：[Da'Inihlus](https://github.com/dynilath)
 
-要求实现 **`scope_guard`** 类型 （ 即支恃传入任意可调用类型 , 析构的时候同时调用 ）。
+要求实现 **`scope_guard`** 类型 （ 即支持传入任意可调用类型 , 析构的时候同时调用 ）。
 
 ```cpp
 #include <cstdio>
@@ -533,7 +537,7 @@ X()
 
 - 难度:**★★★★☆**（完全满足要求的情况下）
 
-### 群友提交
+### [群友提交](src/群友提交/第05题)
 
 ### 标准答案
 
@@ -594,7 +598,7 @@ int main() {
 
 - 难度:**★★★☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第06题)
 
 ### 标准答案
 
@@ -624,7 +628,7 @@ atomic( const atomic& ) = delete;
 
 C++17 的改动是：**复制消除变为强制要求**。
 纯右值表达式作为构造对象的参数，不会再调用移动构造，也不会去检测，而是原位构造。
->说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如`X x{X{}}`，即使移动/复制构造函数**都被delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
+>说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如 `X x{X{}}` ，即使移动/复制构造函数**都被delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
 
 ---
 
@@ -653,7 +657,7 @@ int main(){
 
 > 灵感来源自 **Java** 人写 **C++**
 
-在`main`函数中自行修改代码，接取`f2()`函数抛出的异常（`try catch`）。
+在 `main` 函数中自行修改代码，接取 `f2()` 函数抛出的异常（`try catch`）。
 
 ### 运行结果
 
@@ -668,7 +672,7 @@ new Exception异常....
 > 某些IDE或者平台可能会将打印的异常信息标为红色放到第一行，即
 > new Exception异常.... 这句话也可能在第一行（一般终端运行不会，默认vs也无此功能）
 
-### 群友提交
+### [群友提交](src/群友提交/第07题)
 
 ### 标准答案
 
@@ -684,7 +688,7 @@ int main() {
 ```
 
 实际上本题是用来讽刺将 Java 的写法带入到其他语言中，也就是很经典的：**Java 人写什么都是 Java**。
-只是看我们这道题，实际上你非要说 `new` 有什么不好，倒也没什么非常不行的地方，只是，没有理由自己多写一个`delete`表达式（或者包个智能指针）。
+只是看我们这道题，实际上你非要说 `new` 有什么不好，倒也没什么非常不行的地方，只是，没有理由自己多写一个 `delete` 表达式（或者包个智能指针）。
 > 我希望不要有人开始幻想：`throw new MyException("new Exception异常....")`因为是 `throw` 一个指针类型，所以按指针传递，效率更高。不要让我看到这种逆天想法。如果你想到这一点，那不妨思考一下，构造临时对象的开销，以及使用 `new` 表达式？说实话挺无聊的问题，只是防止有人想到这些点，以及抬杠罢了。
 
 ---
@@ -722,7 +726,7 @@ int main() {
 
 - 难度: **★★★☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第08题)
 
 ### 标准答案
 
@@ -788,7 +792,7 @@ X
 
 提示：[**名字查找**](https://zh.cppreference.com/w/cpp/language/lookup)
 
-### 群友提交
+### [群友提交](src/群友提交/第09题)
 
 ### 标准答案
 
@@ -874,7 +878,7 @@ int main() {
 
 提示：[学习](https://akrzemi1.wordpress.com/2020/10/01/reflection-for-aggregates/)
 
-### 群友提交
+### [群友提交](src/群友提交/第10题)
 
 ### 标准答案
 
@@ -1326,6 +1330,128 @@ int main(){
     vec.emplace_back(1, 5);
 }
 ```
+
+- 难度:**★★☆☆☆**
+
+### [群友提交](src/群友提交/第11题)
+
+### 标准答案
+
+你在使用 `gcc` 并且设置标准在 C++20 之前，会得到[编译器的提示信息](https://godbolt.org/z/rdjjYEcje)
+
+```
+error: new initializer expression list treated as compound expression [-fpermissive]
+  187 |         { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+
+实际上 `std::vector<T>::emplace_back()` 最终会使用类似如下的代码构造对象：
+
+```cpp
+::new (static_cast<void*>(p)) T(std::forward<Args>(args)...)//也就是完美转发+布置new
+```
+
+实际上是因为在 C++20 中增加了 “**括号形式的聚合初始化**”（用词并不准确，当字面意思凑合理解即可）。按照[文档](https://zh.cppreference.com/w/cpp/language/direct_initialization)的描述
+
+>如果目标类型是（可能有 cv 限定）的 **聚合类**，则 **按聚合初始化** 中所述进行初始化，但允许窄化转换，不允许指派初始化器，不延长引用所绑定到的临时量的生存期，不进行花括号消除，并值初始化任何无初始化器的元素。
+
+我们不需要关注那么多，我们用一段代码来演示：
+
+```cpp
+struct Pos {
+    int x;
+    int y;
+};
+
+int main(){
+    Pos p(0,0);//C++20起允许
+}
+```
+
+所以说白了，就是 `T(std::forward<Args>(args)...)` 这里用的小括号进行初始化，直到C++20才允许聚合类型使用小括号初始化。
+
+---
+
+## `12` 实现`make_vector()`
+
+日期：**`2023/8/28`** 出题人：[**`jacky`**](https://github.com/rsp4jack)
+
+请实现函数 `make_vector(...)`，使以下代码编译通过（**C++20**）：
+
+```cpp
+#include <cstdio>
+#include <vector>
+
+inline void dbg(const char* msg)
+{
+    std::puts(msg);
+    std::fflush(stdout);
+}
+
+struct X {
+    X() noexcept
+    {
+        dbg("X()");
+    };
+
+    ~X() noexcept
+    {
+        dbg("~X()");
+    };
+
+    X(const X&)
+    {
+        dbg("X(const X&)");
+    }
+
+    X(X&&) noexcept
+    {
+        dbg("X(X&&)");
+    }
+};
+
+void test()
+{
+    static_assert(requires {
+        {
+            make_vector(std::vector{1, 2, 3})
+        } -> std::same_as<std::vector<std::vector<int>>>;
+        {
+            make_vector(1, 2, 3)
+        } -> std::same_as<std::vector<int>>;
+        make_vector(1, 2, 3).size() == 3;
+    });
+    X    x1;
+    X    x2;
+    auto vec = make_vector(x1, std::move(x2));
+}
+
+int main()
+{
+    test();
+    dbg("test end");
+}
+```
+
+### [运行结果](https://godbolt.org/z/qYn74qGee)
+
+```
+X()
+X()
+X(const X&)
+X(X&&)
+X(const X&)
+X(const X&)
+~X()
+~X()
+~X()
+~X()
+~X()
+~X()
+test end
+```
+
+- 难度:**★★★☆☆**
 
 ### 群友提交
 
