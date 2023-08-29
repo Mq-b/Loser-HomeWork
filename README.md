@@ -71,7 +71,8 @@
   - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
     - [群友提交](#群友提交-10)
     - [标准答案](#标准答案-10)
-  - [`12` `make_vector()`](#12-make_vector)
+  - [`12` 实现`make_vector()`](#12-实现make_vector)
+    - [运行结果](#运行结果-11)
     - [群友提交](#群友提交-11)
     - [标准答案](#标准答案-11)
 
@@ -1371,11 +1372,9 @@ int main(){
 
 ---
 
-## `12` `make_vector()`
+## `12` 实现`make_vector()`
 
 日期：**`2023/8/28`** 出题人：[**`jacky`**](https://github.com/rsp4jack)
-
-<https://godbolt.org/z/qYn74qGee>
 
 请实现函数 `make_vector(...)`，使以下代码编译通过（**C++20**）：
 
@@ -1434,7 +1433,7 @@ int main()
 }
 ```
 
-并输出：
+### [运行结果](https://godbolt.org/z/qYn74qGee)
 
 ```
 X()
