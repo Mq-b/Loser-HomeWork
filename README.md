@@ -1455,7 +1455,7 @@ test end
 
 - 难度:**★★★☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第12题)
 
 答题者：[`yuzhiy`](src/群友提交/第12题/yuzhiy.cpp)
 ```cpp
@@ -1465,6 +1465,16 @@ auto make_vector(Args&&...args)->decltype(auto){
 }
 ```
 >没啥问题，就是 `auto` 占位，后置返回类型 `decltype(auto)` 没意义。
+
+答题者：[`Matrix-A`](src/群友提交/第12题/Matrix-A.cpp)
+```cpp
+auto make_vector(auto&&... args) {
+    std::vector<std::common_type_t<decltype(args)...>> temp;
+    (temp.emplace_back(std::forward<decltype(args)>(args)),...);
+    return temp;
+}
+```
+>用 `emplace_back()` 比直接往 `vector` 的初始化器里面传入参数要少拷贝。可[自行测试](https://gcc.godbolt.org/z/3bo7oKfEq)。
 
 ### 标准答案
 
