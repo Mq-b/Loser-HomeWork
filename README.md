@@ -389,7 +389,7 @@ int main()
 
 ### 运行结果
 
-``` 
+```
 0
 1
 1
@@ -803,9 +803,9 @@ X
 
 出现在作用域解析操作符 `::` 右边的名字是限定名（参阅有限定的标识符）。 限定名可能代表的是：
 
-* 类的成员（包括静态和非静态函数、类型和模板等）
-* 命名空间的成员（包括其他的命名空间）
-* 枚举项
+- 类的成员（包括静态和非静态函数、类型和模板等）
+- 命名空间的成员（包括其他的命名空间）
+- 枚举项
 
 如果 `::` 左边为空，那么查找过程只会考虑全局命名空间作用域中作出（或通过 using 声明引入到全局命名空间中）的声明。
 
@@ -846,16 +846,16 @@ this->f();
 
 ```cpp
 int main() {
-	struct X { std::string s{ " " }; }x;
-	struct Y { double a{}, b{}, c{}, d{}; }y;
-	std::cout << size<X>() << '\n';
-	std::cout << size<Y>() << '\n';
+    struct X { std::string s{ " " }; }x;
+    struct Y { double a{}, b{}, c{}, d{}; }y;
+    std::cout << size<X>() << '\n';
+    std::cout << size<Y>() << '\n';
 
-	auto print = [](const auto& member) {
-		std::cout << member << ' ';
-	};
-	for_each_member(x, print);
-	for_each_member(y, print);
+    auto print = [](const auto& member) {
+        std::cout << member << ' ';
+    };
+    for_each_member(x, print);
+    for_each_member(y, print);
 }
 ```
 
@@ -896,8 +896,8 @@ int main() {
 #include<type_traits>
 
 struct init {
-	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
 template<unsigned I>
@@ -908,67 +908,67 @@ struct tag<0> {};
 template <typename T>//SFIANE
 constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
 {
-	return 4u;
+    return 4u;
 }
 template <typename T>
 constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
 {
-	return 3u;
+    return 3u;
 }
 template <typename T>
 constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
 {
-	return 2u;
+    return 2u;
 }
 template <typename T>
 constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
 {
-	return 1u;
+    return 1u;
 }
 template <typename T>
 constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
 {
-	return 0u;
+    return 0u;
 }
 template <typename T>
 constexpr size_t size() {
-	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
-	return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
+    static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+    return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
 }
 
 template <typename T, typename F>
 void for_each_member(T const& v, F&& f) {
-	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+    static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
 
-	if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
-		const auto& [m0, m1, m2, m3] = v;
-		f(m0); f(m1); f(m2); f(m3);
-	}
-	else if constexpr (size<T>() == 3u) {
-		const auto& [m0, m1, m2] = v;
-		f(m0); f(m1); f(m2);
-	}
-	else if constexpr (size<T>() == 2u) {
-		const auto& [m0, m1] = v;
-		f(m0); f(m1);
-	}
-	else if constexpr (size<T>() == 1u) {
-		const auto& [m0] = v;
-		f(m0);
-	}
+    if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
+        const auto& [m0, m1, m2, m3] = v;
+        f(m0); f(m1); f(m2); f(m3);
+    }
+    else if constexpr (size<T>() == 3u) {
+        const auto& [m0, m1, m2] = v;
+        f(m0); f(m1); f(m2);
+    }
+    else if constexpr (size<T>() == 2u) {
+        const auto& [m0, m1] = v;
+        f(m0); f(m1);
+    }
+    else if constexpr (size<T>() == 1u) {
+        const auto& [m0] = v;
+        f(m0);
+    }
 }
 
 int main() {
-	struct X { std::string s{ " " }; }x;
-	struct Y { double a{}, b{}, c{}, d{}; }y;
-	std::cout << size<X>() << '\n';
-	std::cout << size<Y>() << '\n';
+    struct X { std::string s{ " " }; }x;
+    struct Y { double a{}, b{}, c{}, d{}; }y;
+    std::cout << size<X>() << '\n';
+    std::cout << size<Y>() << '\n';
 
-	auto print = [](const auto& member) {
-		std::cout << member << ' ';
-	};
-	for_each_member(x, print);
-	for_each_member(y, print);
+    auto print = [](const auto& member) {
+        std::cout << member << ' ';
+    };
+    for_each_member(x, print);
+    for_each_member(y, print);
 }
 ```
 
@@ -991,8 +991,8 @@ void f(Y) { puts("Y"); }
 void f2(X) { puts("X"); }
 
 int main(){
-	f(G{});//G的父类是Y，重载决议优先选择f(Y)
-	f2(G{});//但是实际上使用X一样可以，当没有更匹配的重载，重载决议会选择到f2(X)
+    f(G{});//G的父类是Y，重载决议优先选择f(Y)
+    f2(G{});//但是实际上使用X一样可以，当没有更匹配的重载，重载决议会选择到f2(X)
 }
 ```
 
@@ -1008,7 +1008,7 @@ Y
 ```cpp
 
 template<unsigned I>
-struct tag :tag<I - 1> {};
+struct tag : tag<I - 1> {};
 template<>
 struct tag<0> {};
 ```
@@ -1032,6 +1032,7 @@ struct tag :tag<3> {};
 template <typename T>
 constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u);
 ```
+
 开始，一直到
 
 ```cpp
@@ -1047,14 +1048,14 @@ constexpr auto size_(tag<0>) -> decltype(T{}, 0u);
 
 ```cpp
 #include <iostream>
-#include<type_traits>
+#include <type_traits>
 
 struct init {
-	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
-template<typename T>
+template <typename T>
 consteval size_t size(auto&&...Args) {
     if constexpr (!requires{T{ Args... }; }) {
         return sizeof...(Args) - 1;
@@ -1066,37 +1067,37 @@ consteval size_t size(auto&&...Args) {
 
 template <typename T, typename F>
 void for_each_member(T const& v, F&& f) {//和C++17的写法一毛一样
-	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+    static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
 
-	if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
-		const auto& [m0, m1, m2, m3] = v;
-		f(m0); f(m1); f(m2); f(m3);
-	}
-	else if constexpr (size<T>() == 3u) {
-		const auto& [m0, m1, m2] = v;
-		f(m0); f(m1); f(m2);
-	}
-	else if constexpr (size<T>() == 2u) {
-		const auto& [m0, m1] = v;
-		f(m0); f(m1);
-	}
-	else if constexpr (size<T>() == 1u) {
-		const auto& [m0] = v;
-		f(m0);
-	}
+    if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
+        const auto& [m0, m1, m2, m3] = v;
+        f(m0); f(m1); f(m2); f(m3);
+    }
+    else if constexpr (size<T>() == 3u) {
+        const auto& [m0, m1, m2] = v;
+        f(m0); f(m1); f(m2);
+    }
+    else if constexpr (size<T>() == 2u) {
+        const auto& [m0, m1] = v;
+        f(m0); f(m1);
+    }
+    else if constexpr (size<T>() == 1u) {
+        const auto& [m0] = v;
+        f(m0);
+    }
 }
 
 int main() {
-	struct X { std::string s{ " " }; }x;
-	struct Y { double a{}, b{}, c{}, d{}; }y;
-	std::cout << size<X>() << '\n';
-	std::cout << size<Y>() << '\n';
+    struct X { std::string s{ " " }; }x;
+    struct Y { double a{}, b{}, c{}, d{}; }y;
+    std::cout << size<X>() << '\n';
+    std::cout << size<Y>() << '\n';
 
-	auto print = [](const auto& member) {
-		std::cout << member << ' ';
-	};
-	for_each_member(x, print);
-	for_each_member(y, print);
+    auto print = [](const auto& member) {
+        std::cout << member << ' ';
+    };
+    for_each_member(x, print);
+    for_each_member(y, print);
 }
 ```
 
@@ -1106,8 +1107,9 @@ int main() {
 >他的设计非常的巧妙，如你所见，它是一个递归函数，还是编译期的递归，使用到了 **编译期 `if`** ；并且这个函数是以 [`consteval`](https://zh.cppreference.com/w/cpp/language/consteval) 修饰 ，是立即函数，即必须在编译期执行，**产生编译时常量**。
 
 好，我们正式进入这个函数。首先看到函数前两行，模板和 `C++20` 简写模板，这是一个形参包，万能引用。`typename T` 的 `T` 是指代外部传入的，需要获取成员个数的聚合体类型。
+
 ```cpp
-template<typename T>
+template <typename T>
 consteval size_t size(auto&&...Args)
 ```
 
@@ -1123,7 +1125,7 @@ if constexpr (!requires{T{ Args... }; })
 
 ```cpp
 struct X{
-	int a,b,c;
+    int a,b,c;
 };
 ```
 
@@ -1145,26 +1147,26 @@ X x4{1,2,3,4}; //error
 #include <iostream>
 
 struct init {
-	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
 template<typename T>
 consteval size_t size(auto&&...Args) {
-	if constexpr (!requires{T{ Args... }; }) {
-		return sizeof...(Args) - 1;
-	}
-	else {
-		return size<T>(Args..., init{});
-	}
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
 }
 
 struct X{
-	int a,b,c;
+    int a,b,c;
 };
 
 int main(){
-	std::cout << size<X>() << '\n';//3
+    std::cout << size<X>() << '\n';//3
 }
 ```
 
@@ -1180,8 +1182,8 @@ int main(){
 8. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{} } }`。显然同 `2` `5` 返回 **`false`**，不进入分支。
 9. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{})`。
 10. **第四次** 进入 `size` 函数，此时形参包 `Args` 有**三个**参数 `init`。
-11.  编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
-12.  进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
+11. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
+12. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
 13. **第五次** 进入 `size` 函数，此时形参包 `Args` 有**四个**参数 `init`。（**注意，重点要来了，`X` 类型只有三个成员**）
 14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
 15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4` ，再 `-1`，也就是  **`3`**。**得到最终结果**。
@@ -1206,32 +1208,32 @@ int main(){
 #include<boost/pfr/functions_for.hpp>
 
 struct init {
-	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
 template<typename T>
 consteval size_t size(auto&&...Args) {
-	if constexpr (!requires{T{ Args... }; }) {
-		return sizeof...(Args) - 1;
-	}
-	else {
-		return size<T>(Args..., init{});
-	}
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
 }
 struct X { int a{ 1 }, b{ 2 }, c[2]{ 3, 4 }; };
 
 int main(){
-	std::cout << size<X>() << '\n';
+    std::cout << size<X>() << '\n';
     std::cout << boost::pfr::tuple_size_v<X> << '\n';//调pfr库
 
-	std::cout << std::is_aggregate_v<X> << '\n';
+    std::cout << std::is_aggregate_v<X> << '\n';
 }
 ```
 
 ##### [运行结果](https://godbolt.org/z/dWEK6beoK)
 
-```
+```plain
 4
 4
 1
@@ -1239,63 +1241,62 @@ int main(){
 
 </details>
 
-
-
 <details>
 <summary><h5>C++17 的写法结果的对比 </summary></h5>
 
 ```cpp
 #include <iostream>
-#include<boost/pfr/functions_for.hpp>
+#include <boost/pfr/functions_for.hpp>
 
 struct init {
-	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
-template<unsigned I>
-struct tag :tag<I - 1> {};//模板递归展开 继承 用来规定重载的匹配顺序 如果不这么写，匹配是无序的
-template<>
+template <unsigned I>
+struct tag :tag<I - 1> {}; //模板递归展开 继承 用来规定重载的匹配顺序 如果不这么写，匹配是无序的
+template <>
 struct tag<0> {};
 
 template <typename T>//SFIANE
 constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
 {
-	return 4u;
+    return 4u;
 }
 template <typename T>
 constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
 {
-	return 3u;
+    return 3u;
 }
 template <typename T>
 constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
 {
-	return 2u;
+    return 2u;
 }
 template <typename T>
 constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
 {
-	return 1u;
+    return 1u;
 }
 template <typename T>
 constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
 {
-	return 0u;
+    return 0u;
 }
+
 template <typename T>
 constexpr size_t size() {
-	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
-	return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
+    static_assert(std::is_aggregate_v<T>); //检测是否为聚合类型
+    return size_<T>(tag<4>{}); //这里就是要求从tag<4>开始匹配，一直到tag<0>
 }
 
-struct X { int a{ 1 }, b{ 2 }, c[2]{ 3, 4 }; };
+struct X { int a{1}, b{2}, c[2]{3, 4}; };
 
 int main(){
-	std::cout << size<X>() << '\n';
+    std::cout << size<X>() << '\n';
     std::cout << boost::pfr::tuple_size_v<X> << '\n';
 
-	std::cout << std::is_aggregate_v<X> << '\n';
+    std::cout << std::is_aggregate_v<X> << '\n';
 }
 ```
 
@@ -1337,7 +1338,7 @@ int main(){
 
 ### 标准答案
 
-你在使用 `gcc` 并且设置标准在 C++20 之前，会得到[编译器的提示信息](https://godbolt.org/z/rdjjYEcje)
+你在使用 `gcc` 并且设置标准在 C++20 之前，会得到 [编译器的提示信息](https://godbolt.org/z/rdjjYEcje)
 
 ```
 error: new initializer expression list treated as compound expression [-fpermissive]
