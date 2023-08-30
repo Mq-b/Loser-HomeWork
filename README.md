@@ -1481,7 +1481,7 @@ auto make_vector(auto&&... args) {
 ```cpp
 template<typename...Args>
 constexpr auto make_vector(Args&&...args) {
-	return std::vector({ std::forward<Args>(args)... });
+    return std::vector({ std::forward<Args>(args)... });
 }
 ```
 
@@ -1496,7 +1496,7 @@ constexpr auto make_vector(Args&&...args) {
 我们去掉 `requires` 表达式中的：
 ```cpp
 {
-	make_vector(std::vector{1, 2, 3})
+    make_vector(std::vector{1, 2, 3})
 } -> std::same_as<std::vector<std::vector<int>>>;
 ```
 
@@ -1526,18 +1526,18 @@ std::vector v{std::vector{1},std::vector{2}}; //就能得到std::vector<std::vec
 
 template<typename T>
 struct Test {
-	Test() {}
-	Test(std::initializer_list<T>) { puts("被调用"); }
-	Test(const Test<T>&) { puts("复制构造"); }
+    Test() {}
+    Test(std::initializer_list<T>) { puts("被调用"); }
+    Test(const Test<T>&) { puts("复制构造"); }
 };
 
 template<typename T>
 Test(std::initializer_list<T>) -> Test<T>;
 
 int main() {
-	Test<int> a;
-	Test t{ a,a };//被调用	        会推导为Test<Test<int>>
-	Test t2{ a };//复制构造         会推导为Test<int>
+    Test<int> a;
+    Test t{ a,a };//被调用	        会推导为Test<Test<int>>
+    Test t2{ a };//复制构造         会推导为Test<int>
 }
 ```
 
