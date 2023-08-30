@@ -75,6 +75,7 @@
     - [运行结果](#运行结果-11)
     - [群友提交](#群友提交-11)
     - [标准答案](#标准答案-11)
+      - [运行结果：](#运行结果-12)
 
 </details>
 
@@ -1454,6 +1455,119 @@ test end
 
 - 难度:**★★★☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第12题)
+
+答题者：[`yuzhiy`](src/群友提交/第12题/yuzhiy.cpp)
+```cpp
+template<typename...Args>
+auto make_vector(Args&&...args)->decltype(auto){
+    return std::vector({std::forward<Args>(args)...});
+}
+```
+>没啥问题，就是 `auto` 占位，后置返回类型 `decltype(auto)` 没意义。
+
+答题者：[`Matrix-A`](src/群友提交/第12题/Matrix-A.cpp)
+```cpp
+auto make_vector(auto&&... args) {
+    std::vector<std::common_type_t<decltype(args)...>> temp;
+    (temp.emplace_back(std::forward<decltype(args)>(args)),...);
+    return temp;
+}
+```
+>用 `emplace_back()` 比直接往 `vector` 的初始化器里面传入参数要少拷贝。可[自行测试](https://gcc.godbolt.org/z/3bo7oKfEq)。
 
 ### 标准答案
+
+```cpp
+template<typename...Args>
+constexpr auto make_vector(Args&&...args) {
+    return std::vector({ std::forward<Args>(args)... });
+}
+```
+
+事实上大多数人看到这段代码会觉得很简单，就这么一行核心代码。
+
+实际上这里有很多坑，如果你没有自己写过不会注意到，即使你自己写过，大多人也并不明白。
+
+即：**为什么需要 `std::vector({})` 这种形式？如果我不这么做呢？只用 `()` 或者 `{}` 呢？有什么替代方式吗？**
+
+我们如果去掉外面的 `()` 进行编译，会发生一个**编译错误**，编译器提示我们是`static_assert` 中的 `requires` 表达式出错了，但是看不出是哪个错误。
+
+我们去掉 `requires` 表达式中的：
+```cpp
+{
+    make_vector(std::vector{1, 2, 3})
+} -> std::same_as<std::vector<std::vector<int>>>;
+```
+
+这段代码，发现就可以通过编译了，那么问题很简单了，就是：
+* `make_vector(std::vector{1, 2, 3})` 这段代码无法得到 `std::vector<std::vector<int>>` 类型（前提是我们去掉了 `()` ）。
+
+那么这个问题的本质是什么？
+
+```cpp
+//C++20
+std::vector v{std::vector{1,2,3}};  // std::vector<int>
+```
+
+就这么简单，这就是这个问题表面上的本质，`vector` 再这种情况下也会得不到我们想要的类型。
+
+我们接下来需要解释为什么 `vector` 会有这样的问题，并且，如果是：
+
+```cpp
+std::vector v{std::vector{1},std::vector{2}}; //就能得到std::vector<std::vector<int>>
+```
+
+我们写一个最小的复现 demo 即可
+
+```cpp
+#include <cstdio>
+#include <vector>
+
+template<typename T>
+struct Test {
+    Test() {}
+    Test(std::initializer_list<T>) { puts("被调用"); }
+    Test(const Test<T>&) { puts("复制构造"); }
+};
+
+template<typename T>
+Test(std::initializer_list<T>) -> Test<T>;
+
+int main() {
+    Test<int> a;
+    Test t{ a,a };//被调用	        会推导为Test<Test<int>>
+    Test t2{ a };//复制构造         会推导为Test<int>
+}
+```
+
+#### [运行结果](https://godbolt.org/z/jvKE7Mqhq)：
+
+```
+复制构造
+复制构造
+被调用
+复制构造
+```
+
+根据运行结果我们可以知道，`std::initializer_list` 的构造函数版本只被调用了一次，是 `Test t{ a,a };` 。
+
+`Test t2{ a };` 并没有调用 `std::initializer_list` 的构造函数。
+
+不用感到奇怪，这理所应当。
+
+**当从类型为正在构造的类模板的特化或特化子级的单个元素进行初始化时，复制构造函数优先于列表构造函数。**
+
+这就可以解释为什么直接 `{}` 不行，`({})` 的话就很明确了，只能调用 `initializer_list` 的构造函数。
+
+包括可以解释以下给出的**错误**写法：
+
+```cpp
+template<typename... Args>
+auto make_vector(const Args&... elems){
+    return std::vector{elems...};
+}
+auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
+```
+
+可参见[文档](https://oleksandrkvl.github.io/2021/04/02/cpp-20-overview.html#fix-init-list-ctad)描述。
