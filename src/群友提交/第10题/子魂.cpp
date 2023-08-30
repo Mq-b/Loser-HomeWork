@@ -78,14 +78,14 @@ void for_each_member(const T& v, F f)
 }
 
 int main() {
-	struct X { std::string s{ " " }; }x;
-	struct Y { double a{}, b{}, c{}, d{}; }y;
-	std::cout << size<X>() << '\n';
-	std::cout << size<Y>() << '\n';
+    struct X { std::string s{ " " }; }x;
+    struct Y { double a{}, b{}, c{}, d{}; }y;
+    std::cout << size<X>() << '\n';
+    std::cout << size<Y>() << '\n';
 
-	auto print = [](const auto& member) {
-		std::cout << member << ' ';
-	};
-	for_each_member(x, print);
-	for_each_member(y, print);
+    auto print = [](const auto& member) {
+        std::cout << member << ' ';
+    };
+    for_each_member(x, print);
+    for_each_member(y, print);
 }
