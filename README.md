@@ -65,6 +65,17 @@
     - [标准答案](#标准答案-9)
       - [`C++17` 写法](#c17-写法)
       - [`C++20` 写法](#c20-写法)
+      - [补充说明](#补充说明)
+        - [运行结果](#运行结果-9)
+        - [运行结果](#运行结果-10)
+  - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
+    - [群友提交](#群友提交-10)
+    - [标准答案](#标准答案-10)
+  - [`12` 实现`make_vector()`](#12-实现make_vector)
+    - [运行结果](#运行结果-11)
+    - [群友提交](#群友提交-11)
+    - [标准答案](#标准答案-11)
+      - [运行结果：](#运行结果-12)
 
 </details>
 
@@ -106,7 +117,7 @@ int main(){
 
 - 难度：**★☆☆☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第01题)
 
 答题者：[**`andyli`**](src/群友提交/第01题/andyli.cpp)
 
@@ -235,7 +246,7 @@ int main(){
 提示：C++11 用户定义字面量、C++20 format 库。
 难度：**★★☆☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第02题)
 
 答题者：[**`andyli`**](/src/群友提交/第02题/andyli.cpp)
 
@@ -319,7 +330,7 @@ print("{}", f);// 结果为1/10
 >
 > ![图片](image/第03题/01展示.jpg)
 
-### 群友提交
+### [群友提交](src/群友提交/第03题)
 
 ### 标准答案
 
@@ -379,7 +390,7 @@ int main()
 
 ### 运行结果
 
-``` 
+```
 0
 1
 1
@@ -394,7 +405,7 @@ int main()
 >
 > ![图片](image/第04题/01展示.png)
 
-### 群友提交
+### [群友提交](src/群友提交/第04题)
 
 ### 标准答案
 
@@ -449,7 +460,7 @@ int main(){
 
 日期：**`2023/7/29`** 出题人：[Da'Inihlus](https://github.com/dynilath)
 
-要求实现 **`scope_guard`** 类型 （ 即支恃传入任意可调用类型 , 析构的时候同时调用 ）。
+要求实现 **`scope_guard`** 类型 （ 即支持传入任意可调用类型 , 析构的时候同时调用 ）。
 
 ```cpp
 #include <cstdio>
@@ -527,7 +538,7 @@ X()
 
 - 难度:**★★★★☆**（完全满足要求的情况下）
 
-### 群友提交
+### [群友提交](src/群友提交/第05题)
 
 ### 标准答案
 
@@ -588,7 +599,7 @@ int main() {
 
 - 难度:**★★★☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第06题)
 
 ### 标准答案
 
@@ -618,7 +629,7 @@ atomic( const atomic& ) = delete;
 
 C++17 的改动是：**复制消除变为强制要求**。
 纯右值表达式作为构造对象的参数，不会再调用移动构造，也不会去检测，而是原位构造。
->说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如`X x{X{}}`，即使移动/复制构造函数**都被delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
+>说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如 `X x{X{}}` ，即使移动/复制构造函数**都被delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
 
 ---
 
@@ -647,7 +658,7 @@ int main(){
 
 > 灵感来源自 **Java** 人写 **C++**
 
-在`main`函数中自行修改代码，接取`f2()`函数抛出的异常（`try catch`）。
+在 `main` 函数中自行修改代码，接取 `f2()` 函数抛出的异常（`try catch`）。
 
 ### 运行结果
 
@@ -662,7 +673,7 @@ new Exception异常....
 > 某些IDE或者平台可能会将打印的异常信息标为红色放到第一行，即
 > new Exception异常.... 这句话也可能在第一行（一般终端运行不会，默认vs也无此功能）
 
-### 群友提交
+### [群友提交](src/群友提交/第07题)
 
 ### 标准答案
 
@@ -678,7 +689,7 @@ int main() {
 ```
 
 实际上本题是用来讽刺将 Java 的写法带入到其他语言中，也就是很经典的：**Java 人写什么都是 Java**。
-只是看我们这道题，实际上你非要说 `new` 有什么不好，倒也没什么非常不行的地方，只是，没有理由自己多写一个`delete`表达式（或者包个智能指针）。
+只是看我们这道题，实际上你非要说 `new` 有什么不好，倒也没什么非常不行的地方，只是，没有理由自己多写一个 `delete` 表达式（或者包个智能指针）。
 > 我希望不要有人开始幻想：`throw new MyException("new Exception异常....")`因为是 `throw` 一个指针类型，所以按指针传递，效率更高。不要让我看到这种逆天想法。如果你想到这一点，那不妨思考一下，构造临时对象的开销，以及使用 `new` 表达式？说实话挺无聊的问题，只是防止有人想到这些点，以及抬杠罢了。
 
 ---
@@ -716,7 +727,7 @@ int main() {
 
 - 难度: **★★★☆☆**
 
-### 群友提交
+### [群友提交](src/群友提交/第08题)
 
 ### 标准答案
 
@@ -782,7 +793,7 @@ X
 
 提示：[**名字查找**](https://zh.cppreference.com/w/cpp/language/lookup)
 
-### 群友提交
+### [群友提交](src/群友提交/第09题)
 
 ### 标准答案
 
@@ -793,9 +804,9 @@ X
 
 出现在作用域解析操作符 `::` 右边的名字是限定名（参阅有限定的标识符）。 限定名可能代表的是：
 
-* 类的成员（包括静态和非静态函数、类型和模板等）
-* 命名空间的成员（包括其他的命名空间）
-* 枚举项
+- 类的成员（包括静态和非静态函数、类型和模板等）
+- 命名空间的成员（包括其他的命名空间）
+- 枚举项
 
 如果 `::` 左边为空，那么查找过程只会考虑全局命名空间作用域中作出（或通过 using 声明引入到全局命名空间中）的声明。
 
@@ -836,21 +847,21 @@ this->f();
 
 ```cpp
 int main() {
-	struct X { std::string s{ " " }; }x;
-	struct Y { double a{}, b{}, c{}, d{}; }y;
-	std::cout << size<X>() << '\n';
-	std::cout << size<Y>() << '\n';
+    struct X { std::string s{ " " }; }x;
+    struct Y { double a{}, b{}, c{}, d{}; }y;
+    std::cout << size<X>() << '\n';
+    std::cout << size<Y>() << '\n';
 
-	auto print = [](const auto& member) {
-		std::cout << member << ' ';
-	};
-	for_each_member(x, print);
-	for_each_member(y, print);
+    auto print = [](const auto& member) {
+        std::cout << member << ' ';
+    };
+    for_each_member(x, print);
+    for_each_member(y, print);
 }
 ```
 
 要求自行实现 `for_each_member` 以及 `size` 模板函数。
-要求支持任意自定义类类型（**聚合体**）的数据成员遍历。
+要求支持任意自定义类类型（**聚合体**）的数据成员遍历（**聚合体中存储数组这种情况不需要处理，具体原因看最后的[补充说明](#补充说明)**）。
 这需要打表，那么我们的要求是支持聚合体拥有 `0` 到 `4` 个数据成员的遍历。
 >如果从来没有接触过，那这道题有相当的难度，可以等 **标准答案** 以及 **视频**。或者去网络上查找这方面的知识。
 
@@ -868,7 +879,7 @@ int main() {
 
 提示：[学习](https://akrzemi1.wordpress.com/2020/10/01/reflection-for-aggregates/)
 
-### 群友提交
+### [群友提交](src/群友提交/第10题)
 
 ### 标准答案
 
@@ -886,8 +897,8 @@ int main() {
 #include<type_traits>
 
 struct init {
-	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
 template<unsigned I>
@@ -898,71 +909,139 @@ struct tag<0> {};
 template <typename T>//SFIANE
 constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
 {
-	return 4u;
+    return 4u;
 }
 template <typename T>
 constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
 {
-	return 3u;
+    return 3u;
 }
 template <typename T>
 constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
 {
-	return 2u;
+    return 2u;
 }
 template <typename T>
 constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
 {
-	return 1u;
+    return 1u;
 }
 template <typename T>
 constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
 {
-	return 0u;
+    return 0u;
 }
 template <typename T>
 constexpr size_t size() {
-	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
-	return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
+    static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+    return size_<T>(tag<4>{});//这里就是要求从tag<4>开始匹配，一直到tag<0>
 }
 
 template <typename T, typename F>
 void for_each_member(T const& v, F&& f) {
-	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+    static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
 
-	if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
-		const auto& [m0, m1, m2, m3] = v;
-		f(m0); f(m1); f(m2); f(m3);
-	}
-	else if constexpr (size<T>() == 3u) {
-		const auto& [m0, m1, m2] = v;
-		f(m0); f(m1); f(m2);
-	}
-	else if constexpr (size<T>() == 2u) {
-		const auto& [m0, m1] = v;
-		f(m0); f(m1);
-	}
-	else if constexpr (size<T>() == 1u) {
-		const auto& [m0] = v;
-		f(m0);
-	}
+    if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
+        const auto& [m0, m1, m2, m3] = v;
+        f(m0); f(m1); f(m2); f(m3);
+    }
+    else if constexpr (size<T>() == 3u) {
+        const auto& [m0, m1, m2] = v;
+        f(m0); f(m1); f(m2);
+    }
+    else if constexpr (size<T>() == 2u) {
+        const auto& [m0, m1] = v;
+        f(m0); f(m1);
+    }
+    else if constexpr (size<T>() == 1u) {
+        const auto& [m0] = v;
+        f(m0);
+    }
 }
 
 int main() {
-	struct X { std::string s{ " " }; }x;
-	struct Y { double a{}, b{}, c{}, d{}; }y;
-	std::cout << size<X>() << '\n';
-	std::cout << size<Y>() << '\n';
+    struct X { std::string s{ " " }; }x;
+    struct Y { double a{}, b{}, c{}, d{}; }y;
+    std::cout << size<X>() << '\n';
+    std::cout << size<Y>() << '\n';
 
-	auto print = [](const auto& member) {
-		std::cout << member << ' ';
-	};
-	for_each_member(x, print);
-	for_each_member(y, print);
+    auto print = [](const auto& member) {
+        std::cout << member << ' ';
+    };
+    for_each_member(x, print);
+    for_each_member(y, print);
 }
 ```
 
 [代码运行](https://godbolt.org/z/3GY5ah88G)
+
+我们稍微聊一下那个模板类 `tag` 的作用，它那里是一个模板递归继承，注释也写了，用来规定重载决议匹配顺序，那么原理是什么呢？
+
+```cpp
+#include <iostream>
+
+struct X{};
+struct Y:X{};
+struct G:Y{};
+
+struct X2:X{};
+
+void f(X) { puts("X"); }
+void f(Y) { puts("Y"); }
+
+void f2(X) { puts("X"); }
+
+int main(){
+    f(G{});//G的父类是Y，重载决议优先选择f(Y)
+    f2(G{});//但是实际上使用X一样可以，当没有更匹配的重载，重载决议会选择到f2(X)
+}
+```
+
+[运行结果](https://godbolt.org/z/nGvjqo9bq)
+
+```
+X
+Y
+```
+
+我们继续看 `tag` 的代码
+
+```cpp
+
+template<unsigned I>
+struct tag : tag<I - 1> {};
+template<>
+struct tag<0> {};
+```
+
+假设我们实例化了 `tag<4>` ，那么相当于
+
+```cpp
+template<4>
+struct tag :tag<3> {};
+```
+
+然后递归，以此类推，最终到 `tag<0>` ，结束。
+
+也就是说 `tag<4>` 继承自 `tag<3>` ，`tag<2>` 继承自 `tag<1>` ，`tag<1>` 继承自 `tag<0>`。
+
+然后看到 `size_<T>(tag<4>{});` 以及 `size_` 模板的几个重载。
+
+结合我们之前说的，我们可以知道，这样就是约束匹配顺序从
+
+```cpp
+template <typename T>
+constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u);
+```
+
+开始，一直到
+
+```cpp
+template <typename T>
+constexpr auto size_(tag<0>) -> decltype(T{}, 0u);
+```
+
+也就是从大到小，获取传入的聚合类型的成员个数。
 
 ---
 
@@ -970,14 +1049,14 @@ int main() {
 
 ```cpp
 #include <iostream>
-#include<type_traits>
+#include <type_traits>
 
 struct init {
-	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
-template<typename T>
+template <typename T>
 consteval size_t size(auto&&...Args) {
     if constexpr (!requires{T{ Args... }; }) {
         return sizeof...(Args) - 1;
@@ -989,37 +1068,37 @@ consteval size_t size(auto&&...Args) {
 
 template <typename T, typename F>
 void for_each_member(T const& v, F&& f) {//和C++17的写法一毛一样
-	static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
+    static_assert(std::is_aggregate_v<T>);//检测是否为聚合类型
 
-	if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
-		const auto& [m0, m1, m2, m3] = v;
-		f(m0); f(m1); f(m2); f(m3);
-	}
-	else if constexpr (size<T>() == 3u) {
-		const auto& [m0, m1, m2] = v;
-		f(m0); f(m1); f(m2);
-	}
-	else if constexpr (size<T>() == 2u) {
-		const auto& [m0, m1] = v;
-		f(m0); f(m1);
-	}
-	else if constexpr (size<T>() == 1u) {
-		const auto& [m0] = v;
-		f(m0);
-	}
+    if constexpr (size<T>() == 4u) {//使用C++17的编译期if和结构化绑定来遍历
+        const auto& [m0, m1, m2, m3] = v;
+        f(m0); f(m1); f(m2); f(m3);
+    }
+    else if constexpr (size<T>() == 3u) {
+        const auto& [m0, m1, m2] = v;
+        f(m0); f(m1); f(m2);
+    }
+    else if constexpr (size<T>() == 2u) {
+        const auto& [m0, m1] = v;
+        f(m0); f(m1);
+    }
+    else if constexpr (size<T>() == 1u) {
+        const auto& [m0] = v;
+        f(m0);
+    }
 }
 
 int main() {
-	struct X { std::string s{ " " }; }x;
-	struct Y { double a{}, b{}, c{}, d{}; }y;
-	std::cout << size<X>() << '\n';
-	std::cout << size<Y>() << '\n';
+    struct X { std::string s{ " " }; }x;
+    struct Y { double a{}, b{}, c{}, d{}; }y;
+    std::cout << size<X>() << '\n';
+    std::cout << size<Y>() << '\n';
 
-	auto print = [](const auto& member) {
-		std::cout << member << ' ';
-	};
-	for_each_member(x, print);
-	for_each_member(y, print);
+    auto print = [](const auto& member) {
+        std::cout << member << ' ';
+    };
+    for_each_member(x, print);
+    for_each_member(y, print);
 }
 ```
 
@@ -1029,8 +1108,9 @@ int main() {
 >他的设计非常的巧妙，如你所见，它是一个递归函数，还是编译期的递归，使用到了 **编译期 `if`** ；并且这个函数是以 [`consteval`](https://zh.cppreference.com/w/cpp/language/consteval) 修饰 ，是立即函数，即必须在编译期执行，**产生编译时常量**。
 
 好，我们正式进入这个函数。首先看到函数前两行，模板和 `C++20` 简写模板，这是一个形参包，万能引用。`typename T` 的 `T` 是指代外部传入的，需要获取成员个数的聚合体类型。
+
 ```cpp
-template<typename T>
+template <typename T>
 consteval size_t size(auto&&...Args)
 ```
 
@@ -1046,7 +1126,7 @@ if constexpr (!requires{T{ Args... }; })
 
 ```cpp
 struct X{
-	int a,b,c;
+    int a,b,c;
 };
 ```
 
@@ -1068,26 +1148,26 @@ X x4{1,2,3,4}; //error
 #include <iostream>
 
 struct init {
-	template <typename T>
-	operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
 };
 
 template<typename T>
 consteval size_t size(auto&&...Args) {
-	if constexpr (!requires{T{ Args... }; }) {
-		return sizeof...(Args) - 1;
-	}
-	else {
-		return size<T>(Args..., init{});
-	}
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
 }
 
 struct X{
-	int a,b,c;
+    int a,b,c;
 };
 
 int main(){
-	std::cout << size<X>() << '\n';//3
+    std::cout << size<X>() << '\n';//3
 }
 ```
 
@@ -1103,8 +1183,8 @@ int main(){
 8. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{} } }`。显然同 `2` `5` 返回 **`false`**，不进入分支。
 9. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{})`。
 10. **第四次** 进入 `size` 函数，此时形参包 `Args` 有**三个**参数 `init`。
-11.  编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
-12.  进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
+11. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
+12. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
 13. **第五次** 进入 `size` 函数，此时形参包 `Args` 有**四个**参数 `init`。（**注意，重点要来了，`X` 类型只有三个成员**）
 14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
 15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4` ，再 `-1`，也就是  **`3`**。**得到最终结果**。
@@ -1112,3 +1192,382 @@ int main(){
 到此，我们介绍完了 `C++20`写法的 获取聚合类型的 `size` 函数。
 
 至于 `for_each_member` 没必要再介绍，很普通简单的分支逻辑而已，只不过是用了编译期的分支。
+
+---
+
+#### 补充说明
+
+我们给出的 `C++20` 或 `C++17` 的 `size` 的实现是有问题的，简单的说，**它没办法处理聚合类型存储数组的问题**。 在题目开头我们也说了。
+
+我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用 [`Boost1.82.0`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 版本。
+
+<details>
+<summary><h5>首先是 C++20 的写法结果的对比 </summary></h5>
+
+```cpp
+#include <iostream>
+#include<boost/pfr/functions_for.hpp>
+
+struct init {
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template<typename T>
+consteval size_t size(auto&&...Args) {
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
+}
+struct X { int a{ 1 }, b{ 2 }, c[2]{ 3, 4 }; };
+
+int main(){
+    std::cout << size<X>() << '\n';
+    std::cout << boost::pfr::tuple_size_v<X> << '\n';//调pfr库
+
+    std::cout << std::is_aggregate_v<X> << '\n';
+}
+```
+
+##### [运行结果](https://godbolt.org/z/dWEK6beoK)
+
+```plain
+4
+4
+1
+```
+
+</details>
+
+<details>
+<summary><h5>C++17 的写法结果的对比 </summary></h5>
+
+```cpp
+#include <iostream>
+#include <boost/pfr/functions_for.hpp>
+
+struct init {
+    template <typename T>
+    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
+};
+
+template <unsigned I>
+struct tag :tag<I - 1> {}; //模板递归展开 继承 用来规定重载的匹配顺序 如果不这么写，匹配是无序的
+template <>
+struct tag<0> {};
+
+template <typename T>//SFIANE
+constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
+{
+    return 4u;
+}
+template <typename T>
+constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
+{
+    return 3u;
+}
+template <typename T>
+constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
+{
+    return 2u;
+}
+template <typename T>
+constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
+{
+    return 1u;
+}
+template <typename T>
+constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
+{
+    return 0u;
+}
+
+template <typename T>
+constexpr size_t size() {
+    static_assert(std::is_aggregate_v<T>); //检测是否为聚合类型
+    return size_<T>(tag<4>{}); //这里就是要求从tag<4>开始匹配，一直到tag<0>
+}
+
+struct X { int a{1}, b{2}, c[2]{3, 4}; };
+
+int main(){
+    std::cout << size<X>() << '\n';
+    std::cout << boost::pfr::tuple_size_v<X> << '\n';
+
+    std::cout << std::is_aggregate_v<X> << '\n';
+}
+```
+
+##### [运行结果](https://godbolt.org/z/jc58bx399)
+
+```
+4
+4
+1
+```
+
+</details>
+
+---
+
+## `11` `emplace_back()` 的问题
+
+日期：**`2023/8/20`** 出题人：[**`jacky`**](https://github.com/rsp4jack)
+
+思考：以下代码为什么在 `C++20` 以下的版本中无法成功编译，而在 `C++20` 及以后却可以？
+
+```cpp
+#include <vector>
+
+struct Pos {
+    int x;
+    int y;
+};
+
+int main(){
+    std::vector<Pos> vec;
+    vec.emplace_back(1, 5);
+}
+```
+
+- 难度:**★★☆☆☆**
+
+### [群友提交](src/群友提交/第11题)
+
+### 标准答案
+
+你在使用 `gcc` 并且设置标准在 C++20 之前，会得到 [编译器的提示信息](https://godbolt.org/z/rdjjYEcje)
+
+```
+error: new initializer expression list treated as compound expression [-fpermissive]
+  187 |         { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
+      |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+
+实际上 `std::vector<T>::emplace_back()` 最终会使用类似如下的代码构造对象：
+
+```cpp
+::new (static_cast<void*>(p)) T(std::forward<Args>(args)...)//也就是完美转发+布置new
+```
+
+实际上是因为在 C++20 中增加了 “**括号形式的聚合初始化**”（用词并不准确，当字面意思凑合理解即可）。按照[文档](https://zh.cppreference.com/w/cpp/language/direct_initialization)的描述
+
+>如果目标类型是（可能有 cv 限定）的 **聚合类**，则 **按聚合初始化** 中所述进行初始化，但允许窄化转换，不允许指派初始化器，不延长引用所绑定到的临时量的生存期，不进行花括号消除，并值初始化任何无初始化器的元素。
+
+我们不需要关注那么多，我们用一段代码来演示：
+
+```cpp
+struct Pos {
+    int x;
+    int y;
+};
+
+int main(){
+    Pos p(0,0);//C++20起允许
+}
+```
+
+所以说白了，就是 `T(std::forward<Args>(args)...)` 这里用的小括号进行初始化，直到C++20才允许聚合类型使用小括号初始化。
+
+---
+
+## `12` 实现`make_vector()`
+
+日期：**`2023/8/28`** 出题人：[**`jacky`**](https://github.com/rsp4jack)
+
+请实现函数 `make_vector(...)`，使以下代码编译通过（**C++20**）：
+
+```cpp
+#include <cstdio>
+#include <vector>
+
+inline void dbg(const char* msg)
+{
+    std::puts(msg);
+    std::fflush(stdout);
+}
+
+struct X {
+    X() noexcept
+    {
+        dbg("X()");
+    };
+
+    ~X() noexcept
+    {
+        dbg("~X()");
+    };
+
+    X(const X&)
+    {
+        dbg("X(const X&)");
+    }
+
+    X(X&&) noexcept
+    {
+        dbg("X(X&&)");
+    }
+};
+
+void test()
+{
+    static_assert(requires {
+        {
+            make_vector(std::vector{1, 2, 3})
+        } -> std::same_as<std::vector<std::vector<int>>>;
+        {
+            make_vector(1, 2, 3)
+        } -> std::same_as<std::vector<int>>;
+        make_vector(1, 2, 3).size() == 3;
+    });
+    X    x1;
+    X    x2;
+    auto vec = make_vector(x1, std::move(x2));
+}
+
+int main()
+{
+    test();
+    dbg("test end");
+}
+```
+
+### [运行结果](https://godbolt.org/z/qYn74qGee)
+
+```
+X()
+X()
+X(const X&)
+X(X&&)
+X(const X&)
+X(const X&)
+~X()
+~X()
+~X()
+~X()
+~X()
+~X()
+test end
+```
+
+- 难度:**★★★☆☆**
+
+### [群友提交](src/群友提交/第12题)
+
+答题者：[`yuzhiy`](src/群友提交/第12题/yuzhiy.cpp)
+```cpp
+template<typename...Args>
+auto make_vector(Args&&...args)->decltype(auto){
+    return std::vector({std::forward<Args>(args)...});
+}
+```
+>没啥问题，就是 `auto` 占位，后置返回类型 `decltype(auto)` 没意义。
+
+答题者：[`Matrix-A`](src/群友提交/第12题/Matrix-A.cpp)
+```cpp
+auto make_vector(auto&&... args) {
+    std::vector<std::common_type_t<decltype(args)...>> temp;
+    (temp.emplace_back(std::forward<decltype(args)>(args)),...);
+    return temp;
+}
+```
+>用 `emplace_back()` 比直接往 `vector` 的初始化器里面传入参数要少拷贝。可[自行测试](https://gcc.godbolt.org/z/3bo7oKfEq)。
+
+### 标准答案
+
+```cpp
+template<typename...Args>
+constexpr auto make_vector(Args&&...args) {
+    return std::vector({ std::forward<Args>(args)... });
+}
+```
+
+事实上大多数人看到这段代码会觉得很简单，就这么一行核心代码。
+
+实际上这里有很多坑，如果你没有自己写过不会注意到，即使你自己写过，大多人也并不明白。
+
+即：**为什么需要 `std::vector({})` 这种形式？如果我不这么做呢？只用 `()` 或者 `{}` 呢？有什么替代方式吗？**
+
+我们如果去掉外面的 `()` 进行编译，会发生一个**编译错误**，编译器提示我们是`static_assert` 中的 `requires` 表达式出错了，但是看不出是哪个错误。
+
+我们去掉 `requires` 表达式中的：
+```cpp
+{
+    make_vector(std::vector{1, 2, 3})
+} -> std::same_as<std::vector<std::vector<int>>>;
+```
+
+这段代码，发现就可以通过编译了，那么问题很简单了，就是：
+* `make_vector(std::vector{1, 2, 3})` 这段代码无法得到 `std::vector<std::vector<int>>` 类型（前提是我们去掉了 `()` ）。
+
+那么这个问题的本质是什么？
+
+```cpp
+//C++20
+std::vector v{std::vector{1,2,3}};  // std::vector<int>
+```
+
+就这么简单，这就是这个问题表面上的本质，`vector` 再这种情况下也会得不到我们想要的类型。
+
+我们接下来需要解释为什么 `vector` 会有这样的问题，并且，如果是：
+
+```cpp
+std::vector v{std::vector{1},std::vector{2}}; //就能得到std::vector<std::vector<int>>
+```
+
+我们写一个最小的复现 demo 即可
+
+```cpp
+#include <cstdio>
+#include <vector>
+
+template<typename T>
+struct Test {
+    Test() {}
+    Test(std::initializer_list<T>) { puts("被调用"); }
+    Test(const Test<T>&) { puts("复制构造"); }
+};
+
+template<typename T>
+Test(std::initializer_list<T>) -> Test<T>;
+
+int main() {
+    Test<int> a;
+    Test t{ a,a };//被调用	        会推导为Test<Test<int>>
+    Test t2{ a };//复制构造         会推导为Test<int>
+}
+```
+
+#### [运行结果](https://godbolt.org/z/jvKE7Mqhq)：
+
+```
+复制构造
+复制构造
+被调用
+复制构造
+```
+
+根据运行结果我们可以知道，`std::initializer_list` 的构造函数版本只被调用了一次，是 `Test t{ a,a };` 。
+
+`Test t2{ a };` 并没有调用 `std::initializer_list` 的构造函数。
+
+不用感到奇怪，这理所应当。
+
+**当从类型为正在构造的类模板的特化或特化子级的单个元素进行初始化时，复制构造函数优先于列表构造函数。**
+
+这就可以解释为什么直接 `{}` 不行，`({})` 的话就很明确了，只能调用 `initializer_list` 的构造函数。
+
+包括可以解释以下给出的**错误**写法：
+
+```cpp
+template<typename... Args>
+auto make_vector(const Args&... elems){
+    return std::vector{elems...};
+}
+auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
+```
+
+可参见[文档](https://oleksandrkvl.github.io/2021/04/02/cpp-20-overview.html#fix-init-list-ctad)描述。

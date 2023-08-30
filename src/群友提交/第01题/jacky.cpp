@@ -5,10 +5,10 @@
 
 template<class Object, class Operator>
 auto&& operator|(Object&& obj, Operator opt) {
-	for(auto&& elon : std::forward<Object>(obj)){
-		opt(std::forward<decltype(elon)>(elon));
-	}
-	return std::forward<Object>(obj);
+    for(auto&& elon : std::forward<Object>(obj)){
+        opt(std::forward<decltype(elon)>(elon));
+    }
+    return std::forward<Object>(obj);
 }
 
 int main() {
