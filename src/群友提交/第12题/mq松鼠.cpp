@@ -29,8 +29,8 @@ struct X {
     }
 };
 template <typename Tp,typename ...Args>
-auto make_vector(Tp t,Args... args){
-    return std::vector<decltype(t)>{t,args...};
+auto make_vector(Tp t,Args&&... args){
+    return std::vector<Tp>{t,args...};
 }
 
 void test()
