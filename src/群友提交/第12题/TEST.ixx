@@ -34,9 +34,9 @@ struct X {
 // make_vector(1, 2, 3) -> std::vector<int>
 // make_vector(std::vector{1, 2, 3}) -> std::vector<std::vector<int>>
 template <typename... Args>
-auto make_vector(Args&&... args) -> std::vector<std::common_type_t<Args...>>
+auto make_vector(Args&&... args)
 {
-	return std::vector{std::forward<Args>(args)...};
+	return std::vector({std::forward<Args>(args)...});
 }
 
 void test()
