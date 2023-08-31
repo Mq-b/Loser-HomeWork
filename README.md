@@ -1479,6 +1479,14 @@ auto make_vector(auto&&... args) {
 ### 标准答案
 
 ```cpp
+template<typename T,typename...Args>
+constexpr auto make_vector(T&&t,Args&&...args) {
+    return std::vector<std::remove_cvref_t<T>>{ std::forward<T>(t), std::forward<Args>(args)... };
+}
+```
+>这种写法纯属为了解决下面解法提到的问题（即推导问题）
+
+```cpp
 template<typename...Args>
 constexpr auto make_vector(Args&&...args) {
     return std::vector({ std::forward<Args>(args)... });
