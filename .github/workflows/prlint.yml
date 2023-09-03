@@ -16,6 +16,7 @@ jobs:
         with:
           style: file
           extra-args: "-std=c++2b -Wall -Wextra"
+          version: "16"
       - name: Fail fast?!
         if: steps.linter.outputs.checks-failed > 0
         run: >
