@@ -22,66 +22,60 @@
 <details>
 <summary><h2>目录</h2></summary>
 
-<br/>
-
-<!-- toc -->
-
 - [Loser-HomeWork](#loser-homework)
-  * [前言](#%E5%89%8D%E8%A8%80)
-  * [`01` 实现管道运算符](#01-%E5%AE%9E%E7%8E%B0%E7%AE%A1%E9%81%93%E8%BF%90%E7%AE%97%E7%AC%A6)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88)
-  * [`02` 实现自定义字面量 `_f`](#02-%E5%AE%9E%E7%8E%B0%E8%87%AA%E5%AE%9A%E4%B9%89%E5%AD%97%E9%9D%A2%E9%87%8F-_f)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-1)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-1)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-1)
-  * [`03` 实现 `print` 以及特化 `std::formatter`](#03-%E5%AE%9E%E7%8E%B0-print-%E4%BB%A5%E5%8F%8A%E7%89%B9%E5%8C%96-stdformatter)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-2)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-2)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-2)
-  * [`04` 给定模板类修改，让其对每一个不同类型实例化有不同 ID](#04-%E7%BB%99%E5%AE%9A%E6%A8%A1%E6%9D%BF%E7%B1%BB%E4%BF%AE%E6%94%B9%E8%AE%A9%E5%85%B6%E5%AF%B9%E6%AF%8F%E4%B8%80%E4%B8%AA%E4%B8%8D%E5%90%8C%E7%B1%BB%E5%9E%8B%E5%AE%9E%E4%BE%8B%E5%8C%96%E6%9C%89%E4%B8%8D%E5%90%8C-id)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-3)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-3)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-3)
-  * [`05` 实现 `scope_guard` 类型](#05-%E5%AE%9E%E7%8E%B0-scope_guard-%E7%B1%BB%E5%9E%8B)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-4)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-4)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-4)
-  * [`06` 解释 `std::atomic` 初始化](#06-%E8%A7%A3%E9%87%8A-stdatomic-%E5%88%9D%E5%A7%8B%E5%8C%96)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-5)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-5)
-  * [`07` `throw new MyException`](#07-throw-new-myexception)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-5)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-6)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-6)
-  * [`08` 定义`array`推导指引](#08-%E5%AE%9A%E4%B9%89array%E6%8E%A8%E5%AF%BC%E6%8C%87%E5%BC%95)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-6)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-7)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-7)
-  * [`09` 名字查找的问题](#09-%E5%90%8D%E5%AD%97%E6%9F%A5%E6%89%BE%E7%9A%84%E9%97%AE%E9%A2%98)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-7)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-8)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-8)
-  * [`10` 遍历任意类数据成员](#10-%E9%81%8D%E5%8E%86%E4%BB%BB%E6%84%8F%E7%B1%BB%E6%95%B0%E6%8D%AE%E6%88%90%E5%91%98)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-8)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-9)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-9)
-      - [`C++17` 写法](#c17-%E5%86%99%E6%B3%95)
-      - [`C++20` 写法](#c20-%E5%86%99%E6%B3%95)
-      - [补充说明](#%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E)
-        * [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-9)
-        * [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-10)
-  * [`11` `emplace_back()` 的问题](#11-emplace_back-%E7%9A%84%E9%97%AE%E9%A2%98)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-10)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-10)
-  * [`12` 实现`make_vector()`](#12-%E5%AE%9E%E7%8E%B0make_vector)
-    + [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-11)
-    + [群友提交](#%E7%BE%A4%E5%8F%8B%E6%8F%90%E4%BA%A4-11)
-    + [标准答案](#%E6%A0%87%E5%87%86%E7%AD%94%E6%A1%88-11)
-      - [运行结果](#%E8%BF%90%E8%A1%8C%E7%BB%93%E6%9E%9C-12)
-
-<!-- tocstop -->
+  - [前言](#前言)
+  - [`01` 实现管道运算符](#01-实现管道运算符)
+    - [运行结果](#运行结果)
+    - [群友提交](#群友提交)
+    - [标准答案](#标准答案)
+  - [`02` 实现自定义字面量 `_f`](#02-实现自定义字面量-_f)
+    - [运行结果](#运行结果-1)
+    - [群友提交](#群友提交-1)
+    - [标准答案](#标准答案-1)
+  - [`03` 实现 `print` 以及特化 `std::formatter`](#03-实现-print-以及特化-stdformatter)
+    - [运行结果](#运行结果-2)
+    - [群友提交](#群友提交-2)
+    - [标准答案](#标准答案-2)
+  - [`04` 给定模板类修改，让其对每一个不同类型实例化有不同 ID](#04-给定模板类修改让其对每一个不同类型实例化有不同-id)
+    - [运行结果](#运行结果-3)
+    - [群友提交](#群友提交-3)
+    - [标准答案](#标准答案-3)
+  - [`05` 实现 `scope_guard` 类型](#05-实现-scope_guard-类型)
+    - [运行结果](#运行结果-4)
+    - [群友提交](#群友提交-4)
+    - [标准答案](#标准答案-4)
+  - [`06` 解释 `std::atomic` 初始化](#06-解释-stdatomic-初始化)
+    - [群友提交](#群友提交-5)
+    - [标准答案](#标准答案-5)
+  - [`07` `throw new MyException`](#07-throw-new-myexception)
+    - [运行结果](#运行结果-5)
+    - [群友提交](#群友提交-6)
+    - [标准答案](#标准答案-6)
+  - [`08` 定义`array`推导指引](#08-定义array推导指引)
+    - [运行结果](#运行结果-6)
+    - [群友提交](#群友提交-7)
+    - [标准答案](#标准答案-7)
+  - [`09` 名字查找的问题](#09-名字查找的问题)
+    - [运行结果](#运行结果-7)
+    - [群友提交](#群友提交-8)
+    - [标准答案](#标准答案-8)
+  - [`10` 遍历任意类数据成员](#10-遍历任意类数据成员)
+    - [运行结果](#运行结果-8)
+    - [群友提交](#群友提交-9)
+    - [标准答案](#标准答案-9)
+      - [`C++17` 写法](#c17-写法)
+      - [`C++20` 写法](#c20-写法)
+      - [补充说明](#补充说明)
+        - [运行结果](#运行结果-9)
+        - [运行结果](#运行结果-10)
+  - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
+    - [群友提交](#群友提交-10)
+    - [标准答案](#标准答案-10)
+  - [`12` 实现`make_vector()`](#12-实现make_vector)
+    - [运行结果](#运行结果-11)
+    - [群友提交](#群友提交-11)
+    - [标准答案](#标准答案-11)
+      - [运行结果：](#运行结果-12)
 
 </details>
 
@@ -445,14 +439,14 @@ A::component_type_id()
 #include <iostream>
 
 template<typename T>
-struct Test {
-    inline static int n = 10;
+struct Test{
+ inline static int n = 10;
 };
 
-int main() {
-    Test<int>::n = 1;
-    std::cout << Test<void>::n << '\n';//10
-    std::cout << Test<int>::n << '\n';//1
+int main(){
+ Test<int>::n = 1;
+ std::cout << Test<void>::n << '\n';//10
+ std::cout << Test<int>::n << '\n';//1
 }
 ```
 
@@ -648,16 +642,16 @@ C++17 的改动是：**复制消除变为强制要求**。
 给出代码:
 
 ```cpp
-struct MyException : std::exception {
-    const char* data{};
-    MyException(const char* s) :data(s) { puts("MyException()"); }
-    ~MyException() { puts("~MyException()"); }
-    const char* what()const noexcept { return data; }
+struct MyException :std::exception {
+ const char* data{};
+ MyException(const char* s) :data(s) { puts("MyException()"); }
+ ~MyException() { puts("~MyException()"); }
+ const char* what()const noexcept { return data; }
 };
 void f2() {
-    throw new MyException("new Exception异常....");
+ throw new MyException("new Exception异常....");
 }
-int main() {
+int main(){
     f2();
 }
 ```
@@ -1555,7 +1549,7 @@ int main() {
 }
 ```
 
-#### [运行结果](https://godbolt.org/z/jvKE7Mqhq)
+#### [运行结果](https://godbolt.org/z/jvKE7Mqhq)：
 
 ```
 复制构造
