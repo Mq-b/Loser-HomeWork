@@ -1,0 +1,29 @@
+---
+Checks:
+  [
+    clang-diagnostic-*,
+    clang-analyzer-*,
+    performance-*,
+    bugprone-*,
+    portability-*,
+    modernize-*,
+    cppcoreguidelines-*,
+    hicpp-*,
+    misc-*,
+    readability-*,
+    concurrency-*,
+    -modernize-use-trailing-return-type,
+    -readability-redundant-access-specifiers,
+    -cppcoreguidelines-avoid-magic-numbers,
+    -readability-magic-numbers,
+    -cppcoreguidelines-pro-type-reinterpret-cast,
+    -cppcoreguidelines-owning-memory,
+    -cppcoreguidelines-init-variables,
+    -hicpp-signed-bitwise,
+    -misc-const-correctness
+  ]
+FormatStyle: file
+User: Mq-b
+CheckOptions:
+---
+
