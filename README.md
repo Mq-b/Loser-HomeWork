@@ -1498,7 +1498,7 @@ int main() {
 }
 ```
 
-#### [运行结果](https://godbolt.org/z/jvKE7Mqhq)：
+#### [运行结果](https://godbolt.org/z/jvKE7Mqhq)
 
 ```
 复制构造
