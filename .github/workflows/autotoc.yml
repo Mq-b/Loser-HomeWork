@@ -1,0 +1,24 @@
+name: Auto TOC
+
+on:
+  push:
+    branches: [main]
+    paths: ['README.md']
+  workflow_dispatch:
+
+jobs:
+  buildtoc:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install markdown-toc
+        run: |
+          npm install -g markdown-toc
+      - name: Add TOC
+        run: |
+          markdown-toc -i README.md
+      - name: Git Commit Push Action
+        uses: GuillaumeFalourd/git-commit-push@v1.3
+        with:
+          commit_message: Auto update markdown TOC
