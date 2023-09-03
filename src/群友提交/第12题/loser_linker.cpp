@@ -2,13 +2,13 @@
 #include <vector>
 #include <type_traits>
 
-template<typename T,typename... Ts>
-auto make_vector(T&& t,Ts&&... ts)
+template<typename... Ts>
+auto make_vector(Ts&&... ts)
 {
-    using vt = std::remove_cvref_t<std::common_type_t<T,Ts...>>;
+    using T = std::remove_cvref_t<std::common_type_t<Ts...>>;
 
-    return std::vector<vt> {
-        std::forward<vt>(ts)...
+    return std::vector<T> {
+        std::forward<T>(ts)...
     };
 }
 
