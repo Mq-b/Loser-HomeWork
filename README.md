@@ -76,6 +76,7 @@
     - [群友提交](#群友提交-11)
     - [标准答案](#标准答案-11)
       - [运行结果：](#运行结果-12)
+  - [`13` 关于 `return std::move`](#13-关于-return-stdmove)
 
 </details>
 
@@ -1579,3 +1580,7 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 ```
 
 可参见[文档](https://oleksandrkvl.github.io/2021/04/02/cpp-20-overview.html#fix-init-list-ctad)描述。
+
+---
+
+## `13` 关于 `return std::move`
