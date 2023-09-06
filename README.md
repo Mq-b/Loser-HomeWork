@@ -76,9 +76,6 @@
     - [群友提交](#群友提交-11)
     - [标准答案](#标准答案-11)
       - [运行结果：](#运行结果-12)
-  - [`13` 关于 `return std::move`](#13-关于-return-stdmove)
-    - [群友提交](#群友提交-12)
-    - [标准答案](#标准答案-12)
 
 </details>
 
@@ -1582,57 +1579,3 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 ```
 
 可参见[文档](https://oleksandrkvl.github.io/2021/04/02/cpp-20-overview.html#fix-init-list-ctad)描述。
-
----
-
-## `13` 关于 `return std::move`
-
-我们会给出三段使用到了 `return std::move` 代码。
-
-**解释说明这些代码是否有问题，问题在哪，或者没问题，那么为什么要这样使用。**
-
-1. 全局函数，返回局部对象，使用 `std::move`。
-
-```cpp
-#include<iostream>
-
-struct X{//后续代码不再重复X类
-    X() { puts("X()"); }
-    X(const X&) { puts("X(const X&)"); }
-    X(X&&)noexcept { puts("X(X&&)"); }
-    ~X() { puts("~X()"); }
-};
-
-X f(){
-    X x;
-    return std::move(x);
-}
-
-int main(){
-    X x = f();
-}
-```
-
-2. 全局函数，返回局部的引用，使用 `std::move`。
-
-```cpp
-X&& f(){
-    X x;
-    return std::move(x);
-}
-```
-
-3. 类中成员函数，返回数据成员，使用 `std::move`。
-
-```cpp
-struct Test {
-    X x;
-    X f() {
-        return std::move(x);
-    }
-};
-```
-
-### [群友提交](src/群友提交/第13题)
-
-### 标准答案
