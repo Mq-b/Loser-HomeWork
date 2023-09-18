@@ -2,10 +2,9 @@
 #include <utility>
 #include <vector>
 
-template<typename T, typename...Args> requires (std::same_as<std::decay_t<T>, std::decay_t<Args>>&&...)
-auto make_vector(T&& value, Args&&... args)
+auto make_vector(auto&&... args)
 {
-    return std::vector<std::decay_t<T>>{ std::forward<T>(value), std::forward<Args>(args)... };
+    return std::vector({std::forward<decltype(args)>(args)...});
 }
 
 inline void dbg(const char* msg)
