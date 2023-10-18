@@ -1205,7 +1205,7 @@ int main(){
 我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用 [`Boost1.82.0`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 版本。
 
 <details>
-<summary><h5>首先是 C++20 的写法结果的对比 </summary></h5>
+<summary><h5>首先是 C++20 的写法结果的对比 </h5> </summary>
 
 ```cpp
 #include <iostream>
@@ -1246,7 +1246,7 @@ int main(){
 </details>
 
 <details>
-<summary><h5>C++17 的写法结果的对比 </summary></h5>
+<summary><h5>C++17 的写法结果的对比 </h5> </summary>
 
 ```cpp
 #include <iostream>
