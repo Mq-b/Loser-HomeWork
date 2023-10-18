@@ -325,13 +325,13 @@ print("{}", f);// 结果为1/10
 
 - 难度：**★★★☆☆**
 
-禁止面相结果编程，使用宏等等方式，最多`B`（指评价），本作业主要考察和学习`format`库罢了。
+禁止面向结果编程，使用宏等等方式，最多`B`（指评价），本作业主要考察和学习`format`库罢了。
 
 提示: **`std::formatter`**
 
-> 提交代码最好是网上编译了三个平台的截图，如：
->
-> ![图片](image/第03题/01展示.jpg)
+提交代码最好是网上编译了三个平台的截图，如：
+
+![图片](image/第03题/01展示.jpg)
 
 ### [群友提交](src/群友提交/第03题)
 
@@ -404,9 +404,9 @@ int main()
 
 - 难度:**★☆☆☆☆**
 
-> 提交应当给出多平台测试结果，如图：
->
-> ![图片](image/第04题/01展示.png)
+提交应当给出多平台测试结果，如图：
+
+![图片](image/第04题/01展示.png)
 
 ### [群友提交](src/群友提交/第04题)
 
@@ -1205,7 +1205,7 @@ int main(){
 我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用 [`Boost1.82.0`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 版本。
 
 <details>
-<summary><h5>首先是 C++20 的写法结果的对比 </summary></h5>
+<summary><h5>首先是 C++20 的写法结果的对比 </h5> </summary>
 
 ```cpp
 #include <iostream>
@@ -1246,7 +1246,7 @@ int main(){
 </details>
 
 <details>
-<summary><h5>C++17 的写法结果的对比 </summary></h5>
+<summary><h5>C++17 的写法结果的对比 </h5> </summary>
 
 ```cpp
 #include <iostream>
