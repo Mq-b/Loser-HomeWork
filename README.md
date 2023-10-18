@@ -1,88 +1,37 @@
-<div align=center>
-<a href = "https://www.bilibili.com/video/BV1Zj411r7eP/?spm_id_from=333.999.0.0"><img src="https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan"/></a>
-<a target="_blank" href = "https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl"><img src="https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue"/></a>
-<a href="https://www.zhihu.com/people/o4ze4r"><img src="https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello"/></a>
-<a href="https://www.youtube.com/channel/UCey35Do4RGewqr-6EiaCJrg"><img src="https://img.shields.io/badge/video-YouTube-red"></a>
-<br>
-<a href = "https://learn.microsoft.com/zh-cn/cpp/cpp/welcome-back-to-cpp-modern-cpp?view=msvc-170">
-<img src="https://img.shields.io/badge/code-Modern%20C++-blue"></a>
-<a href = "https://zh.cppreference.com/w/cpp/compiler_support/20">
-<img src="https://img.shields.io/badge/std-C++20-yello"></a>
-<a href = "https://zh.cppreference.com/w/cpp/compiler_support/23">
-<img src= "https://img.shields.io/badge/std-C++23-yello"></a>
-<a href= "https://gcc.gnu.org/onlinedocs/gcc-12.2.0/gcc/">
-<img src= "https://img.shields.io/badge/compiler-GCC13-white"></a>
-<a href = "https://learn.microsoft.com/zh-cn/cpp/cpp/?view=msvc-170"><img src="https://img.shields.io/badge/compiler-Microsoft Visual Studio Community 2022 (64 位) -white"></a>
-<br>
-<a href="https://zh.cppreference.com/w/cpp">
-<img src="image/cpp.svg" height="64" width="64"></a>
+# Loser Homework
 
-</div>
+[![视频教程](https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan)](https://www.bilibili.com/video/BV1Zj411r7eP)
+[![QQ群](https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue)](https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl)
+[![知乎](https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello)](https://www.zhihu.com/people/o4ze4r)
+[![youtube](https://img.shields.io/badge/video-YouTube-red)](https://www.youtube.com/channel/UCey35Do4RGewqr-6EiaCJrg)
 
-<details>
-<summary><h2>目录</h2></summary>
+[![modern cpp](https://img.shields.io/badge/code-Modern%20C++-blue)](https://learn.microsoft.com/zh-cn/cpp/cpp/welcome-back-to-cpp-modern-cpp)
+[![cpp2b](https://img.shields.io/badge/std-C++20/23/26-yello)](https://zh.cppreference.com/w/cpp/compiler_support)
 
-- [Loser-HomeWork](#loser-homework)
+[![gcc](https://img.shields.io/badge/compiler-GCC13-white)](https://gcc.gnu.org/onlinedocs/13.2.0/)
+[![msvc](https://img.shields.io/badge/compiler-MSVC19.37-white)](https://learn.microsoft.com/zh-cn/cpp/cpp)
+[![clang](https://img.shields.io/badge/compiler-clang17-white)](https://releases.llvm.org/17.0.1/tools/clang/docs/)
+
+[![cpp](image/cpp.png)](https://zh.cppreference.com/w/cpp)
+
+## 目录
+
+- [Loser Homework](#loser-homework)
+  - [目录](#目录)
   - [前言](#前言)
   - [`01` 实现管道运算符](#01-实现管道运算符)
-    - [运行结果](#运行结果)
-    - [群友提交](#群友提交)
-    - [标准答案](#标准答案)
   - [`02` 实现自定义字面量 `_f`](#02-实现自定义字面量-_f)
-    - [运行结果](#运行结果-1)
-    - [群友提交](#群友提交-1)
-    - [标准答案](#标准答案-1)
   - [`03` 实现 `print` 以及特化 `std::formatter`](#03-实现-print-以及特化-stdformatter)
-    - [运行结果](#运行结果-2)
-    - [群友提交](#群友提交-2)
-    - [标准答案](#标准答案-2)
   - [`04` 给定模板类修改，让其对每一个不同类型实例化有不同 ID](#04-给定模板类修改让其对每一个不同类型实例化有不同-id)
-    - [运行结果](#运行结果-3)
-    - [群友提交](#群友提交-3)
-    - [标准答案](#标准答案-3)
   - [`05` 实现 `scope_guard` 类型](#05-实现-scope_guard-类型)
-    - [运行结果](#运行结果-4)
-    - [群友提交](#群友提交-4)
-    - [标准答案](#标准答案-4)
   - [`06` 解释 `std::atomic` 初始化](#06-解释-stdatomic-初始化)
-    - [群友提交](#群友提交-5)
-    - [标准答案](#标准答案-5)
   - [`07` `throw new MyException`](#07-throw-new-myexception)
-    - [运行结果](#运行结果-5)
-    - [群友提交](#群友提交-6)
-    - [标准答案](#标准答案-6)
   - [`08` 定义`array`推导指引](#08-定义array推导指引)
-    - [运行结果](#运行结果-6)
-    - [群友提交](#群友提交-7)
-    - [标准答案](#标准答案-7)
   - [`09` 名字查找的问题](#09-名字查找的问题)
-    - [运行结果](#运行结果-7)
-    - [群友提交](#群友提交-8)
-    - [标准答案](#标准答案-8)
   - [`10` 遍历任意类数据成员](#10-遍历任意类数据成员)
-    - [运行结果](#运行结果-8)
-    - [群友提交](#群友提交-9)
-    - [标准答案](#标准答案-9)
-      - [`C++17` 写法](#c17-写法)
-      - [`C++20` 写法](#c20-写法)
-      - [补充说明](#补充说明)
-        - [运行结果](#运行结果-9)
-        - [运行结果](#运行结果-10)
   - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
-    - [群友提交](#群友提交-10)
-    - [标准答案](#标准答案-10)
   - [`12` 实现`make_vector()`](#12-实现make_vector)
-    - [运行结果](#运行结果-11)
-    - [群友提交](#群友提交-11)
-    - [标准答案](#标准答案-11)
-      - [运行结果：](#运行结果-12)
   - [`13` 关于 `return std::move`](#13-关于-return-stdmove)
-    - [群友提交](#群友提交-12)
-    - [标准答案](#标准答案-12)
-
-</details>
-
-# Loser-HomeWork
 
 ## 前言
 
@@ -114,7 +63,7 @@ int main(){
 
 ### 运行结果
 
-```
+```text
 1 4 9
 ```
 
@@ -234,7 +183,7 @@ int main(){
 
 ### 运行结果
 
-```
+```text
 乐 :5 *
 乐 :5 5 *
 乐 :1010101 *
@@ -319,7 +268,7 @@ print("{}", f);// 结果为1/10
 
 ### 运行结果
 
-```
+```text
 1/10
 ```
 
@@ -393,7 +342,7 @@ int main()
 
 ### 运行结果
 
-```
+```text
 0
 1
 1
@@ -529,7 +478,7 @@ int main() {
 
 ### 运行结果
 
-```shell
+```text
 Test
 ----------
 X()
@@ -636,8 +585,6 @@ C++17 的改动是：**复制消除变为强制要求**。
 
 ---
 
-<br>
-
 ## `07` `throw new MyException`
 
 日期：**`2023/8/6`** 出题人：**`mq白`**
@@ -665,7 +612,7 @@ int main(){
 
 ### 运行结果
 
-```
+```text
 MyException()
 new Exception异常....
 ~MyException()
@@ -724,7 +671,7 @@ int main() {
 
 ### 运行结果
 
-```
+```text
 1 2 3 4 5 
 ```
 
@@ -784,7 +731,7 @@ int main() {
 
 ### 运行结果
 
-```
+```text
 X
 全局
 ```
@@ -802,18 +749,15 @@ X
 
 根据我们的提示 **名字查找**，我看大家多少都还是能查到一些东西。我们慢慢说吧，首先名字查找分为：**有限定** 名字查找，**无限定** 名字查找。
 
-<details>
-<summary><h4>有限定名字查找指？</h4></summary>
-
-出现在作用域解析操作符 `::` 右边的名字是限定名（参阅有限定的标识符）。 限定名可能代表的是：
-
-- 类的成员（包括静态和非静态函数、类型和模板等）
-- 命名空间的成员（包括其他的命名空间）
-- 枚举项
+> 有限定名字查找指？
+>  
+> 出现在作用域解析操作符 `::` 右边的名字是限定名（参阅有限定的标识符）。 限定名可能代表的是：
+>  
+> - 类的成员（包括静态和非静态函数、类型和模板等）
+> - 命名空间的成员（包括其他的命名空间）
+> - 枚举项
 
 如果 `::` 左边为空，那么查找过程只会考虑全局命名空间作用域中作出（或通过 using 声明引入到全局命名空间中）的声明。
-
-</details>
 
 ```cpp
 this->f();
@@ -870,7 +814,7 @@ int main() {
 
 ### 运行结果
 
-```
+```text
 1
 4
   0 0 0 0
@@ -1002,7 +946,7 @@ int main(){
 
 [运行结果](https://godbolt.org/z/nGvjqo9bq)
 
-```
+```text
 X
 Y
 ```
@@ -1196,123 +1140,12 @@ int main(){
 
 至于 `for_each_member` 没必要再介绍，很普通简单的分支逻辑而已，只不过是用了编译期的分支。
 
----
-
-#### 补充说明
+### 补充说明
 
 我们给出的 `C++20` 或 `C++17` 的 `size` 的实现是有问题的，简单的说，**它没办法处理聚合类型存储数组的问题**。 在题目开头我们也说了。
+我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用1.82.0版本。
 
-我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用 [`Boost1.82.0`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 版本。
-
-<details>
-<summary><h5>首先是 C++20 的写法结果的对比 </h5> </summary>
-
-```cpp
-#include <iostream>
-#include<boost/pfr/functions_for.hpp>
-
-struct init {
-    template <typename T>
-    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
-};
-
-template<typename T>
-consteval size_t size(auto&&...Args) {
-    if constexpr (!requires{T{ Args... }; }) {
-        return sizeof...(Args) - 1;
-    }
-    else {
-        return size<T>(Args..., init{});
-    }
-}
-struct X { int a{ 1 }, b{ 2 }, c[2]{ 3, 4 }; };
-
-int main(){
-    std::cout << size<X>() << '\n';
-    std::cout << boost::pfr::tuple_size_v<X> << '\n';//调pfr库
-
-    std::cout << std::is_aggregate_v<X> << '\n';
-}
-```
-
-##### [运行结果](https://godbolt.org/z/dWEK6beoK)
-
-```plain
-4
-4
-1
-```
-
-</details>
-
-<details>
-<summary><h5>C++17 的写法结果的对比 </h5> </summary>
-
-```cpp
-#include <iostream>
-#include <boost/pfr/functions_for.hpp>
-
-struct init {
-    template <typename T>
-    operator T(); // 无定义 我们需要一个可以转换为任何类型的在以下特殊语境中使用的辅助类
-};
-
-template <unsigned I>
-struct tag :tag<I - 1> {}; //模板递归展开 继承 用来规定重载的匹配顺序 如果不这么写，匹配是无序的
-template <>
-struct tag<0> {};
-
-template <typename T>//SFIANE
-constexpr auto size_(tag<4>) -> decltype(T{ init{}, init{}, init{}, init{} }, 0u)
-{
-    return 4u;
-}
-template <typename T>
-constexpr auto size_(tag<3>) -> decltype(T{ init{}, init{}, init{} }, 0u)
-{
-    return 3u;
-}
-template <typename T>
-constexpr auto size_(tag<2>) -> decltype(T{ init{}, init{} }, 0u)
-{
-    return 2u;
-}
-template <typename T>
-constexpr auto size_(tag<1>) -> decltype(T{ init{} }, 0u)
-{
-    return 1u;
-}
-template <typename T>
-constexpr auto size_(tag<0>) -> decltype(T{}, 0u)
-{
-    return 0u;
-}
-
-template <typename T>
-constexpr size_t size() {
-    static_assert(std::is_aggregate_v<T>); //检测是否为聚合类型
-    return size_<T>(tag<4>{}); //这里就是要求从tag<4>开始匹配，一直到tag<0>
-}
-
-struct X { int a{1}, b{2}, c[2]{3, 4}; };
-
-int main(){
-    std::cout << size<X>() << '\n';
-    std::cout << boost::pfr::tuple_size_v<X> << '\n';
-
-    std::cout << std::is_aggregate_v<X> << '\n';
-}
-```
-
-##### [运行结果](https://godbolt.org/z/jc58bx399)
-
-```
-4
-4
-1
-```
-
-</details>
+参见 [示例代码](src/群友提交/第10题/with_boost_pfr.md)
 
 ---
 
@@ -1344,7 +1177,7 @@ int main(){
 
 你在使用 `gcc` 并且设置标准在 C++20 之前，会得到 [编译器的提示信息](https://godbolt.org/z/rdjjYEcje)
 
-```
+```text
 error: new initializer expression list treated as compound expression [-fpermissive]
   187 |         { ::new((void *)__p) _Up(std::forward<_Args>(__args)...); }
       |           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1440,7 +1273,7 @@ int main()
 
 ### [运行结果](https://godbolt.org/z/qYn74qGee)
 
-```
+```text
 X()
 X()
 X(const X&)
@@ -1461,15 +1294,18 @@ test end
 ### [群友提交](src/群友提交/第12题)
 
 答题者：[`yuzhiy`](src/群友提交/第12题/yuzhiy.cpp)
+
 ```cpp
 template<typename...Args>
 auto make_vector(Args&&...args)->decltype(auto){
     return std::vector({std::forward<Args>(args)...});
 }
 ```
->没啥问题，就是 `auto` 占位，后置返回类型 `decltype(auto)` 没意义。
+
+> 没啥问题，就是 `auto` 占位，后置返回类型 `decltype(auto)` 没意义。
 
 答题者：[`Matrix-A`](src/群友提交/第12题/Matrix-A.cpp)
+
 ```cpp
 auto make_vector(auto&&... args) {
     std::vector<std::common_type_t<decltype(args)...>> temp;
@@ -1477,7 +1313,8 @@ auto make_vector(auto&&... args) {
     return temp;
 }
 ```
->用 `emplace_back()` 比直接往 `vector` 的初始化器里面传入参数要少拷贝。可[自行测试](https://gcc.godbolt.org/z/3bo7oKfEq)。
+
+> 用 `emplace_back()` 比直接往 `vector` 的初始化器里面传入参数要少拷贝。可[自行测试](https://gcc.godbolt.org/z/3bo7oKfEq)。
 
 ### 标准答案
 
@@ -1487,7 +1324,8 @@ constexpr auto make_vector(T&&t,Args&&...args) {
     return std::vector<std::remove_cvref_t<T>>{ std::forward<T>(t), std::forward<Args>(args)... };
 }
 ```
->这种写法纯属为了解决下面解法提到的问题（即推导问题）
+
+> 这种写法纯属为了解决下面解法提到的问题（即推导问题）
 
 ```cpp
 template<typename...Args>
@@ -1496,23 +1334,22 @@ constexpr auto make_vector(Args&&...args) {
 }
 ```
 
-事实上大多数人看到这段代码会觉得很简单，就这么一行核心代码。
-
-实际上这里有很多坑，如果你没有自己写过不会注意到，即使你自己写过，大多人也并不明白。
+事实上大多数人看到这段代码会觉得很简单，就这么一行核心代码。实际上这里有很多坑，如果你没有自己写过不会注意到，即使你自己写过，大多人也并不明白。
 
 即：**为什么需要 `std::vector({})` 这种形式？如果我不这么做呢？只用 `()` 或者 `{}` 呢？有什么替代方式吗？**
 
 我们如果去掉外面的 `()` 进行编译，会发生一个**编译错误**，编译器提示我们是`static_assert` 中的 `requires` 表达式出错了，但是看不出是哪个错误。
 
 我们去掉 `requires` 表达式中的：
+
 ```cpp
 {
     make_vector(std::vector{1, 2, 3})
 } -> std::same_as<std::vector<std::vector<int>>>;
 ```
 
-这段代码，发现就可以通过编译了，那么问题很简单了，就是：
-* `make_vector(std::vector{1, 2, 3})` 这段代码无法得到 `std::vector<std::vector<int>>` 类型（前提是我们去掉了 `()` ）。
+这段代码，发现就可以通过编译了。那么问题很简单了，就是：
+`make_vector(std::vector{1, 2, 3})` 这段代码无法得到 `std::vector<std::vector<int>>` 类型（前提是我们去掉了 `()` ）。
 
 那么这个问题的本质是什么？
 
@@ -1547,14 +1384,14 @@ Test(std::initializer_list<T>) -> Test<T>;
 
 int main() {
     Test<int> a;
-    Test t{ a,a };//被调用	        会推导为Test<Test<int>>
-    Test t2{ a };//复制构造         会推导为Test<int>
+    Test t{ a,a }; //被调用         会推导为Test<Test<int>>
+    Test t2{ a };  //复制构造       会推导为Test<int>
 }
 ```
 
-#### [运行结果](https://godbolt.org/z/jvKE7Mqhq)：
+#### [运行结果](https://godbolt.org/z/jvKE7Mqhq)
 
-```
+```text
 复制构造
 复制构造
 被调用
