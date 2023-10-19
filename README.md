@@ -12,9 +12,9 @@
 [![msvc](https://img.shields.io/badge/compiler-MSVC19.37-white)](https://learn.microsoft.com/zh-cn/cpp/cpp)
 [![clang](https://img.shields.io/badge/compiler-clang17-white)](https://releases.llvm.org/17.0.1/tools/clang/docs/)
 
-<div id="img" style="text-align:center">
+<p id="img" align=center>
     <a herf="https://zh.cppreference.com/w/cpp"><img src="image/cpp.svg" width=64px alt="cpp"/></a>
-</div>
+</p>
 
 <details>
     <summary style="font-size:150%">目录</summary>
