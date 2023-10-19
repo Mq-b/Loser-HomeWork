@@ -14,8 +14,9 @@
 [![msvc](https://img.shields.io/badge/compiler-MSVC19.37-white)](https://learn.microsoft.com/zh-cn/cpp/cpp)
 [![clang](https://img.shields.io/badge/compiler-clang17-white)](https://releases.llvm.org/17.0.1/tools/clang/docs/)
 
-[![cpp](image/cpp.png)](https://zh.cppreference.com/w/cpp)
-
+<a herf="https://zh.cppreference.com/w/cpp">
+    <img src="image/cpp.svg" width=64px alt="cpp"/>
+</a>
 </center>
 
 <details>
