@@ -1,5 +1,5 @@
-# Loser Homework
-
+<div id="img" align=center>
+    
 [![视频教程](https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan)](https://www.bilibili.com/video/BV1Zj411r7eP)
 [![QQ群](https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue)](https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl)
 [![知乎](https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello)](https://www.zhihu.com/people/o4ze4r)
@@ -7,19 +7,19 @@
 
 [![modern cpp](https://img.shields.io/badge/code-Modern%20C++-blue)](https://learn.microsoft.com/zh-cn/cpp/cpp/welcome-back-to-cpp-modern-cpp)
 [![cpp2b](https://img.shields.io/badge/std-C++20/23/26-yello)](https://zh.cppreference.com/w/cpp/compiler_support)
-
 [![gcc](https://img.shields.io/badge/compiler-GCC13-white)](https://gcc.gnu.org/onlinedocs/13.2.0/)
 [![msvc](https://img.shields.io/badge/compiler-MSVC19.37-white)](https://learn.microsoft.com/zh-cn/cpp/cpp)
 [![clang](https://img.shields.io/badge/compiler-clang17-white)](https://releases.llvm.org/17.0.1/tools/clang/docs/)
 
-<p id="img" align=center>
+</div>
+<div id="img" align=center>
     <a herf="https://zh.cppreference.com/w/cpp"><img src="image/cpp.svg" width=64px alt="cpp"/></a>
-</p>
+</div>
 
 <details>
     <summary style="font-size:150%">目录</summary>
 
-- [Loser Homework](#loser-homework)
+- Loser Homework
   - [前言](#前言)
   - [`01` 实现管道运算符](#01-实现管道运算符)
     - [运行结果](#运行结果)
