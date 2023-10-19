@@ -12,26 +12,72 @@
 [![msvc](https://img.shields.io/badge/compiler-MSVC19.37-white)](https://learn.microsoft.com/zh-cn/cpp/cpp)
 [![clang](https://img.shields.io/badge/compiler-clang17-white)](https://releases.llvm.org/17.0.1/tools/clang/docs/)
 
-[![cpp](image/cpp.png)](https://zh.cppreference.com/w/cpp)
+<div id="img" style="text-align:center">
+    <a herf="https://zh.cppreference.com/w/cpp"><img src="image/cpp.svg" width=64px alt="cpp"/></a>
+</div>
 
-## 目录
+<details>
+    <summary style="font-size:150%">目录</summary>
 
 - [Loser Homework](#loser-homework)
-  - [目录](#目录)
   - [前言](#前言)
   - [`01` 实现管道运算符](#01-实现管道运算符)
+    - [运行结果](#运行结果)
+    - [群友提交](#群友提交)
+    - [标准答案](#标准答案)
   - [`02` 实现自定义字面量 `_f`](#02-实现自定义字面量-_f)
+    - [运行结果](#运行结果-1)
+    - [群友提交](#群友提交-1)
+    - [标准答案](#标准答案-1)
   - [`03` 实现 `print` 以及特化 `std::formatter`](#03-实现-print-以及特化-stdformatter)
+    - [运行结果](#运行结果-2)
+    - [群友提交](#群友提交-2)
+    - [标准答案](#标准答案-2)
   - [`04` 给定模板类修改，让其对每一个不同类型实例化有不同 ID](#04-给定模板类修改让其对每一个不同类型实例化有不同-id)
+    - [运行结果](#运行结果-3)
+    - [群友提交](#群友提交-3)
+    - [标准答案](#标准答案-3)
   - [`05` 实现 `scope_guard` 类型](#05-实现-scope_guard-类型)
+    - [运行结果](#运行结果-4)
+    - [群友提交](#群友提交-4)
+    - [标准答案](#标准答案-4)
   - [`06` 解释 `std::atomic` 初始化](#06-解释-stdatomic-初始化)
+    - [群友提交](#群友提交-5)
+    - [标准答案](#标准答案-5)
   - [`07` `throw new MyException`](#07-throw-new-myexception)
+    - [运行结果](#运行结果-5)
+    - [群友提交](#群友提交-6)
+    - [标准答案](#标准答案-6)
   - [`08` 定义`array`推导指引](#08-定义array推导指引)
+    - [运行结果](#运行结果-6)
+    - [群友提交](#群友提交-7)
+    - [标准答案](#标准答案-7)
   - [`09` 名字查找的问题](#09-名字查找的问题)
+    - [运行结果](#运行结果-7)
+    - [群友提交](#群友提交-8)
+    - [标准答案](#标准答案-8)
   - [`10` 遍历任意类数据成员](#10-遍历任意类数据成员)
+    - [运行结果](#运行结果-8)
+    - [群友提交](#群友提交-9)
+    - [标准答案](#标准答案-9)
+      - [`C++17` 写法](#c17-写法)
+      - [`C++20` 写法](#c20-写法)
+    - [补充说明](#补充说明)
   - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
+    - [群友提交](#群友提交-10)
+    - [标准答案](#标准答案-10)
   - [`12` 实现`make_vector()`](#12-实现make_vector)
+    - [运行结果](#运行结果-9)
+    - [群友提交](#群友提交-11)
+    - [标准答案](#标准答案-11)
+      - [运行结果](#运行结果-10)
   - [`13` 关于 `return std::move`](#13-关于-return-stdmove)
+    - [群友提交](#群友提交-12)
+    - [标准答案](#标准答案-12)
+
+</details>
+
+---
 
 ## 前言
 
