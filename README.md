@@ -204,6 +204,36 @@ std::vector<int>& operator|(auto& v1, const auto& f) {
 ```
 
 **各种范式无非就是这些改来改去了，没必要再写。**
+### 解析
+很明显的是我们需要重载运算符 **|**，其次根据管道运算符的调用形式得知返回值为 `std::vector& `,管道运算符实际上执行的是`operator |(v:std::vector,f2:F){//实现细节}`,如果要对存储任意类型的vector都可应用此重载，我们不免需要使用模板。既然使用模板我可以使用c++20的requires表达式来约束模板参数。
+```c++
+template<typename  U,typename F>
+requires std::regular_invocable<F, U&> //我们可以认为对模板形参U，F满足std::regular_invocable的约束
+```
+如果没接触过约束表达式，没关系，下面将简要的介绍。
+
+requires 表达式如同一个返回bool的函数，而U和F作为类型填入std::regular_invocable的实参列表里，只要作为类型的U，F满足该表达式则返回true;不满足则返回false，称为“不满足约束”。不满足约束的类型自然不会执行后续的代码。而[std::regular_invocable](https://zh.cppreference.com/w/cpp/concepts/invocable)我们可以简单看成对类型U的每一个值，我们是否可以调用函数F，即调用 `std::invoke` 。相当于我们在编译期对运行期做了想象，想象一下可以对U在运行期执行F吗？如果可以那满足约束。
+
+而函数主体则极为简单
+```c++
+std::vector<U>& operator|(std::vector<U>& v1, const F f) {
+    for (auto& i : v1) {
+        f(i);
+    }
+    return v1;
+}
+```
+其中[范围表达式](https://zh.cppreference.com/w/cpp/language/range-for) `for (auto& i : v1)`,如同`for(auto i=v.begin();i=v.end();++i){f(*i)}` 我们对*vector*（范围）中的每一个元素应用一次**f**函数。返回时照常返回v1。
+
+如若不使用模板，则我们的形参列表得用[std::functoin](https://zh.cppreference.com/w/cpp/utility/functional/function)来接住我们使用的函数。对范围中的每个成员应用**f**不需要返回值且需要对范围中的元素进行修改，所以第二个形参为`std::function<void(int&)>`，并且我们不需要对传进来的函数**f**进行修改与拷贝，所以加上**const**限定是个好习惯。
+
+同样的我们可以不使用范围for而是更简单的`std::ranges::for_each(v1, f); `即同上一样对范围v1内的每个元素，应用一次函数**f**。
+
+对于使用模板的形式，我们可以使用c++20的简写函数模板；简而言之，在函数形参列表中auto占位符会为模板形参列表追加一个虚设的模板形参。最开始的模板形式可以写成
+```c++
+std::vector<int>& operator|(auto& v1, const auto& f) 
+``` 
+它和原形式相同。
 
 ---
 
@@ -287,6 +317,35 @@ constexpr auto operator""_f(const char* fmt, size_t) {
     return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
 }
 ```
+### 解析
+同样的我们需要对运算符进行重载，`""_f`正是[用户自定义字符串后缀](https://zh.cppreference.com/w/cpp/language/user_literal)，但自定义字符串的重载的形参列表有一些限制，我们需要的是`(const char *,std::size)`这样的形参列表，不过这是允许的；而重载函数的返回值我们需要独立创建为一个类型，并且需要在内部重载**()**运算符，以满足上述字符串像函数一样调用的要求。
+```c++
+/* 实现定义*/ operator""_f(const char* s, std::size_t len){return {s,len};}
+```
+我们通过引入一个自定义类型解决返回值问题，首先我们的自定义类型需要`cosnt string_view `类型的数据成员用以保存`cosnt char *`,其次`string_view`的构造函数还需要一个长度参数，这就是为什么形参列表中需要传递长度；其次需要重载 **()** 运算符由于我们事先并不知道`operotar()()`中形参的长度，我们可以使用c++20的模板形参包,借此我们可以传递变长参数：
+```c++
+ template <typename... Args>
+        std::string operator()(Args&&... args)
+```
+如果形参包的相关语法不熟悉可参看[形参包](https://zh.cppreference.com/w/cpp/language/parameter_pack)或[视频]([卢瑟白这里链接填你的视频，我公司网屏蔽了b站搞不了](https://www.bilibili.com/video/BV1HG4y1g76d/?spm_id_from=333.999.0.0))。
+而函数体内我们需要使用[std::format](https://zh.cppreference.com/w/cpp/utility/format/format)来格式化字符串来把传递进来的参数塞进原字符串的 **{}** 中。`std::format`提供了`vformat`函数，它返回`std::string`,用它来帮我们完成把值塞进 **{}** 的操作，当然同样提供了`format`函数，不过我们不建议使用，他们的区别是带v的版本首个参数不要求编译期常量。
+```c++
+ template <typename... Args>
+        std::string operator()(Args&&... args) const {
+            return std::vformat(s, std::make_format_args(std::forward<Args>(args)...));
+        }
+```
+在调用`vformat`函数的实参列表中，我们并不能直接进行包展开传递参数，而是需要使用`std::make_format_args()`构造`vformat`的第二个参数，参看他的形参列表可知它第二个参数需要`format_args`类型，即`std::basic_format_args`;而`std::make_format_args()`正是用来构造它的，在其中进行包展开时，因为函数实参在绑定到具体的值发生值类型的变换，我们需要完美转发形参包的参数。
+
+以上是本题的一般思路，不过更进一步来说，我们可以把上述代码简化成一行[泛型lambda](https://zh.cppreference.com/w/cpp/language/lambda)表达式，因为lambda表达式自身就重载了函数调用运算符。
+```c++
+constexpr auto operator""_f(const char* fmt, size_t) {
+    return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
+}
+```
+`<typename...T>`表示该lambda表达式的形参包，我们可以像平常使用函数形参包一样使用它，泛型lambda中为了使用重载字符串调用运算符的形参列表中的参数，我们需要复制捕获使用到的参数。
+
+---
 
 ## `03` 实现 `print` 以及特化 `std::formatter`
 
@@ -348,7 +407,35 @@ void print(std::string_view fmt,auto&&...args){
 简单的特化以及 [`std::formatter`](https://zh.cppreference.com/w/cpp/utility/format/formatter) 支持的形式可以参见[**文档**](https://zh.cppreference.com/w/cpp/utility/format/formatter)。
 一些复杂的特化，up之前也有写过，在 [**`Cookbook`**](https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC) 中，里面有对 [`std::ranges::range`](https://zh.cppreference.com/w/cpp/ranges/range) 和 [`std::tuple`](https://zh.cppreference.com/w/cpp/utility/tuple) 的特化，支持所有形式。
 
+### 解析
+实现一个**print**很简单，我们只要按第二题的思路来，接一个`std::string_view`对象，再接需要格式化,也就是往里塞的参数。同样的我们使用简写函数模板和形参包。
+```c++
+void print(std::string_view fmt,auto&&...args){
+    std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
+}
+```
+此处我们没有显示声明模板形参，所以展开时不能使用以往的模板形参做完美转发的模板实参，但是根据形参包展开的规则。例
+`args...`展开成`args1,args2,args3...`,而上式展开成
+```c++
+std::forward<decltype(args1)>(args1),
+std::forward<decltype(args2)>(arsg2),
+std::forward<decltype(args3)>(args3),... 
+```
+这样我们对每个应用到的参数用decltype取他的类型再作为完美转发的模板参数。这样调用`vformat`,返回string,可以使用cout直接输出。
+
+而自定义类型，特化std::formatter;我们需要知道的是:想要自定义**std::formatter**模板特化需要提供两个函数，**parse和format**,**parse** 用来处理格式说明，并且设置相关的成员变量,相对于本题我们不需要如此麻烦的写此成员函数;我们选择继承`std::formatter<char>`的**parse**函数，独立实现**format**函数。此处模板特化的语法,不了解请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
+```c++
+template<>
+struct std::formatter<Frac>:std::formatter<char>{
+    auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
+        return std::format_to(ctx.out(), "{}/{}", frac.a, frac.b);
+    }
+};
+```
+我们同样使用**auto**作占位符的简写函数模板，对于**format**函数，首个参数为我们传递的自定义类，第二个参数(**ctx**)为我们要传递给`std::format_to`输出迭代器的格式字符串。在函数体中我们直接返回`std::format_to()`调用表达式的结果,此函数返回输出迭代器;返回值我们使用**auto**占位符进行返回值推导。在函数实参中,`ctx.out`即为输出迭代器，第二个参数为可转换为**std::string_view**或**std::wstring_view**,而转换结果是常量表达式和 Args 的合法格式字符串。本题中我们填入我们需要的形式即`{}/{}`我们想要两个参数塞到 **{ }**,就如我们使用`printf(%d,x)`一样；最后两个参数为“需要塞进 **{ }** 的值”,即要格式化的参数。
+
 ---
+
 
 ## `04` 给定模板类修改，让其对每一个不同类型实例化有不同 ID
 
