@@ -25,7 +25,7 @@
     - [运行结果](#运行结果)
     - [群友提交](#群友提交)
     - [标准答案](#标准答案)
-  - [`02` 实现自定义字面量 `_f`](#02-实现自定义字面量-_f)
+  - [`02` 实现自定义字面量 `_f`](#02-实现自定义字面量-f)
     - [运行结果](#运行结果-1)
     - [群友提交](#群友提交-1)
     - [标准答案](#标准答案-1)
@@ -37,7 +37,7 @@
     - [运行结果](#运行结果-3)
     - [群友提交](#群友提交-3)
     - [标准答案](#标准答案-3)
-  - [`05` 实现 `scope_guard` 类型](#05-实现-scope_guard-类型)
+  - [`05` 实现 `scope_guard` 类型](#05-实现-scopeguard-类型)
     - [运行结果](#运行结果-4)
     - [群友提交](#群友提交-4)
     - [标准答案](#标准答案-4)
@@ -63,10 +63,10 @@
       - [`C++17` 写法](#c17-写法)
       - [`C++20` 写法](#c20-写法)
     - [补充说明](#补充说明)
-  - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
+  - [`11` `emplace_back()` 的问题](#11-emplaceback-的问题)
     - [群友提交](#群友提交-10)
     - [标准答案](#标准答案-10)
-  - [`12` 实现`make_vector()`](#12-实现make_vector)
+  - [`12` 实现`make_vector()`](#12-实现makevector)
     - [运行结果](#运行结果-9)
     - [群友提交](#群友提交-11)
     - [标准答案](#标准答案-11)
@@ -225,7 +225,7 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 ```
 其中[范围表达式](https://zh.cppreference.com/w/cpp/language/range-for) `for (auto& i : v1)`,如同`for(auto i=v.begin();i=v.end();++i){f(*i)}` 我们对*vector*（范围）中的每一个元素应用一次**f**函数。返回时照常返回v1。
 
-如若不使用模板，则我们的形参列表得用[std::functoin](https://zh.cppreference.com/w/cpp/utility/functional/function)来接住我们使用的函数。对范围中的每个成员应用**f**不需要返回值且需要对范围中的元素进行修改，所以第二个形参为`std::function<void(int&)>`，并且我们不需要对传进来的函数**f**进行修改与拷贝，所以加上**const**限定是个好习惯。
+如若不使用模板，则我们的形参列表得用[std::function](https://zh.cppreference.com/w/cpp/utility/functional/function)来接住我们使用的函数。对范围中的每个成员应用**f**不需要返回值且需要对范围中的元素进行修改，所以第二个形参为`std::function<void(int&)>`，并且我们不需要对传进来的函数**f**进行修改与拷贝，所以加上**const**限定是个好习惯。
 
 同样的我们可以不使用范围for而是更简单的`std::ranges::for_each(v1, f); `即同上一样对范围v1内的每个元素，应用一次函数**f**。
 
@@ -276,7 +276,7 @@ int main(){
 
 ### [群友提交](src/群友提交/第02题)
 
-答题者：[**`andyli`**](/src/群友提交/第02题/andyli.cpp)
+答题者：[**`andyli`**](src/群友提交/第02题/andyli.cpp)
 
 ```cpp
 #include <format>
@@ -421,7 +421,7 @@ std::forward<decltype(args1)>(args1),
 std::forward<decltype(args2)>(arsg2),
 std::forward<decltype(args3)>(args3),... 
 ```
-这样我们对每个应用到的参数用decltype取他的类型再作为完美转发的模板参数。这样调用`vformat`,返回string,可以使用cout直接输出。
+这样我们对每个应用到的参数用 decltype 取他的类型再作为完美转发的模板参数。这样调用`vformat`,返回string,可以使用cout直接输出。
 
 而自定义类型，特化std::formatter;我们需要知道的是:想要自定义**std::formatter**模板特化需要提供两个函数，**parse和format**,**parse** 用来处理格式说明，并且设置相关的成员变量,相对于本题我们不需要如此麻烦的写此成员函数;我们选择继承`std::formatter<char>`的**parse**函数，独立实现**format**函数。此处模板特化的语法,不了解请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
 ```c++
