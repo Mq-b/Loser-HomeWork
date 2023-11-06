@@ -1,2 +1,8 @@
 /.vs
 /.gitignore
+*.aux
+*.log
+*.aux
+*.fdb_latexmk
+*.fls
+*.gz
