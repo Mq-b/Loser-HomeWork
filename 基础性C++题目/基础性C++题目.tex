@@ -1,0 +1,158 @@
+\documentclass[12pt,fancyhdr]{ctexart}
+\usepackage{graphicx} 
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{minted}
+\usepackage[colorlinks,linkcolor=blue]{hyperref}
+\renewcommand{\headrulewidth}{0.2pt}
+\renewcommand{\headwidth}{\textwidth}
+\renewcommand{\footrulewidth}{0pt}
+\geometry{left=2cm,right=2cm,top=3cm,bottom=2cm}
+\pagestyle{fancy}
+\lhead{\author}
+\chead{\date}
+\rhead{卢瑟帝国万岁}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\title{基础性C++题目}
+\author{\href{https://github.com/dynilath}{Da'Inihlus}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+都是基础知识，并没有特意为难，如有不会，则为知识点未掌握。
+
+\section{题目}
+
+\subsection{结构体拷贝}
+给出以下代码，其行为是？
+
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+
+    #include <iostream>
+
+    struct foo{
+        char a[16];
+    };
+    
+    int main(){
+        foo a {"Hello, World!"};
+        auto b = a;
+        a.a[0] = '\0';
+        std::cout << b.a;
+    }
+\end{minted}
+
+\begin{itemize}
+    \item [A]
+          无法编译/未定义行为
+    \item [B]
+          可编译，保证无输出
+    \item [C]
+          可编译，保证输出"Hello, World!"
+    \item [D]
+          可编译，输出为实现定义
+\end{itemize}
+
+\subsection{C++四种类型转换}
+
+以下代码应当使用的转换是？
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+
+    #include <iostream>
+
+    struct foo{
+        char a[16];
+    };
+
+    struct Base { int x; };
+    struct Derived : Base { int y; }
+    
+    int get_xy(Base * param){
+        auto pd = ????_cast<Derived*>(param);
+        return pd->x * pd->y;
+    }
+\end{minted}
+
+\begin{itemize}
+    \item [A]
+        static\_cast
+    \item [B]
+        dynamic\_cast
+    \item [C]
+        以上全部
+    \item [D]
+        不允许转换
+\end{itemize}
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    void erased_call(void (* pfn)(void), const char * param){
+        auto typed_pfn = ????_cast<void(*)(const char *)>(pfn);
+        typed_pfn(param);
+    }
+\end{minted}
+
+\begin{itemize}
+    \item [A]
+        static\_cast
+    \item [B]
+        dynamic\_cast
+    \item [C]
+        以上全部
+    \item [D]
+        不允许转换
+\end{itemize}
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+
+    template<typename T>
+    void foo(T&& i){
+        // some implemetion code
+    }
+    
+    void speciallized_foo(int param){
+        auto spfoo = ????_cast<void(*)(const double&)>(foo);
+        spfoo(param);
+    }
+\end{minted}
+
+\begin{itemize}
+    \item [A]
+        static\_cast
+    \item [B]
+        dynamic\_cast
+    \item [C]
+        以上全部
+    \item [D]
+        不允许转换
+\end{itemize}
+
+\end{document}
+
+
