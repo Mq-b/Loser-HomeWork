@@ -1,0 +1,27 @@
+日期：2023/7/22 出题人：mq白
+
+给出代码：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    int main(){
+        std::cout << "乐 :{} *\n"_f(5);
+        std::cout << "乐 :{0} {0} *\n"_f(5);
+        std::cout << "乐 :{:b} *\n"_f(0b01010101);
+        std::cout << "{:*<10}"_f("卢瑟");
+        std::cout << '\n';
+        int n{};
+        std::cin >> n;
+        std::cout << "π：{:.{}f}\n"_f(std::numbers::pi_v<double>, n);
+    }
+\end{minted}
+
+6 为输入，决定 \textbf{$\pi$} 的小数点后的位数，可自行输入更大或更小数字。
+
+$\bullet ~ $\textbf{难度}：\ding{72} \ding{72} \ding{73} \ding{73} \ding{73}
+
+$~~~$\textbf{提示}：C++11 用户定义字面量、C++20 format 库。
