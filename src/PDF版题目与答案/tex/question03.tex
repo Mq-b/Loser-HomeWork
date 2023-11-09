@@ -1,0 +1,46 @@
+日期：2023/7/24 出题人：mq白\\
+
+实现一个 print，如果你做了上一个作业，我相信这很简单。 要求调用形式为:
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    print(格式字符串, 任意类型和个数的符合格式字符串要求的参数)
+\end{minted}
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    struct Frac {
+        int a, b;
+     };
+\end{minted}
+
+给出自定义类型Frace，要求支持以下：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    Frac f{ 1,10 };
+    print("{}", f);// 结果为1/10
+\end{minted}
+
+\begin{tcolorbox}[title = {要求运行结果},
+    fonttitle = \bfseries, fontupper = \sffamily, fontlower = \itshape]
+    1/10
+\end{tcolorbox}
+
+$\bullet ~ $\textbf{难度}：\ding{72} \ding{72} \ding{72} \ding{73} \ding{73}
+
+$~~~$\textbf{提示}：std::formatter。
+
+禁止面向结果编程，使用宏等等方式，本题主要考察和学习 format 库，记得测试至少三个不同编译器。
