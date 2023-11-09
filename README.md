@@ -1557,6 +1557,8 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 
 ## `13` 关于 `return std::move`
 
+日期：`2023/9/6` 出题人：`mq白`
+
 我们会给出三段使用到了 `return std::move` 代码。
 
 **解释说明这些代码是否有问题，问题在哪，或者没问题，那么为什么要这样使用。**
