@@ -1,0 +1,67 @@
+日期：2023/9/6 出题人：mq白\\
+
+我们会给出三段使用到了 \mintinline{c++}{return std::move(expr)} 代码。
+
+解释说明这些代码是否有问题，问题在哪，或者没问题，那么为什么要这样使用。
+
+\begin{itemize}
+    \item [1.]
+          全局函数，返回局部对象，使用 std::move。
+          \begin{minted}[mathescape,	
+        linenos,
+        numbersep=5pt,
+        gobble=2,
+        frame=lines,
+        framesep=2mm]{c++}
+        #include<iostream>
+
+        struct X{//后续代码不再重复X类
+            X() { puts("X()"); }
+            X(const X&) { puts("X(const X&)"); }
+            X(X&&)noexcept { puts("X(X&&)"); }
+            ~X() { puts("~X()"); }
+        };
+        
+        X f(){
+            X x;
+            return std::move(x);
+        }
+        
+        int main(){
+            X x = f();
+        }
+    \end{minted}
+    \item [2.]
+          全局函数，返回局部的引用，使用 std::move。
+          \begin{minted}[mathescape,	
+        linenos,
+        numbersep=5pt,
+        gobble=2,
+        frame=lines,
+        framesep=2mm]{c++}
+        X&& f(){
+            X x;
+            return std::move(x);
+        }
+    \end{minted}
+    \item [3.]
+          类中成员函数，返回数据成员，使用 std::move。
+          \begin{minted}[mathescape,	
+        linenos,
+        numbersep=5pt,
+        gobble=2,
+        frame=lines,
+        framesep=2mm]{c++}
+        struct Test {
+            X x;
+            X f() {
+                return std::move(x);
+            }
+        };
+    \end{minted}
+\end{itemize}
+
+\begin{itemize}
+    \item \textbf{难度}： \hardscore{3} \\
+          \textbf{提示}：return 重载决议。
+\end{itemize}

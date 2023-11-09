@@ -1,0 +1,27 @@
+日期：2023/8/20 出题人：\href{https://github.com/rsp4jack}{jacky}\\
+
+思考：以下代码为什么在 C++20 以下的版本中无法成功编译，而在 C++20 及以后却可以？
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    #include <vector>
+
+    struct Pos {
+        int x;
+        int y;
+    };
+    
+    int main(){
+        std::vector<Pos> vec;
+        vec.emplace_back(1, 5);
+    }
+\end{minted}
+
+\begin{itemize}
+\item \textbf{难度}： \hardscore{2} \\
+      \textbf{提示}：new，聚合初始化。
+\end{itemize}

@@ -1,0 +1,39 @@
+日期：2023/8/6 出题人：mq白\\
+
+给出代码：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    struct MyException :std::exception {
+        const char* data{};
+        MyException(const char* s) :data(s) { puts("MyException()"); }
+        ~MyException() { puts("~MyException()"); }
+        const char* what()const noexcept { return data; }
+       };
+       void f2() {
+        throw new MyException("new Exception异常....");
+       }
+       int main(){
+           f2();
+       }
+\end{minted}
+
+灵感来源自 Java 人写 C++。
+
+在 main 函数中自行修改代码，接取 f2() 函数抛出的异常（try catch）。
+
+\begin{tcolorbox}[title = {要求运行结果},
+    fonttitle = \bfseries, fontupper = \sffamily, fontlower = \itshape]
+    MyException()\\
+    new Exception异常....\\
+    ~MyException()
+\end{tcolorbox}
+
+\begin{itemize}
+    \item \textbf{难度}： \hardscore{1} \\
+    \textbf{提示}：std::exception，try catch
+\end{itemize}
