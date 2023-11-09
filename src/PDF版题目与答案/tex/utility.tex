@@ -1,0 +1,14 @@
+
+\newcommand{\hardscore}[1]{
+    \newcount\starcount
+    \starcount=0
+    \loop
+        \ifnum\starcount<5
+            \ifnum\starcount<#1
+            \ding{72}
+            \else
+            \ding{73}
+            \fi
+        \advance\starcount by 1
+    \repeat
+}
