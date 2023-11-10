@@ -2,4 +2,52 @@
 
 \subsection{答案}
 
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    template<typename U, typename F>
+        requires std::regular_invocable<F, U&>//可加可不加，不会就不加
+    std::vector<U>& operator|(std::vector<U>& v1, F f) {
+        for (auto& i : v1) {
+            f(i);
+        }
+        return v1;
+    }
+\end{minted}
+
+\textbf{不使用模板：}
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    std::vector<int>& operator|(std::vector<int>& v1, const std::function<void(int&)>& f) {
+        for (auto& i : v1) {
+            f(i);
+        }
+        return v1;
+    }
+\end{minted}
+
+\textbf{不使用范围 for，使用 C++20 简写函数模板：}
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    std::vector<int>& operator|(auto& v1, const auto& f) {
+        std::ranges::for_each(v1, f);
+        return v1;
+    }
+\end{minted}
+
+\textbf{各种其他答案的范式无非就是这些改来改去了，没必要再写。}
+
 \subsection{解析}
