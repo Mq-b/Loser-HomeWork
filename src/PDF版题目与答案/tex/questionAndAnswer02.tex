@@ -1,0 +1,24 @@
+\input{tex/question02.tex}
+
+\subsection{答案}
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    constexpr auto operator""_f(const char* fmt, size_t) {
+        return [=]<typename... T>(T&&... Args) { 
+            return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...));
+        };
+    }
+\end{minted}
+
+\subsection{解析}
+
+% 用户定义字面量所调用的函数被称为字面量运算符 注意用词。
+
+我们需要使用到 C++11 用户定义字面量，\mintinline{c++}{""_f} 正是用户自定义字面量，但\textbf{字面量运算符}（用户定义字面量所调用的函数被称为字面量运算符）的形参列表有一些限制，
+我们需要的是 \mintinline{c++}{(const char *,std::size)} 这样的形参列表，恰好这是允许的；
+字面量运算符的返回类型，我们需要自定义，这个类型需要在内部重载 \mintinline{c++}{()} 运算符，以满足上述字面量像函数一样调用的要求。
