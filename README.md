@@ -323,33 +323,41 @@ constexpr auto operator""_f(const char* fmt, size_t) {
     return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
 }
 ```
+
 ### 解析
-同样的我们需要对运算符进行重载，`""_f`正是[用户自定义字符串后缀](https://zh.cppreference.com/w/cpp/language/user_literal)，但自定义字符串的重载的形参列表有一些限制，我们需要的是`(const char *,std::size)`这样的形参列表，不过这是允许的；而重载函数的返回值我们需要独立创建为一个类型，并且需要在内部重载**()**运算符，以满足上述字符串像函数一样调用的要求。
+
+我们需要使用到 C++11 用户定义字面量，`""_f` 正是[用户自定义字面量](https://zh.cppreference.com/w/cpp/language/user_literal)，但**字面量运算符**（用户定义字面量所调用的函数被称为字面量运算符）的形参列表有一些限制，我们需要的是 `(const char *,std::size)` 这样的形参列表，恰好这是允许的；而字面量运算符的返回类型，我们需要自定义，这个类型需要在内部重载 **`()`** 运算符，以满足上述字面量像函数一样调用的要求。
+
 ```c++
 /* 实现定义*/ operator""_f(const char* s, std::size_t len){return {s,len};}
 ```
-我们通过引入一个自定义类型解决返回值问题，首先我们的自定义类型需要`cosnt string_view `类型的数据成员用以保存`cosnt char *`,其次`string_view`的构造函数还需要一个长度参数，这就是为什么形参列表中需要传递长度；其次需要重载 **()** 运算符由于我们事先并不知道`operotar()()`中形参的长度，我们可以使用c++20的模板形参包,借此我们可以传递变长参数：
+
+我们通过引入一个自定义类型解决返回值问题，首先我们的自定义类型需要 `cosnt string_view` 类型的数据成员用以保存 `cosnt char *`,其次 `string_view` 的构造函数还需要一个长度参数，这就是为什么形参列表中需要传递长度；其次需要重载 **()** 运算符由于我们事先并不知道 `operotar()()` 中形参的长度，我们可以使用c++20的模板形参包,借此我们可以传递变长参数：
+
 ```c++
  template <typename... Args>
         std::string operator()(Args&&... args)
 ```
+
 如果形参包的相关语法不熟悉可参看[形参包](https://zh.cppreference.com/w/cpp/language/parameter_pack)或[视频]([卢瑟白这里链接填你的视频，我公司网屏蔽了b站搞不了](https://www.bilibili.com/video/BV1HG4y1g76d/?spm_id_from=333.999.0.0))。
-而函数体内我们需要使用[std::format](https://zh.cppreference.com/w/cpp/utility/format/format)来格式化字符串来把传递进来的参数塞进原字符串的 **{}** 中。`std::format`提供了`vformat`函数，它返回`std::string`,用它来帮我们完成把值塞进 **{}** 的操作，当然同样提供了`format`函数，不过我们不建议使用，他们的区别是带v的版本首个参数不要求编译期常量。
+而函数体内我们需要使用[std::format](https://zh.cppreference.com/w/cpp/utility/format/format)来格式化字符串来把传递进来的参数塞进原字符串的 **{}** 中。`std::format` 提供了 `vformat` 函数，它返回 `std::string`,用它来帮我们完成把值塞进 **{}** 的操作，当然同样提供了 `format` 函数，不过我们不建议使用，他们的区别是带v的版本首个参数不要求编译期常量。
 ```c++
  template <typename... Args>
         std::string operator()(Args&&... args) const {
             return std::vformat(s, std::make_format_args(std::forward<Args>(args)...));
         }
 ```
-在调用`vformat`函数的实参列表中，我们并不能直接进行包展开传递参数，而是需要使用`std::make_format_args()`构造`vformat`的第二个参数，参看他的形参列表可知它第二个参数需要`format_args`类型，即`std::basic_format_args`;而`std::make_format_args()`正是用来构造它的，在其中进行包展开时，因为函数实参在绑定到具体的值发生值类型的变换，我们需要完美转发形参包的参数。
+在调用 `vformat` 函数的实参列表中，我们并不能直接进行包展开传递参数，而是需要使用 `std::make_format_args()` 构造 `vformat` 的第二个参数，参看他的形参列表可知它第二个参数需要 `format_args` 类型，即 `std::basic_format_args`;而 `std::make_format_args()` 正是用来构造它的，在其中进行包展开时，因为函数实参在绑定到具体的值发生值类型的变换，我们需要完美转发形参包的参数。
 
 以上是本题的一般思路，不过更进一步来说，我们可以把上述代码简化成一行[泛型lambda](https://zh.cppreference.com/w/cpp/language/lambda)表达式，因为lambda表达式自身就重载了函数调用运算符。
+
 ```c++
 constexpr auto operator""_f(const char* fmt, size_t) {
     return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
 }
 ```
-`<typename...T>`表示该lambda表达式的形参包，我们可以像平常使用函数形参包一样使用它，泛型lambda中为了使用重载字符串调用运算符的形参列表中的参数，我们需要复制捕获使用到的参数。
+
+`<typename...T>` 表示该lambda表达式的形参包，我们可以像平常使用函数形参包一样使用它，泛型lambda中为了使用重载字符串调用运算符的形参列表中的参数，我们需要复制捕获使用到的参数。
 
 ---
 
