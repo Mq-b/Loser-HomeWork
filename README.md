@@ -206,13 +206,15 @@ std::vector<int>& operator|(auto& v1, const auto& f) {
 **各种其他答案的范式无非就是这些改来改去了，没必要再写。**
 ### 解析
 很明显的是我们需要重载运算符 **|**，其次根据管道运算符的调用形式得知返回值为 `std::vector& `,管道运算符实际上执行的是 `operator |(v:std::vector,f2:F){//实现细节}`,如果要对存储任意类型的 vector 都可应用此重载，我们不免需要使用模板。既然使用模板我可以使用 c++20 的 requires 表达式来约束模板参数。
+
 ```c++
 template<typename  U,typename F>
 requires std::regular_invocable<F, U&> //我们可以认为对模板形参U，F满足std::regular_invocable的约束
 ```
+
 如果没接触过约束表达式，没关系，下面将简要的介绍。
 
-requires 表达式如同一个返回bool的函数，而U和F作为类型填入std::regular_invocable的实参列表里，只要作为类型的U，F满足该表达式则返回true;不满足则返回false，称为“不满足约束”。不满足约束的类型自然不会执行后续的代码。而[std::regular_invocable](https://zh.cppreference.com/w/cpp/concepts/invocable)我们可以简单看成对类型U的每一个值，我们是否可以调用函数F，即调用 `std::invoke` 。相当于我们在编译期对运行期做了想象，想象一下可以对U在运行期执行F吗？如果可以那满足约束。
+requires 表达式如同一个返回 bool 的函数，而U和F作为类型填入 std::regular_invocable 的实参列表里，只要作为类型的U，F满足该表达式则返回true;不满足则返回 false，称为“不满足约束”。不满足约束的类型自然不会执行后续的代码。而 [std::regular_invocable](https://zh.cppreference.com/w/cpp/concepts/invocable) 我们可以简单看成对类型U的每一个值，我们是否可以调用函数F，即调用 `std::invoke` 。相当于我们在编译期对运行期做了想象，想象一下可以对U在运行期执行F吗？如果可以那满足约束。
 
 而函数主体则极为简单
 
@@ -227,7 +229,7 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 
 其中[范围表达式](https://zh.cppreference.com/w/cpp/language/range-for) `for (auto& i : v1)`,如同`for(auto i=v.begin();i=v.end();++i){f(*i)}` 我们对*vector*（范围）中的每一个元素应用一次**f**函数。返回时照常返回v1。
 
-如若不使用模板，则我们的形参列表得用[std::function](https://zh.cppreference.com/w/cpp/utility/functional/function)来接住我们使用的函数。对范围中的每个成员应用**f**不需要返回值且需要对范围中的元素进行修改，所以第二个形参为 `std::function<void(int&)>`，并且我们不需要对传进来的函数 **f** 进行修改与拷贝，所以加上 **const** 限定是个好习惯。
+如若不使用模板，则我们的形参列表得用 [std::function](https://zh.cppreference.com/w/cpp/utility/functional/function) 来接住我们使用的函数。对范围中的每个成员应用**f**不需要返回值且需要对范围中的元素进行修改，所以第二个形参为 `std::function<void(int&)>`，并且我们不需要对传进来的函数 **f** 进行修改与拷贝，所以加上 **const** 限定是个好习惯。
 
 同样的我们可以不使用范围 for 而是更简单的 `std::ranges::for_each(v1, f);` 即同上一样对范围v1内的每个元素，应用一次函数 **f**。
 
