@@ -22,3 +22,78 @@
 我们需要使用到 C++11 用户定义字面量，\mintinline{c++}{""_f} 正是用户自定义字面量，但\textbf{字面量运算符}（用户定义字面量所调用的函数被称为字面量运算符）的形参列表有一些限制，
 我们需要的是 \mintinline{c++}{(const char *,std::size)} 这样的形参列表，恰好这是允许的；
 字面量运算符的返回类型，我们需要自定义，这个类型需要在内部重载 \mintinline{c++}{()} 运算符，以满足上述字面量像函数一样调用的要求。
+
+我们一步一步来：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    void operator""_test(const char* str, std::size_t){
+        std::cout << str << '\n';
+    }
+    
+    "luse"_test; //调用了字面量运算符，打印 luse
+    
+    std::size_t operator""_test(const char* , std::size_t len){
+        return len;
+    }
+    
+    std::size_t len = "luse"_test; //调用了字面量运算符，返回 luse 的长度 4
+\end{minted}
+
+上面这段代码的两个使用示例展示了我们用户定义字面量的基本使用，尤其注意第二段，返回值。如果要做到像 \mintinline{c++}{"xxx"_f(xxx)} 这样调用，就得在返回类型上做点手脚。
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    struct X{
+        std::size_t operator()(std::size_t n)const{
+            return n;
+        }
+    };
+    
+    X operator""_test(const char* , std::size_t){
+        return {};
+    }
+    
+    std::cout<<"无意义"_test(1); //打印 1
+\end{minted}
+
+以上这段简单的代码很好的完成了我们需要的调用形式，那么是时候完成题目要求的功能了。最简单的方式是直接使用 C++20 format 库进行格式化。
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    namespace impl {
+        struct Helper {
+            const std::string_view s;
+            Helper(const char* s, std::size_t len): s(s, len) {}
+            template <typename... Args>
+            std::string operator()(Args&&... args) const {
+                return std::vformat(s, std::make_format_args(std::forward<Args>(args)...));
+            }
+        };
+    } // namespace impl
+    impl::Helper operator""_f(const char* s, std::size_t len) noexcept {
+        return {s, len};
+    }
+\end{minted}
+
+\mintinline{c++}{operator""_f} 本身非常简单，只是用来把传入的参数（格式字符串）和长度，构造 mpl::Helper 对象再返回。Helper 类型使用了一个 string\_veiw 作为数据成员，存储了格式字符串，以供后面格式化使用。
+
+重点只在于 \textbf{operator$()$}。 它是一个变参模板，用来接取我们传入的任意类型和个数的参数，然后返回格式化后的字符串。
+
+这里用到的是 std::vformat 进行格式化，它的第一个参数是格式字符串，也就是我们要按照什么样的规则去格式化；第二个参数是要格式化的参数，但是我们没有办法直接进行形参包展开，它第二个参数的类型实际上是 std::format\_args。 我们必须使用 std::make\_format\_args 函数传入我们的参数，它会返回 std::format\_args 类型，其实也就是相当于转换一下，合理。
+
+\textbf{不过显然标准答案不是这样的，还能简化，直接让 \mintinline{c++}{""_f} 返回一个 lambda 表达式即可。}
+
+\clearpage
