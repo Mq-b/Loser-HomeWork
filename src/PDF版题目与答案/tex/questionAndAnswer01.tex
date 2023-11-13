@@ -57,4 +57,37 @@
 
 v $|$ f2 调用 \mintinline{c++}{operator |}，operator $|$ 中使用 f2 遍历了 v 中的每一个元素，然后返回 v 的引用，再 $|$ f。
 
+形式和原理很简单，那么接下来就是实现；最简单的方式无非就是写一个模板
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    template<typename T, typename F>
+    T& operator|(T& v1, F f) {
+        for (auto& i : v1) {
+            f(i);
+        }
+        return v1;
+    }
+\end{minted}
+
+当然了，这个模板还不够好，我们知道了第一个参数会是 vector，模板完全可以再准确一点：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    template<typename U, typename F>
+    std::vector<U>& operator|(std::vector<U>& v1, F f)
+\end{minted}
+
+考虑到 std::function 的复制开销也不小，第二个模板形参也可以加 const\&。
+
+\href{https://zh.cppreference.com/w/cpp/language/range-for}{范围 for}，以及 \href{https://zh.cppreference.com/w/cpp/language/requires}{requires} 不再介绍。
+
 \clearpage
