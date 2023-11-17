@@ -1,0 +1,25 @@
+\input{tex/question03.tex}
+
+\subsection{标准答案}
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm,
+    breaklines]{c++}
+    template<>
+    struct std::formatter<Frac>:std::formatter<char>{
+        auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
+            return std::format_to(ctx.out(), "{}/{}", frac.a, frac.b);
+        }
+    };
+    void print(std::string_view fmt,auto&&...args){
+        std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
+    }
+\end{minted}
+
+\subsection{解析}
+
+\clearpage
