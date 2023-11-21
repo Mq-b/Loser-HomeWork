@@ -450,22 +450,28 @@ void print(std::string_view fmt,auto&&...args){
 一些复杂的特化，up之前也有写过，在 [**`Cookbook`**](https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC) 中，里面有对 [`std::ranges::range`](https://zh.cppreference.com/w/cpp/ranges/range) 和 [`std::tuple`](https://zh.cppreference.com/w/cpp/utility/tuple) 的特化，支持所有形式。
 
 ### 解析
-实现一个**print**很简单，我们只要按第二题的思路来，接一个`std::string_view`对象，再接需要格式化,也就是往里塞的参数。同样的我们使用简写函数模板和形参包。
+
+实现一个 print 很简单，我们只要按第二题的思路来就行了，一个格式化字符串，用 std::string_view 做第一个形参，另外需要任意参数和个数，使用形参包即可。
+
 ```c++
 void print(std::string_view fmt,auto&&...args){
     std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
 }
 ```
+
 此处我们没有显示声明模板形参，所以展开时不能使用以往的模板形参做完美转发的模板实参，但是根据形参包展开的规则。例
 `args...`展开成`args1,args2,args3...`,而上式展开成
+
 ```c++
 std::forward<decltype(args1)>(args1),
 std::forward<decltype(args2)>(arsg2),
 std::forward<decltype(args3)>(args3),... 
 ```
-这样我们对每个应用到的参数用 decltype 取他的类型再作为完美转发的模板参数。这样调用`vformat`,返回string,可以使用cout直接输出。
 
-而自定义类型，特化std::formatter;我们需要知道的是:想要自定义**std::formatter**模板特化需要提供两个函数，**parse和format**,**parse** 用来处理格式说明，并且设置相关的成员变量,相对于本题我们不需要如此麻烦的写此成员函数;我们选择继承`std::formatter<char>`的**parse**函数，独立实现**format**函数。此处模板特化的语法,不了解请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
+这样我们对每个应用到的参数用 decltype 取他的类型再作为完美转发的模板参数。这样调用 `vformat`,返回string,可以使用cout直接输出。
+
+而自定义类型，特化std::formatter;我们需要知道的是:想要自定义**std::formatter** 模板特化需要提供两个函数，**parse和format**,**parse** 用来处理格式说明，并且设置相关的成员变量,相对于本题我们不需要如此麻烦的写此成员函数;我们选择继承`std::formatter<char>`的 **parse** 函数，独立实现 **format** 函数。此处模板特化的语法,不了解请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
+
 ```c++
 template<>
 struct std::formatter<Frac>:std::formatter<char>{
@@ -474,6 +480,7 @@ struct std::formatter<Frac>:std::formatter<char>{
     }
 };
 ```
+
 我们同样使用**auto**作占位符的简写函数模板，对于**format**函数，首个参数为我们传递的自定义类，第二个参数(**ctx**)为我们要传递给`std::format_to`输出迭代器的格式字符串。在函数体中我们直接返回`std::format_to()`调用表达式的结果,此函数返回输出迭代器;返回值我们使用**auto**占位符进行返回值推导。在函数实参中,`ctx.out`即为输出迭代器，第二个参数为可转换为**std::string_view**或**std::wstring_view**,而转换结果是常量表达式和 Args 的合法格式字符串。本题中我们填入我们需要的形式即`{}/{}`我们想要两个参数塞到 **{ }**,就如我们使用`printf(%d,x)`一样；最后两个参数为“需要塞进 **{ }** 的值”,即要格式化的参数。
 
 ---
