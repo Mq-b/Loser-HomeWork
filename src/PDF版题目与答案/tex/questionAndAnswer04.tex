@@ -1,0 +1,61 @@
+\input{tex/question04}
+
+\subsection{标准答案}
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm,
+    breaklines]{c++}
+    template<typename T>
+    class Component : public ComponentBase{
+    public:
+        static size_t component_type_id(){
+            static size_t ID = component_type_count++;
+            return ID;
+        }
+    };
+\end{minted}
+
+\subsection{解析}
+
+我们需要实现 Component 的静态成员函数 component\_type\_id。这是从给出代码得知的：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm,
+    breaklines]{c++}
+    class A : public Component<A>
+    {};
+    A::component_type_id()
+\end{minted}
+
+C++ 的模板不是具体类型，实例化之后才是（即函数模板不是函数，类模板不是类），类模板的静态成员或静态成员函数也不属于模板，而是属于实例化后的具体类型我们可以用一段代码来展示结论：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm,
+    breaklines]{c++}
+    #include <iostream>
+
+    template<typename T>
+    struct Test{
+        inline static int n = 10;
+    };
+    
+    int main(){
+        Test<int>::n = 1;
+        std::cout << Test<void>::n << '\n';//10
+        std::cout << Test<int>::n << '\n';//1
+    }
+\end{minted}
+
+\clearpage

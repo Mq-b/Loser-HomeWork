@@ -486,7 +486,7 @@ struct std::formatter<Frac>:std::formatter<char>{
 ---
 
 
-## `04` 给定模板类修改，让其对每一个不同类型实例化有不同 ID
+## `04` 给定类模板修改，让其对每一个不同类型实例化有不同 ID
 
 日期：**`2023/7/25`** 出题人：**`Maxy`**
 
@@ -567,20 +567,20 @@ A::component_type_id()
 题目要求是每一个自定义类类型（假设是X）继承 `Component<X>`，调用 `component_type_id()` 返回的是自己独一无二的ID。其他的类型同理。
 
 解决题目之前我们需要强调一个知识点：
-> C++ 的模板不是具体类型，实例化之后才是，模板类的静态成员或静态成员函数也**不属于模板**我们可以用一段代码来展示结论：
+> C++ 的模板不是具体类型，实例化之后才是（即**函数模板不是函数，类模板不是类**），类模板的静态成员或静态成员函数也不属于模板，而是属于**实例化后的具体类型**，我们可以用一段代码来展示结论：
 
 ```cpp
 #include <iostream>
 
 template<typename T>
 struct Test{
- inline static int n = 10;
+    inline static int n = 10;
 };
 
 int main(){
- Test<int>::n = 1;
- std::cout << Test<void>::n << '\n';//10
- std::cout << Test<int>::n << '\n';//1
+    Test<int>::n = 1;
+    std::cout << Test<void>::n << '\n';//10
+    std::cout << Test<int>::n << '\n';//1
 }
 ```
 
