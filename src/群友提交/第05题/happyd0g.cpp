@@ -16,9 +16,7 @@ struct scope_guard {
     std::function<void()> func;
     scope_guard() { puts("scope_guard()"); }
     template<typename F,typename...Args>
-    scope_guard(F&& f, Args&&... args) {
-        func = std::bind(std::forward<decltype(f)>(f), std::forward<decltype(args)>(args)...);
-    }
+    scope_guard(F&& f, Args&&... args):func(std::bind(std::forward<decltype(f)>(f), std::forward<decltype(args)>(args)...)) {}
     scope_guard(const scope_guard&) { puts("scope_guard(const scope_guard&)"); }
     scope_guard(scope_guard&&) noexcept { puts("scope_guard(scope_guard&&)"); }
     ~scope_guard() { func(); }
