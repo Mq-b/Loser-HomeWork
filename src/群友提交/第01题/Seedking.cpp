@@ -3,7 +3,7 @@
 #include <iostream>
 
 template <typename I, typename F>
-std::vector<I>& operator|(std::vector<I> &input, F func) {
+std::vector<I>& operator|(std::vector<I> &input, const F& func) {
     for (auto& i : input) {
         func(i);
     }
