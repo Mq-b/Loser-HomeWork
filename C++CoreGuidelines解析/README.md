@@ -1,8 +1,8 @@
 # 阅读须知
 
-本书我在很早之前就在 `github` 看过[翻译的版本](https://github.com/lynnboy/CppCoreGuidelines-zh-CN)，以及它的前身应该算作是开源社区的产物，而不是那本英文版的书（不过本书似乎是根据英文版的书翻译的）。
+本书我在很早之前就在 `github` 看过[翻译的版本](https://github.com/lynnboy/CppCoreGuidelines-zh-CN)，以及它的前身应该算作是开源社区的产物，而不是那本英文版的书（不过本书是根据英文版的书翻译的）。
 
-我们以清华大学出版社出版的 **《C++ Core Guidelines 解析》** 进行展开讲解。
+我们以清华大学出版社出版的 **《C++ Core Guidelines 解析》** 进行展开讲解，也参照英文原书（Rainer Grimm 的《C++ Core Guidelines Explained》）以及 C++ Core Guidelines [文档](https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#c-core-guidelines)。
 
 它和我提到的 `github` 上的翻译并不完全一样，显然都不是单纯的翻译。
 
