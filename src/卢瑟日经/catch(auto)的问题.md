@@ -46,7 +46,7 @@ gcc 和 clang 都[无法通过编译](https://godbolt.org/z/vxTW3c4sK)，但是�
 
 > 既然能通过编译，那试试打印类型。
 
-![1](/Loser-HomeWork/image/卢瑟日经/catch(auto)01.png)
+![1](image/卢瑟日经/catch(auto)01.png)
 
 如果使用它，则无法通过编译，这种行为其实很像一个 bug。根本没初始化。没看出有什么意义和作用。
 
