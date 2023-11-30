@@ -38,7 +38,7 @@ int main()
 
 gcc 和 clang 都[无法通过编译](https://godbolt.org/z/vxTW3c4sK)，但是实测我的 msvc 可以，但是它也没有办法接取这个异常，只是能通过编译而已，在运行时依旧会抛出异常。
 
-![2](/Loser-HomeWork/image/卢瑟日经/catch(auto)02.png)
+![2](/image/卢瑟日经/catch(auto)02.png)
 
 显然作用和 `...` 不一样。
 
@@ -52,7 +52,7 @@ gcc 和 clang 都[无法通过编译](https://godbolt.org/z/vxTW3c4sK)，但是�
 
 可以看看愚蠢的 GPT 的说法，因为这个问题就是 GPT 搞出来的。
 
-![3](/Loser-HomeWork/image/卢瑟日经/catch(auto)03.jpg)
+![3](/image/卢瑟日经/catch(auto)03.jpg)
 
 没有什么意义，按照它那样来
 
