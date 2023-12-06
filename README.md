@@ -1683,6 +1683,8 @@ struct Test {
 - using namespace ss
 
 - namespace x = ss，x::a
+  
+- using ss::a
 
 这些方式去修改命名空间 `ss` 中的对象 **a**，并且满足运行结果。
 
