@@ -77,4 +77,6 @@ int main()
 
 ## 总结
 
-暂时没啥结果，这种没有使用意义，应该不会是编译器扩展，可能就是个 bug。
+暂时没啥结果，这种没有使用意义，应该不会是编译器扩展，可能就是个 bug[^1]。
+
+[^1]: [Invalid `catch(auto)` syntax is accepted - Developer Community](https://developercommunity.visualstudio.com/t/Invalid-catchauto-syntax-is-accepted/1570658)
