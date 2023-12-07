@@ -78,6 +78,8 @@
   - [标准答案](#标准答案-12)
 - [`14` 以特殊方法修改命名空间中声明的对象](#14-以特殊方法修改命名空间中声明的对象)
   - [运行结果](#运行结果-11)
+  - [群友提交](#群友提交-13)
+  - [标准答案](#标准答案-13)
 
 </details>
 
@@ -1690,7 +1692,7 @@ struct Test {
 
 需要真的修改了 a，而不是别的东西，诸如更改入口函数等。
 
-不要求你的做法完全符合标准。
+**不要求你的做法完全符合标准**。
 
 ```cpp
 #include<iostream>
@@ -1710,3 +1712,48 @@ int main() {
 ```txt
 100
 ```
+
+- 难度: **★★★★☆**
+
+> 本题其实是“**魔法**”题，并不是常规的那些，你可能会对本题的存在一些质疑，认为这种东西毫无价值，但这恰恰考察的是别的基础知识，如**符号修饰、链接、内存布局**。
+> 越是写的奇特，诡异，**往往令人印象深刻**，这也正是教学的方式。
+> 举个例子，别人和你说“C/C++ 的 #include 的本质是复制”，你可能没什么感觉，但是如果直接写一段代码呢？
+
+```cpp
+int arr[] = {
+#include"1.txt"
+};
+```
+
+> **即使这种形式基本上没有任何的实际用途和价值，但是它能教会各位，让各位印象深刻，那也足够了。**
+
+### 群友提交
+
+答题者：[**`Matrix-A`**](src/群友提交/第14题/Matrix-A.cpp)
+
+```cpp
+#include<iostream>
+#include<cstdint>
+
+namespace ss {
+    int a = 0;
+}
+
+#if defined(_MSC_VER)
+#define MAIN_ATTRIBUTES __pragma(optimize("", off))
+#elif defined(__clang__)
+#define MAIN_ATTRIBUTES [[clang::optnone]]
+#else
+#define MAIN_ATTRIBUTES [[gnu::optimize(0)]]
+#endif
+
+int b = 0;
+MAIN_ATTRIBUTES
+int main() {
+    *(int*)((uint8_t*)&b - sizeof(int)) = 100;
+    *(int*)((uint8_t*)&b + sizeof(int)) = 100;
+    std::cout << ss::a << '\n';
+}
+```
+
+### 标准答案
