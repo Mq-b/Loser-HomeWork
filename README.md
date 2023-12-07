@@ -80,6 +80,8 @@
   - [运行结果](#运行结果-11)
   - [群友提交](#群友提交-13)
   - [标准答案](#标准答案-13)
+    - [利用符号来解决](#利用符号来解决)
+    - [直接修改内存](#直接修改内存)
 
 </details>
 
@@ -1757,3 +1759,72 @@ int main() {
 ```
 
 ### 标准答案
+
+#### 利用符号来解决
+
+```cpp
+#include<iostream>
+
+extern "C"{
+    namespace ss {
+        int a = 0;
+    }
+}
+
+extern "C" int a;
+
+int main() {
+    a = 100;
+    std::cout << ss::a << '\n'; 
+}
+```
+
+> 利用符号解决，[实测](https://godbolt.org/z/os3WM4b9W)三平台通用（但显然不是标准规定的）。
+
+`extern "C"{ }` 包含了命名空间 `ss` ，让对象 `a` 没有了额外的符号修饰，就是单纯的 `a`，如果不使用 `extern "C"` 包含，`ss::a` 的符号得是 **`_ZN2ss1aE`**。
+
+全局作用域的 `extern "C" int a;` 使用 `extern "C"` 能让对象 `a` 没有额外的符号修饰。也就是操作这个 `a` 等价于 `ss::a`，因为他们**编译后的符号是一样的**。
+
+也可以使用一些不太高明的方式，不需要用到 `extern "C"`
+
+```cpp
+#include<iostream>
+
+int a = 0;
+
+namespace ss{
+    int a = 0;
+}
+
+extern int _ZN2ss1aE;
+
+int main(){
+    _ZN2ss1aE = 100;
+    std::cout<<ss::a<<'\n';
+} 
+```
+
+不过这种方式是写死的，并且这只支持 `gcc` 以及 `clang`，更多的解释看之前的[博客](https://zhuanlan.zhihu.com/p/667571439)。
+
+#### 直接修改内存
+
+```cpp
+#include<iostream>
+#include<cstdint>
+
+namespace ss {
+    int a = 0;
+}
+
+int b = 0;
+
+int main() {
+    *(int*)((uint8_t*)&b - sizeof(int)) = 100;
+    *(int*)((uint8_t*)&b + sizeof(int)) = 100;
+    std::cout << ss::a << '\n';
+}
+```
+
+没啥说的，直接 UB 越界修改内存就完事了，在全局声明一个 `b` 只是用来做基地址进行偏移罢了。
+
+存在两个修改的原因是因为ss::a和b的前后顺序是不确定的，至少msvc和（clang、gcc）是不一样的，可能和系统有关。
