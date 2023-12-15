@@ -720,10 +720,6 @@ template<typename F, typename...Args>//推导指引非常重要
 scope_guard(F&&, Args&&...) -> scope_guard<std::decay_t<F>, std::decay_t<Args>...>;
 ```
 
-<video id="video">
-      <source id="mp4" src="video/动画.mp4" type="video/mp4">
-</videos>
-
 ---
 
 ## `06` 解释 `std::atomic` 初始化
