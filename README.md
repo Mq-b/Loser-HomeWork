@@ -720,6 +720,8 @@ template<typename F, typename...Args>//推导指引非常重要
 scope_guard(F&&, Args&&...) -> scope_guard<std::decay_t<F>, std::decay_t<Args>...>;
 ```
 
+![第五题答案动画](video/第五题答案动画.gif)
+
 ---
 
 ## `06` 解释 `std::atomic` 初始化
