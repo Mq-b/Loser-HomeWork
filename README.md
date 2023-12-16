@@ -1808,6 +1808,32 @@ int main(){
 
 不过这种方式是写死的，并且这只支持 `gcc` 以及 `clang`，更多的解释看之前的[博客](https://zhuanlan.zhihu.com/p/667571439)。
 
+<br>
+
+当然了，我们也可以利用预处理器，来进行兼容。**原理**：
+
+- Itanium ABI 上变量 ss::a 的重整名为 _ZN2ss1aE。
+- 在 MSVC 上需要用 #pragma 告诉链接器使用 MSVC ABI 的重整名 ?a@ss@@3HA。
+
+```cpp
+#include<iostream>
+
+namespace ss {
+    int a = 0;
+}
+
+int main() {
+    extern int _ZN2ss1aE;
+#ifdef _MSC_VER
+#pragma comment(linker, "/alternatename:?_ZN2ss1aE@@3HA=?a@ss@@3HA")
+#endif
+    _ZN2ss1aE = 100;
+    std::cout << ss::a << '\n';
+}
+```
+
+> 来源：[聚聚](https://github.com/Mq-b/Loser-HomeWork/pull/194)。
+
 #### 直接修改内存
 
 ```cpp
