@@ -48,7 +48,7 @@ int main(){
     Test t{ 1 };
     Test t2{ 2 };
     t2 = std::max(t, t2);    // 合理
-    t = t2;                  // 不合理
+    t = t;                   // 不合理
 }
 ```
 
