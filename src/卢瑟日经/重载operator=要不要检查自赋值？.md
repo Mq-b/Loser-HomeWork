@@ -177,7 +177,7 @@ element_type* _Ptr{nullptr};
 _Ref_count_base* _Rep{nullptr};
 ```
 
-std::shared_ptr 本身只包含两个对象：指向控制块对象的指针和一个指向其管理的资源的指针。
+std::shared_ptr 本身只包含两个对象：指向控制块对象的指针 `_Rep` 和一个指向其管理的资源的指针 `_Ptr`。
 
 最终无非是交换指针罢了，即使自赋值，也不会带来什么问题和开销，当然也是能保证**自赋值安全**。
 
