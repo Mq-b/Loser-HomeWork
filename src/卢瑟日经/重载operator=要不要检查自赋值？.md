@@ -153,6 +153,34 @@ public:
 
 这理所应当，不是吗？`operator=` 不需要检测任何东西。
 
+或者我们再聊细一点，std::shared_ptr 的 swap 的实现是这样的：
+
+```cpp
+void swap(shared_ptr& _Other) noexcept {
+    this->_Swap(_Other);
+}
+```
+
+只是转发了参数，还要调用内部的接口 `_Swap`
+
+```cpp
+void _Swap(_Ptr_base& _Right) noexcept { // swap pointers
+    _STD swap(_Ptr, _Right._Ptr);
+    _STD swap(_Rep, _Right._Rep);
+}
+```
+
+成员的声明：
+
+```cpp
+element_type* _Ptr{nullptr};
+_Ref_count_base* _Rep{nullptr};
+```
+
+std::shared_ptr 本身只包含两个对象：指向控制块对象的指针和一个指向其管理的资源的指针。
+
+最终无非是交换指针罢了，即使自赋值，也不会带来什么问题和开销，当然也是能保证**自赋值安全**。
+
 我们回到最初的示例：
 
 ```cpp
