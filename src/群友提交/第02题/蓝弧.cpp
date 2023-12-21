@@ -18,7 +18,7 @@ auto operator ""_f()
 {
     return [](auto&&...v)
     {
-        return std::format(std::basic_string_view(s),v...);//use std::format,not std::vformat
+        return std::format(std::basic_string_view{s.begin(),s.end()-1},v...);//use std::format,not std::vformat
     };
 }
 
