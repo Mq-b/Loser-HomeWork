@@ -1858,3 +1858,22 @@ int main() {
 没啥说的，直接 UB 越界修改内存就完事了，在全局声明一个 `b` 只是用来做基地址进行偏移罢了。
 
 存在两个修改的原因是因为 ss::a 和 b 的前后顺序是不确定的，至少 msvc 和（clang、gcc）是不一样的，可能和系统有关。
+
+#### 利用名字查找规则修改
+
+```cpp
+#include<iostream>
+
+namespace ss {
+    int a = 0;
+}
+
+namespace ss {
+    extern int b;
+}
+
+int ss::b = a = 100;
+
+int main() {
+    std::cout << ss::a <<'\n';
+}
