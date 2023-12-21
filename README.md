@@ -82,6 +82,7 @@
   - [标准答案](#标准答案-13)
     - [利用符号来解决](#利用符号来解决)
     - [直接修改内存](#直接修改内存)
+    - [利用名字查找规则](#利用名字查找规则)
 
 </details>
 
@@ -1858,3 +1859,29 @@ int main() {
 没啥说的，直接 UB 越界修改内存就完事了，在全局声明一个 `b` 只是用来做基地址进行偏移罢了。
 
 存在两个修改的原因是因为 ss::a 和 b 的前后顺序是不确定的，至少 msvc 和（clang、gcc）是不一样的，可能和系统有关。
+
+#### 利用名字查找规则
+
+```cpp
+#include<iostream>
+
+namespace ss {
+    int a = 0;
+}
+
+namespace ss {
+    extern int b;
+}
+
+int ss::b = a = 100;
+
+int main() {
+    std::cout << ss::a <<'\n';
+}
+```
+
+> 来源：[mq败](https://github.com/autobotoptimusprime)。
+
+当某个命名空间的成员变量在该命名空间外被定义时，该定义中用到的名字的查找会以与在命名空间之内使用的名字相同的方式进行。
+
+参见[文档](https://zh.cppreference.com/w/cpp/language/unqualified_lookup#.E5.9C.A8.E5.91.BD.E5.90.8D.E7.A9.BA.E9.97.B4.E5.A4.96.E8.BF.9B.E8.A1.8C.E5.AE.9A.E4.B9.89)。
