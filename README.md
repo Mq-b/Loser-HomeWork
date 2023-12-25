@@ -1335,12 +1335,106 @@ int main(){
 
 至于 `for_each_member` 没必要再介绍，很普通简单的分支逻辑而已，只不过是用了编译期的分支。
 
+### 无法处理引用类型以及不可移动类型
+
+先前的代码没办法处理引用类型和不可移动类型，如下：
+
+```cpp
+struct init {
+    template <typename T>
+    operator T(); 
+};
+
+template <typename T>
+consteval size_t size(auto&&...Args) {
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
+}
+
+struct X{
+    int& v1,v2,v3; // 换成 int&& 也都同理
+};
+
+int main(){
+    std::cout << size<X>() << '\n'; // 18446744073709551615
+}
+```
+
+```cpp
+struct init {
+    template <typename T>
+    operator T(); 
+};
+
+template <typename T>
+consteval size_t size(auto&&...Args) {
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
+}
+
+struct X{
+    std::mutex m;   // 不可移动不可复制
+    int v1,v2,v3;
+};
+
+int main(){
+    std::cout << size<X>() << '\n'; // 0
+}
+```
+
+换自己写的：
+
+```cpp
+struct init {
+    template <typename T>
+    operator T(); 
+};
+
+template <typename T>
+consteval size_t size(auto&&...Args) {
+    if constexpr (!requires{T{ Args... }; }) {
+        return sizeof...(Args) - 1;
+    }
+    else {
+        return size<T>(Args..., init{});
+    }
+}
+
+struct Y
+{
+    Y() {}
+    Y(const Y&) {}
+    Y(Y&&) = delete;
+};
+
+struct X{
+    Y y1,y2,y3,y4;
+};
+
+int main(){
+    std::cout << size<X>() << '\n';
+}
+```
+
+懒得改。
+
 ### 补充说明
 
-我们给出的 `C++20` 或 `C++17` 的 `size` 的实现是有问题的，简单的说，**它没办法处理聚合类型存储数组的问题**。 在题目开头我们也说了。
+我们给出的 `C++20` 或 `C++17` 的 `size` 的实现是有问题的，简单的说，**它没办法处理聚合类型存储数组的问题**，包括引用、不可移动类型。在题目开头我们也说了。
 我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用1.82.0版本。
 
 参见 [示例代码](src/群友提交/第10题/with_boost_pfr.md)
+
+
+
 
 ---
 
