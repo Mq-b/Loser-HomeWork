@@ -9,10 +9,10 @@ template<typename T>
 class Component : public ComponentBase {
 public:
     //todo...
-    //Ê¹ÓÃÈÎÒâ·½Ê½¸ü¸Äµ±Ç°Ä£°åÀà£¬Ê¹µÃ¶ÔÓÚÈÎÒâÀàĞÍX£¬ÈôÆä¼Ì³Ğ×ÔComponent
+    //ä½¿ç”¨ä»»æ„æ–¹å¼æ›´æ”¹å½“å‰æ¨¡æ¿ç±»ï¼Œä½¿å¾—å¯¹äºä»»æ„ç±»å‹Xï¼Œè‹¥å…¶ç»§æ‰¿è‡ªComponent
 
-    //ÔòX::component_type_id()»áµÃµ½Ò»¸ö¶ÀÒ»ÎŞ¶şµÄsize_tÀàĞÍµÄid£¨¶ÔÓÚ²»Í¬µÄXÀàĞÍ·µ»ØµÄÖµÓ¦²»Í¬£©
-    //ÒªÇó£º²»ÄÜÊ¹ÓÃstd::type_info£¨½ûÓÃtypeid¹Ø¼ü×Ö£©£¬ËùÓĞid´Ó0¿ªÊ¼Á¬Ğø¡£
+    //åˆ™X::component_type_id()ä¼šå¾—åˆ°ä¸€ä¸ªç‹¬ä¸€æ— äºŒçš„size_tç±»å‹çš„idï¼ˆå¯¹äºä¸åŒçš„Xç±»å‹è¿”å›çš„å€¼åº”ä¸åŒï¼‰
+    //è¦æ±‚ï¼šä¸èƒ½ä½¿ç”¨std::type_infoï¼ˆç¦ç”¨typeidå…³é”®å­—ï¼‰ï¼Œæ‰€æœ‰idä»0å¼€å§‹è¿ç»­ã€‚
 
     static size_t component_type_id() {
         static size_t type_id = component_type_count++;
