@@ -1,4 +1,9 @@
-use std::path::{Path, PathBuf};
+use std::{
+    path::{Path, PathBuf},
+    sync::atomic::{AtomicBool, Ordering},
+};
+
+static FAILED: AtomicBool = AtomicBool::new(false);
 
 fn main() {
     let root = Path::new(".").canonicalize().unwrap();
@@ -8,6 +13,9 @@ fn main() {
     check_utf8(&others);
     check_utf8(&mds);
     check_md(&mds);
+    if FAILED.load(Ordering::Relaxed) {
+        std::process::exit(1);
+    }
 }
 
 fn get_file_paths(root: &Path) -> Vec<PathBuf> {
@@ -45,6 +53,7 @@ fn check_utf8(paths: &Vec<&PathBuf>) {
             Err(e) => {
                 let pos = e.utf8_error().valid_up_to();
                 println!("({}) 无效的UTF-8:at {} bytes", path.display(), pos);
+                FAILED.store(true, Ordering::Relaxed);
             }
         }
     }
@@ -72,6 +81,7 @@ fn check_md(paths: &Vec<&PathBuf>) {
                     window[1],
                     at
                 );
+                FAILED.store(true, Ordering::Relaxed);
             }
         }
     }
