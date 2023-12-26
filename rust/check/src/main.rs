@@ -24,55 +24,63 @@ fn get_file_paths(root: &Path) -> Vec<PathBuf> {
     out
 }
 
-fn get_extension_paths(paths:Vec<PathBuf>, extension: &[&str]) -> Vec<PathBuf> {
-    paths.into_iter().filter(|path| {
-        match path.extension() {
+fn get_extension_paths(paths: Vec<PathBuf>, extension: &[&str]) -> Vec<PathBuf> {
+    paths
+        .into_iter()
+        .filter(|path| match path.extension() {
             Some(ext) => {
                 let ext = ext.to_str().unwrap();
                 extension.contains(&ext)
-            },
+            }
             None => false,
-        }
-    } ).collect()
+        })
+        .collect()
 }
 
-fn check_utf8(paths:&Vec<PathBuf>) {
+fn check_utf8(paths: &Vec<PathBuf>) {
     for path in paths {
         let data = std::fs::read(path).unwrap();
         match String::from_utf8(data) {
-            Ok(_) => {},
+            Ok(_) => {}
             Err(e) => {
                 let pos = e.utf8_error().valid_up_to();
                 println!("({}) 无效的UTF-8:at {} bytes", path.display(), pos);
-            },
+            }
         }
     }
 }
 
-fn check_md(paths:&Vec<PathBuf>) {
+fn check_md(paths: &Vec<PathBuf>) {
     for path in paths {
         let data = std::fs::read(path).unwrap();
         let Ok(str) = String::from_utf8(data) else {
             continue;
         };
         let chars = str.chars().collect::<Vec<_>>();
-        for (index,window) in chars.windows(2).enumerate() {
-            if (is_a2z(window[0]) && is_cjk(window[1])) || (is_cjk(window[0]) && is_a2z(window[1])) {
+        for (index, window) in chars.windows(2).enumerate() {
+            if (is_a2z(window[0]) && is_cjk(window[1])) || (is_cjk(window[0]) && is_a2z(window[1]))
+            {
                 let mut x = chars.split_at(index).0.into_iter().collect::<Vec<_>>();
                 x.reverse();
                 let mut x = x.into_iter().take(80).collect::<Vec<_>>();
                 x.reverse();
                 let at = String::from_iter(x);
-                println!("({}) 两个字之间没有空格:{}{} 上下文：\n{}\n", path.display(),window[0],window[1], at);
+                println!(
+                    "({}) 两个字之间没有空格:{}{} 上下文：\n{}\n",
+                    path.display(),
+                    window[0],
+                    window[1],
+                    at
+                );
             }
         }
     }
 }
 
-fn is_a2z(ch:char) -> bool {
+fn is_a2z(ch: char) -> bool {
     matches!(ch, 'A'..='Z' | 'a'..='z')
 }
 
-fn is_cjk(ch:char) -> bool {
-    matches!(ch, '\u{4E00}' ..= '\u{9FA5}')
+fn is_cjk(ch: char) -> bool {
+    matches!(ch, '\u{4E00}'..='\u{9FA5}')
 }
