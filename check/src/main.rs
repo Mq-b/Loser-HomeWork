@@ -3,8 +3,8 @@ use std::path::{Path, PathBuf};
 fn main() {
     let root = Path::new(".").canonicalize().unwrap();
     let files = get_file_paths(&root);
-    let others = get_extension_paths(files.clone(), &["tex", "cpp"]);
-    let mds = get_extension_paths(files, &["md"]);
+    let others = get_extension_paths(&files, &["tex", "cpp"]);
+    let mds = get_extension_paths(&files, &["md"]);
     check_utf8(&others);
     check_utf8(&mds);
     check_md(&mds);
@@ -24,9 +24,9 @@ fn get_file_paths(root: &Path) -> Vec<PathBuf> {
     out
 }
 
-fn get_extension_paths(paths: Vec<PathBuf>, extension: &[&str]) -> Vec<PathBuf> {
+fn get_extension_paths<'a>(paths: &'a Vec<PathBuf>, extension: &[&str]) -> Vec<&'a PathBuf> {
     paths
-        .into_iter()
+        .iter()
         .filter(|path| match path.extension() {
             Some(ext) => {
                 let ext = ext.to_str().unwrap();
@@ -37,7 +37,7 @@ fn get_extension_paths(paths: Vec<PathBuf>, extension: &[&str]) -> Vec<PathBuf> 
         .collect()
 }
 
-fn check_utf8(paths: &Vec<PathBuf>) {
+fn check_utf8(paths: &Vec<&PathBuf>) {
     for path in paths {
         let data = std::fs::read(path).unwrap();
         match String::from_utf8(data) {
@@ -50,7 +50,7 @@ fn check_utf8(paths: &Vec<PathBuf>) {
     }
 }
 
-fn check_md(paths: &Vec<PathBuf>) {
+fn check_md(paths: &Vec<&PathBuf>) {
     for path in paths {
         let data = std::fs::read(path).unwrap();
         let Ok(str) = String::from_utf8(data) else {
