@@ -4,7 +4,7 @@ X f(){
     return std::move(x);
 }
 ```
-有问题。使用move返回局部命名对象影响nrvo优化。
+有问题。使用 move 返回局部命名对象影响 nrvo 优化。
 ```c++
 X&& f(){
     X x;
