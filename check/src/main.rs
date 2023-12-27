@@ -3,6 +3,11 @@ use std::{
     sync::atomic::{AtomicBool, Ordering},
 };
 
+use comrak::{
+    nodes::{AstNode, NodeValue},
+    Arena, Options,
+};
+
 static FAILED: AtomicBool = AtomicBool::new(false);
 
 fn main() {
@@ -48,14 +53,11 @@ fn get_extension_paths<'a>(paths: &'a Vec<PathBuf>, extension: &[&str]) -> Vec<&
 fn check_utf8(paths: &Vec<&PathBuf>) {
     for path in paths {
         let data = std::fs::read(path).unwrap();
-        match String::from_utf8(data) {
-            Ok(_) => {}
-            Err(e) => {
-                let pos = e.utf8_error().valid_up_to();
-                println!("({}) 无效的UTF-8:at {} bytes", path.display(), pos);
-                FAILED.store(true, Ordering::Relaxed);
-            }
-        }
+        let Err(_) = String::from_utf8(data) else {
+            continue;
+        };
+        println!("({}) 无效的UTF-8", path.display());
+        FAILED.store(true, Ordering::Relaxed);
     }
 }
 
@@ -65,25 +67,28 @@ fn check_md(paths: &Vec<&PathBuf>) {
         let Ok(str) = String::from_utf8(data) else {
             continue;
         };
-        let chars = str.chars().collect::<Vec<_>>();
-        for (index, window) in chars.windows(2).enumerate() {
-            if (is_a2z(window[0]) && is_cjk(window[1])) || (is_cjk(window[0]) && is_a2z(window[1]))
-            {
-                let mut x = chars.split_at(index).0.into_iter().collect::<Vec<_>>();
-                x.reverse();
-                let mut x = x.into_iter().take(80).collect::<Vec<_>>();
-                x.reverse();
-                let at = String::from_iter(x);
-                println!(
-                    "({}) 两个字之间没有空格:{}{} 上下文：\n{}\n",
-                    path.display(),
-                    window[0],
-                    window[1],
-                    at
-                );
-                FAILED.store(true, Ordering::Relaxed);
+        let arena = Arena::new();
+        let options = Options::default();
+        let root = comrak::parse_document(&arena, &str, &options);
+        iter_nodes(root, &|node| match &node.data.borrow().value {
+            NodeValue::Text(str) => {
+                let chars = str.chars().collect::<Vec<_>>();
+                for window in chars.windows(2) {
+                    if (is_a2z(window[0]) && is_cjk(window[1]))
+                        || (is_cjk(window[0]) && is_a2z(window[1]))
+                    {
+                        println!(
+                            "({}) 两个字之间没有空格:{}{}",
+                            path.display(),
+                            window[0],
+                            window[1],
+                        );
+                        FAILED.store(true, Ordering::Relaxed);
+                    }
+                }
             }
-        }
+            _ => {}
+        });
     }
 }
 
@@ -93,4 +98,14 @@ fn is_a2z(ch: char) -> bool {
 
 fn is_cjk(ch: char) -> bool {
     matches!(ch, '\u{4E00}'..='\u{9FA5}')
+}
+
+fn iter_nodes<'a, F>(node: &'a AstNode<'a>, f: &F)
+where
+    F: Fn(&'a AstNode<'a>),
+{
+    f(node);
+    for c in node.children() {
+        iter_nodes(c, f);
+    }
 }
