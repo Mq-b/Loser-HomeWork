@@ -1,3 +1,0 @@
-[workspace]
-members = ["check"]
-resolver = "2"
