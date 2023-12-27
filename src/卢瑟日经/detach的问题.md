@@ -1,4 +1,4 @@
-# detach的问题
+# detach 的问题
 
 ## 起因
 
@@ -12,15 +12,15 @@
 
 反正就是不保证实现，也可以看看 POSIX 的说法：
 
->*[pthread_detach()](https://pubs.opengroup.org/onlinepubs/009696899/functions/pthread_detach.html) 函数应该向实现表明，当线程终止时，线程的存储空间可以被回收。如果线程没有终止，pthread_detach() 将不会导致它终止。多个 pthread_detach() 调用对同一目标线程的影响是未指定的。*
+> *[pthread\_detach()](https://pubs.opengroup.org/onlinepubs/009696899/functions/pthread_detach.html) 函数应该向实现表明，当线程终止时，线程的存储空间可以被回收。如果线程没有终止，pthread\_detach() 将不会导致它终止。多个 pthread\_detach() 调用对同一目标线程的影响是未指定的。*
 
->The pthread_detach() function shall indicate to the implementation that storage for the thread thread can be reclaimed when that thread terminates. If thread has not terminated, pthread_detach() shall not cause it to terminate. The effect of multiple pthread_detach() calls on the same target thread is unspecified.
+> The pthread\_detach() function shall indicate to the implementation that storage for the thread thread can be reclaimed when that thread terminates. If thread has not terminated, pthread\_detach() shall not cause it to terminate. The effect of multiple pthread\_detach() calls on the same target thread is unspecified.
 
 当然了，这种问题显然不会这么单纯的聊，说说实现和举例子是必须的。
 
 我给出了几段代码用于提问：
 
-```cpp
+``` cpp
 int main() {
     std::string str{"C++11"};
 
@@ -31,7 +31,7 @@ int main() {
 
 这个引用捕获想都不用想可能有问题，str 的生存期有可能已经结束，下一个。
 
-```cpp
+``` cpp
 int main() {
     std::string str{"C++11"};
 
@@ -42,7 +42,7 @@ int main() {
 
 复制捕获就没问题了吗？
 
-我的解释是参照了《C++CoreGuidelines解析》：
+我的解释是参照了《C++CoreGuidelines 解析》：
 
 你需要关注的是 std::cout，它是一个全局对象，它的生存期如何呢？它什么时候析构？**全局对象的生存期应当和进程绑定**。
 
@@ -50,7 +50,7 @@ int main() {
 
 你认可这种说法吗？主要来自：
 
->*std::cout的生命周期绑定到进程的生命周期。这意味着线程可能在std::cout在屏幕上打印c++ 11之前就消失了。*
+> *std::cout 的生命周期绑定到进程的生命周期。这意味着线程可能在 std::cout 在屏幕上打印 c++ 11之前就消失了。*
 > std::cout’s lifetime is bound to the lifetime of the process. This means that the thread thr may be gone before std::cout prints C++11 onscreen.
 
 其实我一开始是认可的，但是后面我想到了别的问题：
@@ -59,7 +59,7 @@ int main() {
 
 以一段代码为例：
 
-```cpp
+``` cpp
 #include <iostream>
 #include<thread>
 using namespace std::chrono_literals;
@@ -81,7 +81,7 @@ int main(){
 
 那么如果确保执行已经 `detach` 的线程的时候，主线程和进程没结束呢？
 
-```cpp
+``` cpp
 #include <iostream>
 #include<thread>
 using namespace std::chrono_literals;
@@ -101,7 +101,7 @@ int main(){
 
 以上这段代码在 `ubuntu22.04` 和 `windows11` 上，都能成功创建出两个文件夹。
 可见，问题就在于：
-进程是否执行完毕**。
+进程是否执行完毕\*\*。
 
 ## 总结
 
@@ -109,7 +109,7 @@ int main(){
 
 文档对 `detach` 的实现要求很少，我们上面也列举了一点。
 
-至于 《C++CoreGuidelines解析》 的解释（英文中文都一样），有一定道理，但并不算非常认可。毕竟当进程都结束的时候，被 `detach` 的线程可不单单是 `std::cout` 用不了，基本是啥也干不了了。
+至于 《C++CoreGuidelines 解析》 的解释（英文中文都一样），有一定道理，但并不算非常认可。毕竟当进程都结束的时候，被 `detach` 的线程可不单单是 `std::cout` 用不了，基本是啥也干不了了。
 
 > 或许我们应该直接说：要确保 detach 的线程在主线程之前执行完毕？
 

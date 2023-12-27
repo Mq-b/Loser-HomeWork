@@ -1,6 +1,6 @@
 ## Case 1
 
-```cpp
+``` cpp
 X f(){
     X x;
     return std::move(x);
@@ -11,7 +11,7 @@ X f(){
 
 ## Case 2
 
-```cpp
+``` cpp
 X&& f(){
     X x;
     return std::move(x);
@@ -24,7 +24,7 @@ X&& f(){
 
 ## Case 3
 
-```cpp
+``` cpp
 struct Test {
     X x;
     X f() {

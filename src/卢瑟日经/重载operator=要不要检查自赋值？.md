@@ -2,7 +2,7 @@
 
 在初学 C++ 运算符重载的时候，重载 `=` 运算符，基本都被教导过要**检测自赋值的情况**。
 
-```cpp
+``` cpp
 class Foo {
     std::string s;
     int i;
@@ -28,7 +28,7 @@ public:
 
 **自赋值并不算很常见但是需要处理，正常逻辑的确会遇到**。如下：
 
-```cpp
+``` cpp
 struct Test{
     int v{};
     Test& operator=(const Test& test) {
@@ -52,9 +52,9 @@ int main(){
 }
 ```
 
-我们可以看看标准库是如何处理的，这里以 [**msvc STL**](https://github.com/microsoft/STL) 的 std::vector、std::string、std::shared_ptr 的 operator= 为例。
+我们可以看看标准库是如何处理的，这里以 [**msvc STL**](https://github.com/microsoft/STL) 的 std::vector、std::string、std::shared\_ptr 的 operator= 为例。
 
-```cpp
+``` cpp
 _CONSTEXPR20 vector& operator=(const vector& _Right) {
     if (this == _STD addressof(_Right)) {
         return *this;
@@ -77,7 +77,7 @@ _CONSTEXPR20 vector& operator=(const vector& _Right) {
 }
 ```
 
-```cpp
+``` cpp
 _CONSTEXPR20 basic_string& operator=(const basic_string& _Right) {
     if (this == _STD addressof(_Right)) {
         return *this;
@@ -120,20 +120,20 @@ _CONSTEXPR20 basic_string& operator=(const basic_string& _Right) {
 }
 ```
 
-```cpp
+``` cpp
 shared_ptr& operator=(const shared_ptr& _Right) noexcept {
     shared_ptr(_Right).swap(*this);
     return *this;
 }
 ```
 
-如你所见，std::vector，std::string 均检测自赋值，std::shared_ptr 则没有，甚至是**强异常安全**的，声明为 noexcept。
+如你所见，std::vector，std::string 均检测自赋值，std::shared\_ptr 则没有，甚至是**强异常安全**的，声明为 noexcept。
 
-std::shared_ptr 的很好解释，[copy-and-swap](https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom) 理所应当这样，不需要检测。
+std::shared\_ptr 的很好解释，[copy-and-swap](https://stackoverflow.com/questions/3279543/what-is-the-copy-and-swap-idiom) 理所应当这样，不需要检测。
 
 我们举个简单的示例：
 
-```cpp
+``` cpp
 class dumb_array{
 public:
     friend void swap(dumb_array& first, dumb_array& second){
@@ -153,9 +153,9 @@ public:
 
 这理所应当，不是吗？`operator=` 不需要检测任何东西。
 
-或者我们再聊细一点，std::shared_ptr 的 swap 的实现是这样的：
+或者我们再聊细一点，std::shared\_ptr 的 swap 的实现是这样的：
 
-```cpp
+``` cpp
 void swap(shared_ptr& _Other) noexcept {
     this->_Swap(_Other);
 }
@@ -163,7 +163,7 @@ void swap(shared_ptr& _Other) noexcept {
 
 只是转发了参数，还要调用内部的接口 `_Swap`
 
-```cpp
+``` cpp
 void _Swap(_Ptr_base& _Right) noexcept { // swap pointers
     _STD swap(_Ptr, _Right._Ptr);
     _STD swap(_Rep, _Right._Rep);
@@ -172,18 +172,18 @@ void _Swap(_Ptr_base& _Right) noexcept { // swap pointers
 
 成员的声明：
 
-```cpp
+``` cpp
 element_type* _Ptr{nullptr};
 _Ref_count_base* _Rep{nullptr};
 ```
 
-std::shared_ptr 本身只包含两个对象：指向控制块对象的指针 `_Rep` 和一个指向其管理的资源的指针 `_Ptr`。
+std::shared\_ptr 本身只包含两个对象：指向控制块对象的指针 `_Rep` 和一个指向其管理的资源的指针 `_Ptr`。
 
 最终无非是交换指针罢了，即使自赋值，也不会带来什么问题和开销，当然也是能保证**自赋值安全**。
 
 我们回到最初的示例：
 
-```cpp
+``` cpp
 class Foo {
     std::string s;
     int i;
@@ -203,7 +203,7 @@ public:
 
 这里不单单是不需要 `if (this == &a) return *this`，甚至这个显式的用户定义的赋值运算符都不需要，它还会影响移动语义的使用。
 
-```cpp
+``` cpp
 class Foo {
     std::string s;
     int i;
@@ -231,7 +231,7 @@ class Foo {
 
 不过我们还可以举一个简单的例子：
 
-```cpp
+``` cpp
 struct X{
     int* ptr;
     X(int* p) :ptr(p) {}
@@ -249,6 +249,6 @@ int main(){
 }
 ```
 
-我们可以通过简单的添加一个 `if (this == &a) return *this` 让它**变成自赋值安全**，当然了，也可以选择使用像 std::shared_ptr 一样的方式。
+我们可以通过简单的添加一个 `if (this == &a) return *this` 让它**变成自赋值安全**，当然了，也可以选择使用像 std::shared\_ptr 一样的方式。
 
 一般情况下，不推荐简单的自定义类型或者**天生已经自赋值安全的类型**使用 `if (this == &a) return *this` ，这是多余的，虽然不一定很重要，但是的确会带来额外的开销。**不过保证自赋值安全，依然是基本要求**。

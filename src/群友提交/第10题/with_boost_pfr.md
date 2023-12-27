@@ -6,7 +6,7 @@
 
 ## C++20版本
 
-```cpp
+``` cpp
 #include <iostream>
 #include<boost/pfr/functions_for.hpp>
 
@@ -36,7 +36,7 @@ int main(){
 
 [运行结果](https://godbolt.org/z/dWEK6beoK)
 
-```text
+``` text
 4
 4
 1
@@ -44,7 +44,7 @@ int main(){
 
 ## C++17 版本
 
-```cpp
+``` cpp
 #include <iostream>
 #include <boost/pfr/functions_for.hpp>
 
@@ -102,7 +102,7 @@ int main(){
 
 [运行结果](https://godbolt.org/z/jc58bx399)
 
-```text
+``` text
 4
 4
 1

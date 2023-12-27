@@ -2,7 +2,7 @@
 
 请不要盲目的相信所谓的“**经验**”、“**通俗的智慧**”，在很多时候这些东西显得非常的可笑，他们可能来自于四十年前，或者其他的编程语言；信奉教条主义是愚蠢的行为。
 
->不要吹毛求疵，本人非常的清楚某些非常愚蠢的规则在某些时候和场景会使用，毕竟这些规则不会凭空产生，这很合理，不要认为本人对此不清楚。
+> 不要吹毛求疵，本人非常的清楚某些非常愚蠢的规则在某些时候和场景会使用，毕竟这些规则不会凭空产生，这很合理，不要认为本人对此不清楚。
 
 伪规则概览：
 
@@ -19,13 +19,13 @@
 
 “所有声明都在开头”的规则，来自于上古时代 C89 的规定，或者其他老编程语言。
 
-> 在 C89 中，任何复合语句[^1]（块作用域）中的声明必须出现在块的开头，在任何语句之前。
+> 在 C89 中，任何复合语句\[^1\]（块作用域）中的声明必须出现在块的开头，在任何语句之前。
 
 这样做会导致更长的程序，以及更多由于未初始化的或者错误初始化的变量所导致的错误。
 
 #### 示例，不好
 
-```cpp
+``` cpp
 int use(int x)
 {
     int i;
@@ -63,7 +63,7 @@ int use(int x)
 
 #### 示例
 
-```cpp
+``` cpp
 std::string sign(int x){
     if (x < 0)
         return "小于0";
@@ -75,7 +75,7 @@ std::string sign(int x){
 
 为仅使用一个返回语句，我们得做类似这样的事：
 
-```cpp
+``` cpp
 std::string sign(int x){
     std::string res;
     if (x < 0)
@@ -92,7 +92,7 @@ std::string sign(int x){
 
 #### 示例
 
-```txt
+``` txt
 int CheckPasswordCorrect(int password){
     if (!password) return -1;
     // todo...
@@ -102,7 +102,7 @@ int CheckPasswordCorrect(int password){
 
 如果我们采纳这条规则的话，得做类似这样的事：
 
-```txt
+``` txt
 int CheckPasswordCorrect(int password){
     int i;
     if (!password) 
@@ -135,7 +135,7 @@ int CheckPasswordCorrect(int password){
 
 #### 示例，不好
 
-```cpp
+``` cpp
 class DiskFile{
     FILE* f;
     // ...
@@ -158,7 +158,7 @@ int main(){
 
 #### 示例，好
 
-```cpp
+``` cpp
 class Date{
 public:
     Date();
@@ -189,7 +189,7 @@ goto 是易错的。这种技巧是进行 RAII 式的资源和错误处理的前
 
 #### 示例，不好
 
-```txt
+``` txt
 void do_something(int n)
 {
     if (n < 100) goto exit;
@@ -222,21 +222,21 @@ exit:
 
 #### 示例
 
-这里以 msvc STL 的 std::shared_ptr 的实现为例：
+这里以 msvc STL 的 std::shared\_ptr 的实现为例：
 
-std::shared_ptr 只保有两个数据成员，一个指向资源的指针，一个指向控制块的指针，这两个成员来自它的父类 **_Ptr_base**，是公共继承的。
+std::shared\_ptr 只保有两个数据成员，一个指向资源的指针，一个指向控制块的指针，这两个成员来自它的父类 **\_Ptr\_base**，是公共继承的。
 
-```cpp
+``` cpp
 private:
     element_type* _Ptr{nullptr};
     _Ref_count_base* _Rep{nullptr};
 ```
 
-如你所见，在 _Ptr_base 父类中将这两个成员声明为了 private，而不是 protected，那么子类 std::shared_ptr 是如何使用这两个成员的呢？
+如你所见，在 \_Ptr\_base 父类中将这两个成员声明为了 private，而不是 protected，那么子类 std::shared\_ptr 是如何使用这两个成员的呢？
 
 很简单，用 **friend**。
 
-```cpp
+``` cpp
 friend shared_ptr<_Ty>;
 ```
 
@@ -244,4 +244,4 @@ friend shared_ptr<_Ty>;
 
 - 使用 public 或 private。
 
-[^1]: 复合语句，或称块，是花括号所包围的语句与声明的序列。`{ 语句 | 声明...(可选) }`，函数体，或任意 `{}` 都是复合语句。
+\[^1\]: 复合语句，或称块，是花括号所包围的语句与声明的序列。`{ 语句 | 声明...(可选) }`，函数体，或任意 `{}` 都是复合语句。

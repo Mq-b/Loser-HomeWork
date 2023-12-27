@@ -7,7 +7,6 @@
 
 我们以一个[卢瑟的仓库](https://github.com/OpenTritium/Snowflakes)为例。
 
-
 打开的样子就是下面：
 
 ![打开的界面](image/pr/01.png)
@@ -18,11 +17,11 @@
 
 然后会显示：
 
-![fork后](image/pr/03.png)
+![fork 后](image/pr/03.png)
 
 Repository name（仓库名） 必须写，用默认也行， Description（说明） 可写可不写，我们修改好之后直接点击绿色按钮，**Create fork** 就可以了。
 
-![fork后修改](image/pr/04.png)
+![fork 后修改](image/pr/04.png)
 
 这样我们就会拥有一个这个仓库的副本，默认会跳转到仓库中。
 
@@ -49,7 +48,7 @@ Repository name（仓库名） 必须写，用默认也行， Description（说�
 
 然后提交 pr，如下：
 
-![提交pr](image/pr/09.png)
+![提交 pr](image/pr/09.png)
 
 确认：
 
@@ -65,17 +64,17 @@ Repository name（仓库名） 必须写，用默认也行， Description（说�
 
 我们已经 fork 了仓库，复制它的链接。
 
-我用户名是 Mq-b，我 fork 了这个仓库的链接是:https://github.com/Mq-b/Snowflakes_loser （你们不能用）
+我用户名是 Mq-b，我 fork 了这个仓库的链接是:https://github.com/Mq-b/Snowflakes\_loser （你们不能用）
 
 其实直接去自己的的仓库列表找到这个仓库然后点进去复制链接就好。
 
 打开 vscode：
 
-![打开vscode](image/pr/12.png)
+![打开 vscode](image/pr/12.png)
 
 打开 git 选项，点击克隆仓库：
 
-![打开git选项克隆仓库](image/pr/13.png)
+![打开 git 选项克隆仓库](image/pr/13.png)
 
 输入我们先前复制的自己仓库的链接：
 
