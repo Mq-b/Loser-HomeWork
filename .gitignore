@@ -12,3 +12,6 @@
 *.pygstyle
 *.pygtex
 *.toc
+/target
+Cargo.lock
+Cargo.toml
