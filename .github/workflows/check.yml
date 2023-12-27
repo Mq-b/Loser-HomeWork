@@ -11,7 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: Run
+
+    - name: Cache
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: check/target/release/check
+        key: check-build-cache-0001
+
+    - name: Build
+      if: steps.cache.outputs.cache-hit != 'true'
       run: |
         cd check
-        cargo run --release
+        cargo build --release
+
+    - name: Check
+      run: check/target/release/check
