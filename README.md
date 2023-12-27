@@ -1,7 +1,7 @@
 <div id="img" align=center>
     
 [![视频教程](https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan)](https://www.bilibili.com/video/BV1Zj411r7eP)
-[![QQ群](https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue)](https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl)
+[![QQ 群](https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue)](https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl)
 [![知乎](https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello)](https://www.zhihu.com/people/o4ze4r)
 [![youtube](https://img.shields.io/badge/video-YouTube-red)](https://www.youtube.com/channel/UCey35Do4RGewqr-6EiaCJrg)
 
@@ -94,7 +94,7 @@
 
 [提交 PR](提交pr教程.md) 不应当更改当前 `README`，请将作业提交到 `src\群友提交` 中，比如你要提交第一个作业：
 
-你应当在 `src\群友提交\第01题` 中创建一个自己的 `.md` 或 `.cpp` 文件，**文件名以自己交流群ID命名（或 GitHub 用户名都可，方便找到本人即可）**。
+你应当在 `src\群友提交\第01题` 中创建一个自己的 `.md` 或 `.cpp` 文件，**文件名以自己交流群 ID 命名（或 GitHub 用户名都可，方便找到本人即可）**。
 
 答题的**一般要求**如下（题目额外要求也自行注意看）：
 
@@ -224,7 +224,7 @@ requires std::regular_invocable<F, U&> //我们可以认为对模板形参U，F�
 
 如果没接触过约束表达式，没关系，下面将简要的介绍。
 
-requires 表达式如同一个返回 bool 的函数，而U和F作为类型填入 std::regular_invocable 的实参列表里，只要作为类型的U，F满足该表达式则返回true;不满足则返回 false，称为“不满足约束”。不满足约束的类型自然不会执行后续的代码。而 [std::regular_invocable](https://zh.cppreference.com/w/cpp/concepts/invocable) 我们可以简单看成对类型U的每一个值，我们是否可以调用函数F，即调用 `std::invoke` 。相当于我们在编译期对运行期做了想象，想象一下可以对U在运行期执行F吗？如果可以那满足约束。
+requires 表达式如同一个返回 bool 的函数，而 U 和 F 作为类型填入 std::regular_invocable 的实参列表里，只要作为类型的 U，F 满足该表达式则返回 true;不满足则返回 false，称为“不满足约束”。不满足约束的类型自然不会执行后续的代码。而 [std::regular_invocable](https://zh.cppreference.com/w/cpp/concepts/invocable) 我们可以简单看成对类型 U 的每一个值，我们是否可以调用函数 F，即调用 `std::invoke` 。相当于我们在编译期对运行期做了想象，想象一下可以对 U 在运行期执行 F 吗？如果可以那满足约束。
 
 而函数主体则极为简单
 
@@ -237,11 +237,11 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 }
 ```
 
-其中[范围表达式](https://zh.cppreference.com/w/cpp/language/range-for) `for (auto& i : v1)`,如同`for(auto i=v.begin();i=v.end();++i){f(*i)}` 我们对*vector*（范围）中的每一个元素应用一次**f**函数。返回时照常返回v1。
+其中[范围表达式](https://zh.cppreference.com/w/cpp/language/range-for) `for (auto& i : v1)`,如同`for(auto i=v.begin();i=v.end();++i){f(*i)}` 我们对*vector*（范围）中的每一个元素应用一次**f**函数。返回时照常返回 v1。
 
 如若不使用模板，则我们的形参列表得用 [std::function](https://zh.cppreference.com/w/cpp/utility/functional/function) 来接住我们使用的函数。对范围中的每个成员应用**f**不需要返回值且需要对范围中的元素进行修改，所以第二个形参为 `std::function<void(int&)>`，并且我们不需要对传进来的函数 **f** 进行修改与拷贝，所以加上 **const** 限定是个好习惯。
 
-同样的我们可以不使用范围 for 而是更简单的 `std::ranges::for_each(v1, f);` 即同上一样对范围v1内的每个元素，应用一次函数 **f**。
+同样的我们可以不使用范围 for 而是更简单的 `std::ranges::for_each(v1, f);` 即同上一样对范围 v1内的每个元素，应用一次函数 **f**。
 
 对于使用模板的形式，我们可以使用 c++20 的简写函数模板；简而言之，在函数形参列表中 auto 占位符会为模板形参列表追加一个虚设的模板形参。最开始的模板形式可以写成
 
@@ -456,7 +456,7 @@ void print(std::string_view fmt,auto&&...args){
 
 我们只是非常简单的支持了**题目要求**的形式，给 `std::formatter` 进行特化，如果要支持比如那些 `{:6}` 之类的格式化的话，显然不行，这涉及到更多的操作。
 简单的特化以及 [`std::formatter`](https://zh.cppreference.com/w/cpp/utility/format/formatter) 支持的形式可以参见[**文档**](https://zh.cppreference.com/w/cpp/utility/format/formatter)。
-一些复杂的特化，up之前也有写过，在 [**`Cookbook`**](https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC) 中，里面有对 [`std::ranges::range`](https://zh.cppreference.com/w/cpp/ranges/range) 和 [`std::tuple`](https://zh.cppreference.com/w/cpp/utility/tuple) 的特化，支持所有形式。
+一些复杂的特化，up 之前也有写过，在 [**`Cookbook`**](https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC) 中，里面有对 [`std::ranges::range`](https://zh.cppreference.com/w/cpp/ranges/range) 和 [`std::tuple`](https://zh.cppreference.com/w/cpp/utility/tuple) 的特化，支持所有形式。
 
 ### 解析
 
@@ -477,9 +477,9 @@ std::forward<decltype(args2)>(arsg2),
 std::forward<decltype(args3)>(args3),... 
 ```
 
-这样我们对每个应用到的参数用 decltype 取他的类型再作为完美转发的模板参数。这样调用 `vformat`,返回string,可以使用cout直接输出。
+这样我们对每个应用到的参数用 decltype 取他的类型再作为完美转发的模板参数。这样调用 `vformat`,返回 string,可以使用 cout 直接输出。
 
-而自定义类型，特化std::formatter;我们需要知道的是:想要自定义**std::formatter** 模板特化需要提供两个函数，**parse和format**,**parse** 用来处理格式说明，并且设置相关的成员变量,相对于本题我们不需要如此麻烦的写此成员函数;我们选择继承`std::formatter<char>`的 **parse** 函数，独立实现 **format** 函数。此处模板特化的语法,不了解请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
+而自定义类型，特化 std::formatter;我们需要知道的是:想要自定义**std::formatter** 模板特化需要提供两个函数，**parse 和 format**,**parse** 用来处理格式说明，并且设置相关的成员变量,相对于本题我们不需要如此麻烦的写此成员函数;我们选择继承`std::formatter<char>`的 **parse** 函数，独立实现 **format** 函数。此处模板特化的语法,不了解请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
 
 ```c++
 template<>
@@ -573,7 +573,7 @@ class A : public Component<A>
 A::component_type_id()
 ```
 
-题目要求是每一个自定义类类型（假设是X）继承 `Component<X>`，调用 `component_type_id()` 返回的是自己独一无二的ID。其他的类型同理。
+题目要求是每一个自定义类类型（假设是 X）继承 `Component<X>`，调用 `component_type_id()` 返回的是自己独一无二的 ID。其他的类型同理。
 
 解决题目之前我们需要强调一个知识点：
 > C++ 的模板不是具体类型，实例化之后才是（即**函数模板不是函数，类模板不是类**），类模板的静态成员或静态成员函数也不属于模板，而是属于**实例化后的具体类型**，我们可以用一段代码来展示结论：
@@ -593,7 +593,7 @@ int main(){
 }
 ```
 
-这段代码很轻易的就展示了**静态数据成员属于模板实例化后的具体类型**。`Test<void>::n` 和 `Test<int>::n` 不是相同的n，并且 `Test<void>` 和 `Test<int>` 也不是一种类型（静态成员函数同理）。
+这段代码很轻易的就展示了**静态数据成员属于模板实例化后的具体类型**。`Test<void>::n` 和 `Test<int>::n` 不是相同的 n，并且 `Test<void>` 和 `Test<int>` 也不是一种类型（静态成员函数同理）。
 
 所以我们的解法利用的是：不同的类型实例化 `Component` 类模板，也是不同的静态成员函数，静态成员函数里面的静态局部也都是唯一的，并且在第一次调用的时候才会初始化，后面就不会。
 
@@ -758,7 +758,7 @@ constexpr atomic( T desired ) noexcept;
 
 >转换构造函数也会作为用户定义的转换序列中的一部分
 
-`6` 会调用转换构造函数，构造出一个临时的atomic对象用来**直接初始化 `n`**，即
+`6` 会调用转换构造函数，构造出一个临时的 atomic 对象用来**直接初始化 `n`**，即
 
 ```cpp
 std::atomic<int> n(std::atomic<int>(6))
@@ -770,11 +770,11 @@ std::atomic<int> n(std::atomic<int>(6))
 atomic( const atomic& ) = delete;
 ```
 
-实际上atomic的复制构造被删除（同时移动构造也被抑制生成了）。所以自然而然的不允许。
+实际上 atomic 的复制构造被删除（同时移动构造也被抑制生成了）。所以自然而然的不允许。
 
 C++17 的改动是：**复制消除变为强制要求**。
 纯右值表达式作为构造对象的参数，不会再调用移动构造，也不会去检测，而是原位构造。
->说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如 `X x{X{}}` ，即使移动/复制构造函数**都被delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
+>说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如 `X x{X{}}` ，即使移动/复制构造函数**都被 delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
 
 ---
 
@@ -813,8 +813,8 @@ new Exception异常....
 
 - 难度: **★☆☆☆☆**
 
-> 某些IDE或者平台可能会将打印的异常信息标为红色放到第一行，即
-> new Exception异常.... 这句话也可能在第一行（一般终端运行不会，默认vs也无此功能）
+> 某些 IDE 或者平台可能会将打印的异常信息标为红色放到第一行，即
+> new Exception 异常.... 这句话也可能在第一行（一般终端运行不会，默认 vs 也无此功能）
 
 ### [群友提交](src/群友提交/第07题)
 
@@ -833,7 +833,7 @@ int main() {
 
 实际上本题是用来讽刺将 Java 的写法带入到其他语言中，也就是很经典的：**Java 人写什么都是 Java**。
 只是看我们这道题，实际上你非要说 `new` 有什么不好，倒也没什么非常不行的地方，只是，没有理由自己多写一个 `delete` 表达式（或者包个智能指针）。
-> 我希望不要有人开始幻想：`throw new MyException("new Exception异常....")`因为是 `throw` 一个指针类型，所以按指针传递，效率更高。不要让我看到这种逆天想法。如果你想到这一点，那不妨思考一下，构造临时对象的开销，以及使用 `new` 表达式？说实话挺无聊的问题，只是防止有人想到这些点，以及抬杠罢了。
+> 我希望不要有人开始幻想：`throw new MyException("new Exception 异常....")`因为是 `throw` 一个指针类型，所以按指针传递，效率更高。不要让我看到这种逆天想法。如果你想到这一点，那不妨思考一下，构造临时对象的开销，以及使用 `new` 表达式？说实话挺无聊的问题，只是防止有人想到这些点，以及抬杠罢了。
 
 ---
 
@@ -931,7 +931,7 @@ X
 
 - 难度: **★★★☆☆**
 
-> 本问题堪称经典，**在某著名template书籍也有提过**（虽然它完全没有讲清楚）。
+> 本问题堪称经典，**在某著名 template 书籍也有提过**（虽然它完全没有讲清楚）。
 > 并且从浅薄的角度来说，本题也可以让你向其他人证明加 **`this`** 访问类成员，和不加，是有很多区别的。
 
 提示：[**名字查找**](https://zh.cppreference.com/w/cpp/language/lookup)
@@ -973,7 +973,7 @@ this->f();
 1. `this->f()` **是待决名**，所以它的查找会推迟到得知它模板实参之时（即知道父类是谁，可以访问父类）。
 2. `f()` **是非待决名**，检查该模板的定义时将进行无限定的名字查找（不知道父类），按照正常的查看顺序，先类内（查找不到），然后全局（找到）。
 
->补充：如果是 `msvc` 的某些早期版本，或者c++版本设置在c++20之前，会打印 `X` `X`。这是因为 `msvc`不支持 [`Two-phase name lookup`](https://learn.microsoft.com/zh-cn/archive/blogs/c/msvc%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81two-phase-name-lookup)。
+>补充：如果是 `msvc` 的某些早期版本，或者 c++版本设置在 c++20之前，会打印 `X` `X`。这是因为 `msvc`不支持 [`Two-phase name lookup`](https://learn.microsoft.com/zh-cn/archive/blogs/c/msvc%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81two-phase-name-lookup)。
 详细的可以看看文档。实测 `Microsoft Visual Studio 17.6.4` 设置 `C++20` 之前的版本都无法得到正确结果。
 
 ---
@@ -1495,7 +1495,7 @@ int main(){
 }
 ```
 
-所以说白了，就是 `T(std::forward<Args>(args)...)` 这里用的小括号进行初始化，直到C++20才允许聚合类型使用小括号初始化。
+所以说白了，就是 `T(std::forward<Args>(args)...)` 这里用的小括号进行初始化，直到 C++20才允许聚合类型使用小括号初始化。
 
 ---
 
@@ -1974,7 +1974,7 @@ int main() {
 }
 ```
 
-> 来源：[mq败](https://github.com/autobotoptimusprime)。
+> 来源：[mq 败](https://github.com/autobotoptimusprime)。
 
 当某个命名空间的成员变量在该命名空间外被定义时，该定义中用到的名字的查找会以与在命名空间之内使用的名字相同的方式进行。
 

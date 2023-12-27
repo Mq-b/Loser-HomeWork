@@ -18,11 +18,11 @@
 
 然后会显示：
 
-![fork后](image/pr/03.png)
+![fork 后](image/pr/03.png)
 
 Repository name（仓库名） 必须写，用默认也行， Description（说明） 可写可不写，我们修改好之后直接点击绿色按钮，**Create fork** 就可以了。
 
-![fork后修改](image/pr/04.png)
+![fork 后修改](image/pr/04.png)
 
 这样我们就会拥有一个这个仓库的副本，默认会跳转到仓库中。
 
@@ -49,7 +49,7 @@ Repository name（仓库名） 必须写，用默认也行， Description（说�
 
 然后提交 pr，如下：
 
-![提交pr](image/pr/09.png)
+![提交 pr](image/pr/09.png)
 
 确认：
 
@@ -71,11 +71,11 @@ Repository name（仓库名） 必须写，用默认也行， Description（说�
 
 打开 vscode：
 
-![打开vscode](image/pr/12.png)
+![打开 vscode](image/pr/12.png)
 
 打开 git 选项，点击克隆仓库：
 
-![打开git选项克隆仓库](image/pr/13.png)
+![打开 git 选项克隆仓库](image/pr/13.png)
 
 输入我们先前复制的自己仓库的链接：
 

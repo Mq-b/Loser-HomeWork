@@ -1,4 +1,4 @@
-# detach的问题
+# detach 的问题
 
 ## 起因
 
@@ -42,7 +42,7 @@ int main() {
 
 复制捕获就没问题了吗？
 
-我的解释是参照了《C++CoreGuidelines解析》：
+我的解释是参照了《C++CoreGuidelines 解析》：
 
 你需要关注的是 std::cout，它是一个全局对象，它的生存期如何呢？它什么时候析构？**全局对象的生存期应当和进程绑定**。
 
@@ -50,7 +50,7 @@ int main() {
 
 你认可这种说法吗？主要来自：
 
->*std::cout的生命周期绑定到进程的生命周期。这意味着线程可能在std::cout在屏幕上打印c++ 11之前就消失了。*
+>*std::cout 的生命周期绑定到进程的生命周期。这意味着线程可能在 std::cout 在屏幕上打印 c++ 11之前就消失了。*
 > std::cout’s lifetime is bound to the lifetime of the process. This means that the thread thr may be gone before std::cout prints C++11 onscreen.
 
 其实我一开始是认可的，但是后面我想到了别的问题：
@@ -109,7 +109,7 @@ int main(){
 
 文档对 `detach` 的实现要求很少，我们上面也列举了一点。
 
-至于 《C++CoreGuidelines解析》 的解释（英文中文都一样），有一定道理，但并不算非常认可。毕竟当进程都结束的时候，被 `detach` 的线程可不单单是 `std::cout` 用不了，基本是啥也干不了了。
+至于 《C++CoreGuidelines 解析》 的解释（英文中文都一样），有一定道理，但并不算非常认可。毕竟当进程都结束的时候，被 `detach` 的线程可不单单是 `std::cout` 用不了，基本是啥也干不了了。
 
 > 或许我们应该直接说：要确保 detach 的线程在主线程之前执行完毕？
 

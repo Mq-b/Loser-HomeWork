@@ -12,3 +12,5 @@
 *.pygstyle
 *.pygtex
 *.toc
+/check/target
+/check/Cargo.lock
