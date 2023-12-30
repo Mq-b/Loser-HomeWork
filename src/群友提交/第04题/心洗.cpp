@@ -1,4 +1,4 @@
-import std;
+﻿import std;
 
 class ComponentBase {
 protected:

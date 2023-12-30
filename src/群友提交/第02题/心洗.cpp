@@ -1,4 +1,4 @@
-import std;
+ï»¿import std;
 
 #define USE_LAMBDA
 #ifdef USE_LAMBDA
@@ -35,13 +35,13 @@ auto operator ""_f(const char* text, size_t)
 
 int main()
 {
-    std::cout << "ÀÖ :{} *\n"_f(5);
-    std::cout << "ÀÖ :{0} {0} *\n"_f(5);
-    std::cout << "ÀÖ :{:b} *\n"_f(0b01010101);
-    std::cout << "{:*<10}"_f("Â¬Éª");
+    std::cout << "ä¹ :{} *\n"_f(5);
+    std::cout << "ä¹ :{0} {0} *\n"_f(5);
+    std::cout << "ä¹ :{:b} *\n"_f(0b01010101);
+    std::cout << "{:*<10}"_f("å¢ç‘Ÿ");
     std::cout << '\n';
     int n{};
     std::cin >> n;
-    std::cout << "¦Ð£º{:.{}f}\n"_f(std::numbers::pi_v<double>, n);
+    std::cout << "Ï€ï¼š{:.{}f}\n"_f(std::numbers::pi_v<double>, n);
     return 0;
 }
