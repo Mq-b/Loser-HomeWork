@@ -44,23 +44,36 @@ namespace detail {
 template<typename Aggregate>
 constexpr std::size_t size = detail::size<Aggregate>::value;
 
+/*
+限制:
+要求聚合体的非静态数据成员的类型是以下类型之一: 
+    1) 标量
+    2) 聚合体
+    3) 拥有第一个形参的类型为std::initializer_list, 其余形参(若存在)有默认值的非explicit的public构造函数的类
+*/
+
 struct Pos {
     int x;
     int y;
     int z;
 };
 
+struct A {
+    A(std::initializer_list<int>) noexcept {}
+};
+
 struct Agg {
-    int i;
-    Pos pos;
-    int arr[4];
-    std::string str;
-    std::vector<int> vec;
-    float f;
+    int i;                // 标量
+    Pos pos;              // 聚合体
+    int arr4[4];          // 聚合体
+    std::string str;      // 拥有第一个形参的类型为std::initializer_list, 其余形参有默认值的构造函数的类
+    std::vector<int> vec; // 拥有第一个形参的类型为std::initializer_list, 其余形参有默认值的构造函数的类
+    int arr6[6];          // 聚合体
+    float f;              // 标量
+    A a;                  // 拥有第一个形参的类型为std::initializer_list的类
 };
 
 auto main() ->int {
-    std::cout << size<Agg> << std::endl;
-    // 遍历成员那个就不写了, 😊
+    std::cout << size<Agg> << std::endl; // 8
     return 0;
 }
