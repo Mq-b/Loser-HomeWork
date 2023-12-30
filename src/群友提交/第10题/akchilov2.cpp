@@ -5,7 +5,6 @@
 #include<tuple>
 
 //需要C++20以上
-//msvc下可以编译
 //这个程序的原理是用std::is_constructible猜测类的成员类型
 //然后使用偏移量来访问类的数据成员
 namespace my_utilities
@@ -167,7 +166,7 @@ template<size_t pack_size, class T, class possibilities> class offset_pointer
 {
     using construct_list = typename make_construct_list<size<T>() - 1, T, possibilities, tl<>>::type;
 public:
-    offset_pointer(T a) noexcept : baseptr(reinterpret_cast<unsigned char*>(&a)) {}
+    offset_pointer(T* a) noexcept : baseptr(reinterpret_cast<unsigned char*>(a)) {}
     template<size_t I> typename select_element<I, construct_list>::type get() const
     {
         if constexpr (I == 0) {
@@ -195,7 +194,7 @@ template<class T, class F, size_t ...I> void for_each_member_impl(T&& t, F&& f, 
 {
     //有点上帝视角了，因为已经看到了所有的数据类型
     using possible_types = tl<int, std::string, double>;
-    offset_pointer<alignof(T), T, possible_types> op{ t };
+    offset_pointer<alignof(T), T, possible_types> op{ &t };
     (f(op.template get<I>()), ...);
 }
 
