@@ -193,7 +193,7 @@ template<class T, class F, size_t ...I> void for_each_member_impl(T&& t, F&& f, 
 {
     //有点上帝视角了，因为已经看到了所有的数据类型
     using possible_types = tl<int, std::string, double>;
-    offset_pointer<8, T, possible_types> op{ t };
+    offset_pointer<alignof(T), T, possible_types> op{ t };
     (f(op.get<I>()), ...);
 }
 
