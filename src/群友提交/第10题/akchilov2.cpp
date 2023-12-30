@@ -60,10 +60,13 @@ namespace my_utilities
     {
         using type = TL<T, Args...>;
     };
-  
+
     template<size_t N, class T, class TL> struct gen_list
+    {};
+
+    template<class T, template<class...> class TL, class ...Args> struct gen_list<0, T, TL<Args...>>
     {
-        using type = TL;
+        using type = TL<Args...>;
     };
 
     template<size_t N, template<class...> class TL, class T, class ...Args> struct gen_list<N, T, TL<Args...>>
@@ -71,7 +74,7 @@ namespace my_utilities
         using type = typename gen_list<N - 1, T, TL<Args..., T>>::type;
     };
 
-    template<class T, class TL> struct gen_list<0, T, TL> { using type = TL; };
+
 
     template<size_t N, class pre, class bck, class T> struct replace_at
     {
@@ -102,7 +105,6 @@ namespace my_utilities
 
 }
 using namespace my_utilities;
-
 
 
 template<class T> constexpr size_t size()
@@ -142,18 +144,18 @@ template<size_t N, class T, template<class...> class mem_type_list, class first,
 //工具类，生成成员列表
 template<size_t N, class T, class TL, class saved> struct make_construct_list
 {};
-
+template<class T, template<class...> class TL, template<class...> class saved, class ...Args, class ...savedArgs> struct make_construct_list<0, T, TL<Args...>, saved<savedArgs...>>
+{
+    using current_type = typename constructible_at_try<false, 0, T, TL<Args...>>::type;
+    using type = typename add_front<current_type, saved<savedArgs...>>::type;
+};
 template<size_t N, class T, template<class...> class saved, class TL, class ...Args> struct make_construct_list<N, T, TL, saved<Args...>>
 {
     using current_type = typename constructible_at_try<false, N, T, TL>::type;
     using type = typename make_construct_list<N - 1, T, TL, saved<current_type, Args...>>::type;
 };
 
-template<class T, class TL, class saved> struct make_construct_list<0, T, TL, saved>
-{
-    using current_type = typename constructible_at_try<false, 0, T, TL>::type;
-    using type = typename add_front<current_type, saved>::type;
-};
+
 //计算偏移
 template<size_t pack_size, template<class...> class TL, class ...Typs> constexpr auto make_offset_list(TL<Typs...>)
 {
@@ -163,7 +165,7 @@ template<size_t pack_size, template<class...> class TL, class ...Typs> constexpr
 
 template<size_t pack_size, class T, class possibilities> class offset_pointer
 {
-    using construct_list = make_construct_list<size<T>() - 1, T, possibilities, tl<>>::type;
+    using construct_list = typename make_construct_list<size<T>() - 1, T, possibilities, tl<>>::type;
 public:
     offset_pointer(T a) noexcept : baseptr(reinterpret_cast<unsigned char*>(&a)) {}
     template<size_t I> typename select_element<I, construct_list>::type get() const
@@ -184,7 +186,7 @@ private:
     unsigned char* baseptr;
     std::array<size_t, size<T>()>
         member_offset{
-        make_offset_list<pack_size>(make_construct_list<size<T>() - 1, T, possibilities, tl<>>::type())
+        make_offset_list<pack_size>(typename make_construct_list<size<T>() - 1, T, possibilities, tl<>>::type())
     };
 };
 
@@ -194,7 +196,7 @@ template<class T, class F, size_t ...I> void for_each_member_impl(T&& t, F&& f, 
     //有点上帝视角了，因为已经看到了所有的数据类型
     using possible_types = tl<int, std::string, double>;
     offset_pointer<alignof(T), T, possible_types> op{ t };
-    (f(op.get<I>()), ...);
+    (f(op.template get<I>()), ...);
 }
 
 template<class T, class F> constexpr void for_each_member(T&& t, F&& f)
