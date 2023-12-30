@@ -1,4 +1,4 @@
-import std;
+﻿import std;
 
 template<typename T>
 struct Lazy
