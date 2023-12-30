@@ -21,12 +21,12 @@ namespace detail {
     };
 
     template <typename T, typename Is>
-    struct is_aggregate_constructible_from_n_impl 
+    struct is_aggregate_constructible_from_n_impl
         : std::false_type {};
 
     template <typename T, std::size_t...Is>
-        requires requires() { {T{ (void(Is), Anything{})... } } -> std::same_as<T>; }
-    struct is_aggregate_constructible_from_n_impl<T, std::index_sequence<Is...>> 
+        requires requires() { {T{ { (void(Is), Anything{}) }... } } -> std::same_as<T>; }
+    struct is_aggregate_constructible_from_n_impl<T, std::index_sequence<Is...>>
         : std::true_type {};
 
     template <typename T, std::size_t N>
@@ -63,24 +63,24 @@ namespace detail {
 constexpr std::size_t cap_max = 0xff; // 假设不超过 0xff 个元素，则递归深度不超过 log2(0xff) ，约为 8
 
 template <typename T, std::size_t Cap = cap_max>
-    requires std::is_aggregate_v<std::decay_t<T>>
-using constructor_arity = detail::maximize< 0, Cap, detail::construct_searcher<T>::template result >;
+    requires std::is_aggregate_v<std::remove_cvref_t<T>>
+using constructor_arity = detail::maximize< 0, Cap, detail::construct_searcher<std::remove_cvref_t<T>>::template result >;
 
 template <typename T, std::size_t Cap = cap_max>
-    requires std::is_aggregate_v<std::decay_t<T>>
-constexpr std::size_t constructor_arity_v = constructor_arity<T, Cap>::value;
+    requires std::is_aggregate_v<std::remove_cvref_t<T>>
+constexpr std::size_t constructor_arity_v = constructor_arity<std::remove_cvref_t<T>, Cap>::value;
 
 
 template<typename T, std::size_t Cap = cap_max>
-    requires std::is_aggregate_v<std::decay_t<T>>
+    requires std::is_aggregate_v<std::remove_cvref_t<T>>
 consteval std::size_t size() {
-    return constructor_arity_v<std::decay_t<T>, Cap>;
+    return constructor_arity_v<std::remove_cvref_t<T>, Cap>;
 }
 
 template <typename T, typename Fn, std::size_t Cap = cap_max>
-    requires std::is_aggregate_v<std::decay_t<T>>
+    requires std::is_aggregate_v<std::remove_cvref_t<T>>
 void for_each_member(const T& agg, Fn&& fn) {
-    constexpr auto size = constructor_arity_v<std::decay_t<T>, Cap>;
+    constexpr auto size = constructor_arity_v<std::remove_cvref_t<T>, Cap>;
     if constexpr (size == 0) {
         // nothing
     }
@@ -100,14 +100,23 @@ void for_each_member(const T& agg, Fn&& fn) {
         auto& [m0, m1, m2, m3] = agg;
         fn(m0); fn(m1); fn(m2); fn(m3);
     }
+    else if constexpr (size == 5) {
+        auto& [m0, m1, m2, m3, m4] = agg;
+        fn(m0); fn(m1); fn(m2); fn(m3); fn(m4);
+    }
     else {
-        // TODO 更大的size
+        // todo
     }
 }
 
 int main() {
     auto print = [](const auto& member) {
-        std::cout << member << ' ';
+        if constexpr (!requires { std::cout << member; }) {
+            std::cout << "[" << &member << "] ";
+        }
+        else {
+            std::cout << member << ' ';
+        }
         };
     {
         std::cout << "------------\n";
@@ -137,13 +146,76 @@ int main() {
         for_each_member(z, print);
         std::cout << "\n";
     }
-    //{
-    //    // error
-    //    std::cout << "------------\n";
-    //    struct A { int a{ 1 }; double b[2]{ 2.3, 3.4 }; std::string c{ "5" }; } a;
-    //    std::cout << size<A>() << '\n';
-    //    for_each_member(a, print);
-    //    std::cout << "\n";
-    //}
+    {
+        std::cout << "------------\n";
+        struct A { int a{ 1 }; double b[2]{ 2.3, 3.4 }; std::string c{ "5" }; } a;
+        std::cout << size<A>() << '\n';
+        for_each_member(a, print);
+        std::cout << "\n";
+    }
+    {
+        std::cout << "------------\n";
+        struct A { int a{ 1 }; double b[2]{ 2.3, 3.4 }; std::string c{ "5" }; } a[3];
+        std::cout << size<decltype(a)>() << '\n';
+        for_each_member(a, print);
+        std::cout << "\n";
+    }
+    {
+        std::cout << "------------\n";
+        struct A { int a{ 1 }; std::array<double, 2> b{ 2.3, 3.4 }; std::string c{ "5" }; } a;
+        std::cout << size<decltype(a)>() << '\n';
+        for_each_member(a, print);
+        std::cout << "\n";
+    }
+    // test const or reference
+    {
+        struct A{ int a{ 1 }; double b[2]{ 2.3, 3.4 }; std::string c{ "5" }; };
+        {
+            std::cout << "------------\n";
+            const A a[3];
+            std::cout << size<decltype(a)>() << '\n';
+            for_each_member(a, print);
+            std::cout << "\n";
+        }
+        {
+            std::cout << "------------\n";
+            const A& a{};
+            std::cout << size<decltype(a)>() << '\n';
+            for_each_member(a, print);
+            std::cout << "\n";
+        }
+        {
+            std::cout << "------------\n";
+            A&& a{};
+            std::cout << size<decltype(a)>() << '\n';
+            for_each_member(a, print);
+            std::cout << "\n";
+        }
+    }
+    {
+        {
+            std::cout << "------------\n";
+            struct A { int a{ 1 }; double b[2][1]{ {2.3}, {4.5} }; std::string c{ "5" }; } a;
+            std::cout << size<decltype(a)>() << '\n';
+            for_each_member(a, print);
+            std::cout << "\n";
+        }
+        {
+            std::cout << "------------\n";
+            struct A { int a{ 1 }; std::array<std::array<double, 1>, 2> b{ {2.3, 4.5} }; std::string c{ "5" }; } a;
+            std::cout << size<decltype(a)>() << '\n';
+            for_each_member(a, print);
+            std::cout << "\n";
+        }
+    }
+    {
+        // error
+        // struct A { int a{ 1 }; std::string &c; };
+        // {
+        //     std::cout << "------------\n";
+        //     A a{ {}, detail::Anything{} };
+        //     std::cout << size<decltype(a)>() << '\n';
+        //     for_each_member(a, print);
+        // }
+    }
 }
-
