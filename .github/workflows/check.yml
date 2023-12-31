@@ -12,12 +12,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - name: Get checker commit hash
+      run: |
+        git log --no-decorate --pretty=format:"CHECKER_COMMIT=%h" -1 check >> $GITHUB_ENV
+
     - name: Cache
       id: cache
       uses: actions/cache@v3
       with:
         path: check/target/release/check
-        key: check-build-cache-0001
+        key: check-build-cache-${{ env.CHECKER_COMMIT }}
 
     - name: Build
       if: steps.cache.outputs.cache-hit != 'true'
