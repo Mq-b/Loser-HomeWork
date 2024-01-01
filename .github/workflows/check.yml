@@ -21,7 +21,7 @@ jobs:
         # workdir: ''
     
         # The patterns used to match files.
-        patterns: 'checker/**'
+        patterns: 'check/**'
 
     - name: Cache
       id: cache
