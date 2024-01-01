@@ -12,16 +12,23 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Get checker commit hash
-      run: |
-        git log --no-decorate --pretty=format:"CHECKER_COMMIT=%h" -1 check >> $GITHUB_ENV
+    - name: Get checker hash
+      id: computehash
+      uses: seepine/hash-files@v1
+      with:
+        # The working dir for the action.
+        # Default: ${{ github.workspace }}
+        workdir: ''
+    
+        # The patterns used to match files.
+        patterns: 'checker/**'
 
     - name: Cache
       id: cache
       uses: actions/cache@v3
       with:
         path: check/target/release/check
-        key: check-build-cache-${{ env.CHECKER_COMMIT }}
+        key: check-build-cache-${{ steps.computehash.outputs.short }}
 
     - name: Build
       if: steps.cache.outputs.cache-hit != 'true'
