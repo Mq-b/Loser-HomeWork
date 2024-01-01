@@ -18,7 +18,7 @@ jobs:
       with:
         # The working dir for the action.
         # Default: ${{ github.workspace }}
-        workdir: ''
+        # workdir: ''
     
         # The patterns used to match files.
         patterns: 'checker/**'
