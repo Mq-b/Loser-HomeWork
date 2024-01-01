@@ -28,7 +28,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: check/target/release/check
-        key: check-build-cache-${{ steps.computehash.outputs.short }}
+        key: check-build-cache-${{ steps.computehash.outputs.hash }}
 
     - name: Build
       if: steps.cache.outputs.cache-hit != 'true'
