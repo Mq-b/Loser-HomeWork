@@ -117,7 +117,6 @@ namespace offset_pointer{
         //假如forward offset+value==pack_size， 或则当前层偏移为0时，成员会存在当前层， 移动 size/pack_size + 1层，
         //否则当size%pack_size == 0, size/pack_size + 2层，因为它会被放在下一层
         //否则当size%pack_size != 0, size/pack_size + 3层(暂时没见过这种情况，数组可能会出现，但是这个类不让使用数组)
-        //因为不会出现一个成员的一部分和另外一个成员在同一层的情况
         template<bool offset_overflow_pack, std::size_t forward_offset> struct advance_impl
         {
             static constexpr std::size_t forward_base = forward_offset / pack_size;
@@ -129,7 +128,7 @@ namespace offset_pointer{
         //但是当forward offset超过半对齐，成员就会存储在后一半层， 否则直接移动forward offset
         template<std::size_t forward_offset> struct advance_impl<false, forward_offset>
         {
-            using type = offset_ptr<pack_size, layer, (forward_offset >= half_pack) ? half_pack : value + forward_offset>;
+            using type = offset_ptr<pack_size, layer, (forward_offset >= half_pack) ? pack_size : value + forward_offset>;
         };
         //工具：使指针越过一个成员的位置
         template<std::size_t forward_offset> using advance = typename advance_impl<((value + forward_offset) >= pack_size), forward_offset>::type;
