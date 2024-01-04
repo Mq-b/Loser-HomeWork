@@ -128,7 +128,7 @@ namespace offset_pointer{
         //但是当forward offset超过半对齐，成员就会存储在后一半层， 否则直接移动forward offset
         template<std::size_t forward_offset> struct advance_impl<false, forward_offset>
         {
-            using type = offset_ptr<pack_size, layer, (forward_offset >= half_pack) ? pack_size : value + forward_offset>;
+            using type = offset_ptr<pack_size, layer, (value + forward_offset >= half_pack) ? pack_size : value + forward_offset>;
         };
         //工具：使指针越过一个成员的位置
         template<std::size_t forward_offset> using advance = typename advance_impl<((value + forward_offset) >= pack_size), forward_offset>::type;
@@ -136,10 +136,9 @@ namespace offset_pointer{
         //枚举了给定的指针是否超过半对齐，内存对齐的情况
         template<std::size_t forward_size> struct forward_impl
         {
-            static constexpr std::size_t value = 0 +
-                ((forward_size >= half_pack && forward_size < pack_size) ? (offset == 0 ? 0 : half_pack) : 0) +
-                ((forward_size >= pack_size ? (offset == 0 ? 0 : pack_size) : 0));
-            using type = std::conditional_t<(value + offset >= 8), advance_layer<1>, advance<value>>;
+            using type = std::conditional_t<(forward_size >= pack_size), 
+            advance_layer<(value == 0)?0:1>, offset_ptr<pack_size, layer, 
+            ((forward_size >= half_pack) ? ((value == 0) ? 0 : half_pack) : 0) >>;
         };
         template<std::size_t forward_size> using forward_offset = typename forward_impl<forward_size>::type;
         //基于当前的层偏移，使用探索指针寻找给定的类型的首地址
