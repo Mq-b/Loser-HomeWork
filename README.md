@@ -1979,3 +1979,87 @@ int main() {
 当某个命名空间的成员变量在该命名空间外被定义时，该定义中用到的名字的查找会以与在命名空间之内使用的名字相同的方式进行。
 
 参见[文档](https://zh.cppreference.com/w/cpp/language/unqualified_lookup#.E5.9C.A8.E5.91.BD.E5.90.8D.E7.A9.BA.E9.97.B4.E5.A4.96.E8.BF.9B.E8.A1.8C.E5.AE.9A.E4.B9.89)。
+
+## `15` 表达式模板
+
+日期：`2024/1/7` 出题人：[`Matrix-A`](https://github.com/Matrix-A)（[#159](https://github.com/Mq-b/Loser-HomeWork/issues/159)）
+
+1. 使用**表达式模板**补全下面的代码，实现表达式计算；
+2. 指出**表达式模板**和 STL Ranges 库中哪些**视图**类似，并指出它们的异同和优缺点。
+
+```cpp
+#include <algorithm>
+#include <functional>
+#include <print>
+#include <ranges>
+#include <vector>
+
+// 为std::vector增加一个自定义的赋值函数
+template <typename T>
+    requires std::disjunction_v<std::is_integral<T>, std::is_floating_point<T>>
+class vector : public std::vector<T> {
+public:
+    using std::vector<T>::vector;
+    using std::vector<T>::size;
+    using std::vector<T>::operator[];
+    template <typename E>
+    vector<T>& operator=(const E& e)
+    {
+        const auto count = std::min(size(), e.size());
+        this->resize(count);
+        for (std::size_t idx { 0 }; idx < count; ++idx) {
+            this->operator[](idx) = e[idx];
+        }
+        return *this;
+    }
+};
+
+/*
+// 实现表达式模板类及相关函数
+template<...>
+struct vector_expr {
+
+};
+
+// operator+
+// operator-
+// operator*
+// operator/
+*/
+
+int main()
+{
+    auto print = [](const auto& v) {
+        std::for_each(std::begin(v), std::end(v), [](const auto& e) {
+            std::print("{}, ", e);
+        });
+        std::println("");
+    };
+    const vector<double> a { 1.2764, 1.3536, 1.2806, 1.9124, 1.8871, 1.7455 };
+    const vector<double> b { 2.1258, 2.9679, 2.7635, 2.3796, 2.4820, 2.4195 };
+    const vector<double> c { 3.9064, 3.7327, 3.4760, 3.5705, 3.8394, 3.8993 };
+    const vector<double> d { 4.7337, 4.5371, 4.5517, 4.2110, 4.6760, 4.3139 };
+    const vector<double> e { 5.2126, 5.1452, 5.8678, 5.1879, 5.8816, 5.6282 };
+
+    {
+        vector<double> result(6);
+        for (std::size_t idx = 0; idx < 6; idx++) {
+            result[idx] = a[idx] - b[idx] * c[idx] / d[idx] + e[idx];
+        }
+        print(result);
+    }
+    {
+        vector<double> result(6);
+        result = a - b * c / d + e; // 使用表达式模板计算
+        print(result);
+    }
+    return 0;
+}
+```
+
+学习链接：
+
+- [Wikipedia - Expression templates](https://en.wikipedia.org/wiki/Expression_templates)
+- [我们不需要臭名昭著的表达式模板（英文）](https://gieseanw.wordpress.com/2019/10/20/we-dont-need-no-stinking-expression-templates/)
+- [C++语言的表达式模板：表达式模板的入门性介绍](https://blog.csdn.net/magisu/article/details/12964911)
+- [std::valarray](https://zh.cppreference.com/w/cpp/numeric/valarray) 在一些 STL 实现中使用了表达式模板
