@@ -1985,7 +1985,7 @@ int main() {
 日期：`2024/1/7` 出题人：[`Matrix-A`](https://github.com/Matrix-A)（[#159](https://github.com/Mq-b/Loser-HomeWork/issues/159)）
 
 1. 使用**表达式模板**补全下面的代码，实现表达式计算；
-2. 指出**表达式模板**和 STL **`ranges`** 库中哪个或那些**视图**类似，并指出它们的相同点、差异、优点及缺点。
+2. 指出**表达式模板**和 STL Ranges 库中哪些**视图**类似，并指出它们的异同和优缺点。
 
 ```cpp
 #include <algorithm>
