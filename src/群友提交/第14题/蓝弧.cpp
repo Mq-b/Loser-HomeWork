@@ -21,7 +21,14 @@ void todo(std::byte*i)
         }
     }
 }
+void call_todo(void*)
+{
+    void* p = nullptr;
+    void* p2 = nullptr;
+    todo(reinterpret_cast<std::byte*>(*(&p+3)));
+}
 int main() {
-    todo(reinterpret_cast<std::byte*>(main));
+    //todo(reinterpret_cast<std::byte*>(main));
+    call_todo(nullptr);
     std::cout << ss::a << '\n';
 }
