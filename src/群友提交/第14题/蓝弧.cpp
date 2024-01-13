@@ -12,7 +12,7 @@ inline constexpr std::byte operator ""_b(unsigned long long int i)noexcept
 }
 void todo(std::byte*i)
 {
-    for(;*i!=0xCC_b;++i)
+    for(;*i!=0xC3_b;++i)
     {
         if(*i==0x8B_b)
         {
