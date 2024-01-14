@@ -1,9 +1,9 @@
 /*
 测试能够正确运行的编译环境：
-x86-64 gcc 13.2 : https://godbolt.org/z/TdjE64bY4
-x86-64 clang 17.0.1 : https://godbolt.org/z/8jTsWTMqh
+x86-64 gcc 13.2 : https://godbolt.org/z/oG53ff16n
+x86-64 clang 17.0.1 : https://godbolt.org/z/E9vxf5rr5
 MinGW gcc 13.2.0 : 本机 x86_64-13.2.0-release-posix-seh-ucrt-rt_v11-rev0 g++
-x64 msvc v19.37.32824 : 本机 Release x64 /std:c++17 /sdl- 注意需要关闭SDL检查
+x64 msvc v19.37.32824 : 本机 Release x64 /std:c++17
 */
 #include<iostream>
 #include<cstddef>
@@ -30,16 +30,8 @@ void todo(std::byte*i)
         }
     }
 }
-void call_todo(void*)
-{
-    //参数`void*`、局部变量`void* p2`是用来对齐不同编译器栈中内存布局不同
-    void* p = nullptr;
-    void* p2 = nullptr;
-    todo(reinterpret_cast<std::byte*>(*(&p+3)));//将该函数的返回地址（调用该函数时call指令压入栈中的地址）传递给todo
-}
 int main() {
-    //todo(reinterpret_cast<std::byte*>(main));
-    call_todo(nullptr);//使用`call_todo`是为了避免[CWG2811](https://cplusplus.github.io/CWG/issues/2811.html)中不得使用`main`函数的规定。
+    todo(reinterpret_cast<std::byte*>(main));
     //下面这段代码读取了`ss::a`，我就希望从这段代码入手获取`ss::a`的地址，经过测试发现，读取`ss::a`的通常是一条以`8B`开头的`mov`指令，于是就有了`todo`函数；
     std::cout << ss::a << '\n';
 }
