@@ -1829,7 +1829,7 @@ int arr[] = {
 
 > **即使这种形式基本上没有任何的实际用途和价值，但是它能教会各位，让各位印象深刻，那也足够了。**
 
-### 群友提交
+### [群友提交](src/群友提交/第14题)
 
 答题者：[**`Matrix-A`**](src/群友提交/第14题/Matrix-A.cpp)
 
@@ -1991,7 +1991,7 @@ int main() {
 ```cpp
 #include <algorithm>
 #include <functional>
-#include <print>
+#include <iostream>
 #include <ranges>
 #include <vector>
 
@@ -2031,10 +2031,8 @@ struct vector_expr {
 int main()
 {
     auto print = [](const auto& v) {
-        std::for_each(std::begin(v), std::end(v), [](const auto& e) {
-            std::print("{}, ", e);
-        });
-        std::println("");
+        std::ranges::copy(v, std::ostream_iterator<std::ranges::range_value_t<decltype(v)>> { std::cout, ", " });
+        std::cout << std::endl;
     };
     const vector<double> a { 1.2764, 1.3536, 1.2806, 1.9124, 1.8871, 1.7455 };
     const vector<double> b { 2.1258, 2.9679, 2.7635, 2.3796, 2.4820, 2.4195 };
@@ -2058,9 +2056,22 @@ int main()
 }
 ```
 
+### 运行结果
+
+```txt
+4.73472, 4.05709, 5.038, 5.08264, 5.73076, 5.18673,
+4.73472, 4.05709, 5.038, 5.08264, 5.73076, 5.18673,
+```
+
+- 难度: 待定
+
 学习链接：
 
 - [Wikipedia - Expression templates](https://en.wikipedia.org/wiki/Expression_templates)
 - [我们不需要臭名昭著的表达式模板（英文）](https://gieseanw.wordpress.com/2019/10/20/we-dont-need-no-stinking-expression-templates/)
 - [C++语言的表达式模板：表达式模板的入门性介绍](https://blog.csdn.net/magisu/article/details/12964911)
 - [std::valarray](https://zh.cppreference.com/w/cpp/numeric/valarray) 在一些 STL 实现中使用了表达式模板
+
+### [群友提交](src/群友提交/第15题)
+
+### 标准答案
