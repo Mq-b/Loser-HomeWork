@@ -4,9 +4,6 @@
 #include <ranges>
 #include <vector>
 
-
-//ps宏展开在clang gcc下失败，以下是展开版
-// https://gcc.godbolt.org/z/6Y37drM5K
 // 为std::vector增加一个自定义的赋值函数
 template <typename T>
     requires std::disjunction_v<std::is_integral<T>, std::is_floating_point<T>>
