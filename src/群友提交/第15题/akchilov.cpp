@@ -28,53 +28,7 @@ public:
 };
 
 
-// 实现表达式模板类及相关函数
-
-//macro:宏写的给我整懵了
-#define make_vector_expr_declare(suffix, op) template<class E1, class E2> struct vector_expr_##suffix##;
-
-#define make_vector_expr_cast(suffix, op) template<class EE2> auto operator##op##(EE2 const& e)\
-{\
-    return vector_expr_##suffix##<vector_expr<E1,E2>, EE2>{ *this, e };\
-}\
-
-#define make_vector_expr(suffix, op)\
-template<class E1, class E2> struct vector_expr_##suffix## : public vector_expr<E1, E2>\
-{\
-public:\
-    vector_expr_##suffix##(const E1& A, const E2& B) :vector_expr<E1, E2>(A, B) {}\
-    double operator[](std::size_t i) const {\
-        return vector_expr<E1, E2>::e1[i]##op##vector_expr<E1, E2>::e2[i];\
-    }\
-\
-    template<class T> auto operator##op##(vector<T> const& v) const\
-    {\
-        return  vector_expr_##suffix##<vector_expr_##suffix##<E1, E2>, vector<T>>{*this, v};\
-    }\
-    template<class EE1, class EE2> auto operator##op##(vector_expr<EE1, EE2> const& B)\
-    {\
-        return vector_expr_##suffix##<vector_expr_##suffix##<E1, E2>, vector_expr<EE1, EE2>>{*this, B};\
-    }\
-};\
-
-#define make_vector_expr_operator(suffix, op)\
-template<class T> vector_expr_##suffix##<vector<T>, vector<T>> operator##op##(vector<T> const& A, vector<T> const& B)\
-{\
-    return { A, B };\
-}\
-template<class E1, class E2, class T> vector_expr_##suffix##<vector<T>,vector_expr<E1, E2>> operator##op##(vector<T> const& v, vector_expr<E1, E2> const& e)\
-{\
-    return { v, e };\
-}\
-
-make_vector_expr_declare(plus, +)
-make_vector_expr_declare(sub, -)
-make_vector_expr_declare(div, \)
-make_vector_expr_declare(mul, *)
-
-
-
-template<class E1, class E2>
+template<class E1, class E2, class F>
 struct vector_expr {
 
     std::remove_cvref_t<E1> const& e1;
@@ -82,33 +36,56 @@ struct vector_expr {
 
     vector_expr(const E1& e1_, const E2& e2_) :e1(e1_), e2(e2_){}
     std::size_t size() const { return 6; }
-    virtual double operator[](std::size_t)const = 0;
-    make_vector_expr_cast(plus, +)
-    make_vector_expr_cast(sub, -)
-    make_vector_expr_cast(div, /)
-    make_vector_expr_cast(mul, *)
-
+    double operator[](std::size_t i) const
+    {
+        return F{}(e1[i], e2[i]);
+    }
+    template< class Outer_FFF, class EE2> auto invoke_operate(EE2 const& rhs) const
+    {
+        return vector_expr<vector_expr<E1, E2, F>, EE2, Outer_FFF>{*this, rhs};
+    }
+    
 };
 
-
-make_vector_expr(plus, +)
-
-make_vector_expr(sub, -)
-
-make_vector_expr(mul, *)
-
-make_vector_expr(div, / )
+auto plus_f = [](auto const& e1, auto const& e2) {return e1 + e2; };
+auto sub_f = [](auto const& e1, auto const& e2) {return e1 - e2; };
+auto mul_f = [](auto const& e1, auto const& e2) {return e1 * e2; };
+auto div_f = [](auto const& e1, auto const& e2) {return e1 / e2; };
 
 
+template<class E1, class E2, class F> auto operator+ (vector_expr<E1, E2, F> const& A, auto const& B)
+{
+    return A. template invoke_operate<decltype(plus_f)>(B);
+}
+template<class E1, class E2, class F> auto operator- (vector_expr<E1, E2, F> const& A, auto const& B)
+{
+    return A.template invoke_operate<decltype(sub_f)>(B);
+}
+template<class E1, class E2, class F> auto operator* (vector_expr<E1, E2, F> const& A, auto const& B)
+{
+    return A.template invoke_operate<decltype(mul_f)>(B);
+}
+template<class E1, class E2, class F> auto operator/ (vector_expr<E1, E2, F> const& A, auto const& B)
+{
+    return A.template invoke_operate<decltype(div_f)>(B);
+}
 
-make_vector_expr_operator(plus, +)
-
-make_vector_expr_operator(sub, -)
-
-make_vector_expr_operator(mul, *)
-
-make_vector_expr_operator(div, /)
-
+template<class T> auto operator+(vector<T> const& lhs, auto const& rhs)
+{
+    return vector_expr <vector<T>, std::remove_cvref_t<decltype(rhs)>, decltype(plus_f)>{lhs, rhs};
+}
+template<class T> auto operator-(vector<T> const& lhs, auto const& rhs)
+{
+    return vector_expr <vector<T>, std::remove_cvref_t<decltype(rhs)>, decltype(sub_f)>{lhs, rhs};
+}
+template<class T> auto operator*(vector<T> const& lhs, auto const& rhs)
+{
+    return vector_expr <vector<T>, std::remove_cvref_t<decltype(rhs)>, decltype(mul_f)>{lhs, rhs};
+}
+template<class T> auto operator/(vector<T> const& lhs, auto const& rhs)
+{
+    return vector_expr <vector<T>, std::remove_cvref_t<decltype(rhs)>, decltype(div_f)>{lhs, rhs};
+}
 
 
 
