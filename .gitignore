@@ -15,3 +15,5 @@
 /check/target
 /check/Cargo.lock
 __pycache__
+build/*
+!build/.gitkeep
