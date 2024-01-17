@@ -1,22 +1,27 @@
-name: Build and Run HomeWork
+name: Build HomeWork
 
 on:
   workflow_dispatch:
-# push:
-#  branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CXX_Compiler: g++-13
 
     steps:
     - uses: actions/checkout@v3
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$CXX_Compiler
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build
-      
-    - name: Run
-      run: cmake --build ${{github.workspace}}/build --target run_all
+
+  # 有等待输入的程序
+  # - name: Run
+  #   run: cmake --build ${{github.workspace}}/build --target run_all
