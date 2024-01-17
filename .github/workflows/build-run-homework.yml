@@ -11,12 +11,14 @@ on:
       - 'CMakeLists.txt'
       - '**.cmake'
       - "$src_path/**"
+      - '.github/**'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'CMakeLists.txt'
       - '**.cmake'
       - "$src_path/**"
+      - '.github/**'
 
 jobs:
   distribute-cpp-files:
@@ -24,6 +26,7 @@ jobs:
     env:
       default_src: "artifact/default"
       msvc_src: "artifact/msvc"
+      ignore_src: "artifact/ignore"
 
     steps:
       - uses: actions/checkout@v4
@@ -32,14 +35,20 @@ jobs:
         run: |
           mkdir -p $default_src
           mkdir -p $msvc_src
+          mkdir -p $ignore_src
 
       - name: Distribute cpp files
         run: |
           for file in $(find $src_path -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \));
           do
+            # 以//CI-ignore的不编译（暂无合适编译环境
             # 使用modules的交由msvc编译
-            if grep -q "import" $file; then
-              echo "use modules: $file"
+            # 以//msvc开头的文件交由msvc编译
+            if grep -q '^//CI-ignore' $file; then
+              echo "CI ignore: $file"
+              cp --parents $file $ignore_src
+            elif grep -q "import" $file || grep -q '^//msvc' $file; then
+              echo "msvc compile: $file"
               cp --parents $file $msvc_src
             else
               cp --parents $file $default_src
@@ -57,6 +66,12 @@ jobs:
         with:
           name: msvc-src
           path: ${{ env.msvc_src }}
+
+      - name: Upload ignore src artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ignore-src
+          path: ${{ env.ignore_src }}
 
   build:
     needs: distribute-cpp-files

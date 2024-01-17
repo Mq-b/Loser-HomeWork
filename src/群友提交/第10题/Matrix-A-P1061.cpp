@@ -1,3 +1,4 @@
+//CI-ignore
 #include<iostream>
 #include<cstdint>
 
