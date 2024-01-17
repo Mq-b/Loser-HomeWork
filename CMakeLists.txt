@@ -14,6 +14,7 @@ foreach(child ${homework_src_childs})
     endif()
 endforeach()
 
+enable_msvc_build_stl_modules()
 set(all_run_target_list "")
 foreach(subdir ${homework_src_subdirs})
     string(REGEX MATCH "[0-9]+" index ${subdir})

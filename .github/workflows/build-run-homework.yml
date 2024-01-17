@@ -44,10 +44,11 @@ jobs:
             # 以//CI-ignore的不编译（暂无合适编译环境
             # 使用modules的交由msvc编译
             # 以//msvc开头的文件交由msvc编译
-            if grep -q '^//CI-ignore' $file; then
+            first_line=$(head -n 1 $file)
+            if echo "$first_line" | grep -q '//CI-ignore'; then
               echo "CI ignore: $file"
               cp --parents $file $ignore_src
-            elif grep -q "import" $file || grep -q '^//msvc' $file; then
+            elif grep -q "import" $file || echo "$first_line" | grep -q '//msvc'; then
               echo "msvc compile: $file"
               cp --parents $file $msvc_src
             else
@@ -73,7 +74,7 @@ jobs:
           name: ignore-src
           path: ${{ env.ignore_src }}
 
-  build:
+  build-in-gcc:
     needs: distribute-cpp-files
     runs-on: ubuntu-latest
     env:
@@ -100,3 +101,25 @@ jobs:
   # 有等待输入的程序
   # - name: Run
   #   run: cmake --build ${{github.workspace}}/build --target run_all
+
+  build-in-msvc:
+    needs: distribute-cpp-files
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete original HomeWork src
+        run: |
+          Remove-Item -Path $env:src_path -Recurse -Force
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: msvc-src
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build

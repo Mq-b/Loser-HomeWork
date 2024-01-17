@@ -68,6 +68,9 @@ function(add_cpp_executable_targets cpp_file_list target_list)
     foreach(cpp_file target IN ZIP_LISTS cpp_file_list target_list)
         message(STATUS "add executable: ${target} ${cpp_file}")
         add_executable ("${target}" "${cpp_file}")
+        if(MSVC)
+            target_compile_options("${target}" PRIVATE "/experimental:module")
+        endif()
     endforeach()
 endfunction()
 
@@ -96,4 +99,25 @@ function(add_run_all_targets all_targets_name target_list)
                 ${target}
         )
     endforeach()
+endfunction()
+
+function(enable_msvc_build_stl_modules)
+    if( MSVC_VERSION GREATER_EQUAL 1936 AND MSVC_IDE ) # 17.6+
+        # When using /std:c++latest, "Build ISO C++23 Standard Library Modules" defaults to "Yes".
+        # Default to "No" instead.
+        #
+        # As of CMake 3.26.4, there isn't a way to control this property
+        # (https://gitlab.kitware.com/cmake/cmake/-/issues/24922),
+        # We'll use the MSBuild project system instead
+        # (https://learn.microsoft.com/en-us/cpp/build/reference/vcxproj-file-structure)
+        file( CONFIGURE OUTPUT "${CMAKE_BINARY_DIR}/Directory.Build.props" CONTENT [==[
+<Project>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <BuildStlModules>true</BuildStlModules>
+    </ClCompile>
+  </ItemDefinitionGroup>
+</Project>
+]==] @ONLY )
+    endif()
 endfunction()
