@@ -1,23 +1,83 @@
 name: Build HomeWork
 
+env:
+  src_path: "src/群友提交"
+
 on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
+    paths:
+      - 'CMakeLists.txt'
+      - '**.cmake'
+      - "$src_path/**"
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'CMakeLists.txt'
+      - '**.cmake'
+      - "$src_path/**"
 
 jobs:
-  build:
+  distribute-cpp-files:
     runs-on: ubuntu-latest
     env:
-      CXX_Compiler: g++-13
+      default_src: "artifact/default"
+      msvc_src: "artifact/msvc"
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Create artifact path
+        run: |
+          mkdir -p $default_src
+          mkdir -p $msvc_src
+
+      - name: Distribute cpp files
+        run: |
+          for file in $(find $src_path -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \));
+          do
+            # 使用modules的交由msvc编译
+            if grep -q "import" $file; then
+              echo "use modules: $file"
+              cp --parents $file $msvc_src
+            else
+              cp --parents $file $default_src
+            fi
+          done
+
+      - name: Upload default src artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: default-src
+          path: ${{ env.default_src }}
+
+      - name: Upload msvc src artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: msvc-src
+          path: ${{ env.msvc_src }}
+
+  build:
+    needs: distribute-cpp-files
+    runs-on: ubuntu-latest
+    env:
+      cxx_compiler: g++-13
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Delete original HomeWork src
+      run: |
+        rm -rf $src_path
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: default-src
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$CXX_Compiler
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build
