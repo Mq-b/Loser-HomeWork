@@ -21,8 +21,6 @@ class B : public Component<B> {};
 
 class C : public Component<C> {};
 
-#include <iostream>
-
 int main(int argc, char* argv[]) {
     std::cout << "A::id() = " << A::component_type_id() << std::endl;
     std::cout << "B::id() = " << B::component_type_id() << std::endl;
