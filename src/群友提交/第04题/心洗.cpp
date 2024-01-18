@@ -1,4 +1,3 @@
-﻿//CI-ignore
 import std;
 
 class ComponentBase {
