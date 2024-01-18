@@ -1,4 +1,5 @@
-﻿import std;
+﻿//CI-ignore
+import std;
 
 struct Frac
 {

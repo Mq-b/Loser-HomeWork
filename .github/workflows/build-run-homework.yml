@@ -1,23 +1,99 @@
 name: Build HomeWork
 
+env:
+  src_path: "src/群友提交"
+
 on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
+    paths:
+      - 'CMakeLists.txt'
+      - '**.cmake'
+      - "$src_path/**"
+      - '.github/**'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'CMakeLists.txt'
+      - '**.cmake'
+      - "$src_path/**"
+      - '.github/**'
 
 jobs:
-  build:
+  distribute-cpp-files:
     runs-on: ubuntu-latest
     env:
-      CXX_Compiler: g++-13
+      default_src: "artifact/default"
+      msvc_src: "artifact/msvc"
+      ignore_src: "artifact/ignore"
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+
+      - name: Create artifact path
+        run: |
+          mkdir -p $default_src
+          mkdir -p $msvc_src
+          mkdir -p $ignore_src
+
+      - name: Distribute cpp files
+        run: |
+          for file in $(find $src_path -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \));
+          do
+            # 以//CI-ignore的不编译（暂无合适编译环境
+            # 使用modules的交由msvc编译
+            # 以//msvc开头的文件交由msvc编译
+            first_line=$(head -n 1 $file)
+            if echo "$first_line" | grep -q '//CI-ignore'; then
+              echo "CI ignore: $file"
+              cp --parents $file $ignore_src
+            elif grep -q "import" $file || echo "$first_line" | grep -q '//msvc'; then
+              echo "msvc compile: $file"
+              cp --parents $file $msvc_src
+            else
+              cp --parents $file $default_src
+            fi
+          done
+
+      - name: Upload default src artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: default-src
+          path: ${{ env.default_src }}
+
+      - name: Upload msvc src artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: msvc-src
+          path: ${{ env.msvc_src }}
+
+      - name: Upload ignore src artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ignore-src
+          path: ${{ env.ignore_src }}
+
+  build-in-gcc:
+    needs: distribute-cpp-files
+    runs-on: ubuntu-latest
+    env:
+      cxx_compiler: g++-13
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Delete original HomeWork src
+      run: |
+        rm -rf $src_path
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: default-src
 
     - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$CXX_Compiler
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build
@@ -25,3 +101,25 @@ jobs:
   # 有等待输入的程序
   # - name: Run
   #   run: cmake --build ${{github.workspace}}/build --target run_all
+
+  build-in-msvc:
+    needs: distribute-cpp-files
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete original HomeWork src
+        run: |
+          Remove-Item -Path $env:src_path -Recurse -Force
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: msvc-src
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build

@@ -1,3 +1,4 @@
+//CI-ignore
 //https://godbolt.org/z/3GjjW4cjT
 #include<tuple>
 #include<iostream>

@@ -17,3 +17,6 @@
 __pycache__
 build/*
 !build/.gitkeep
+# Clion
+.idea
+cmake-build-*
