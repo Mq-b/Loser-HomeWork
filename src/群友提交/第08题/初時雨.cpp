@@ -1,7 +1,6 @@
-//msvc
 #include <iostream>
 
-template<class Ty, size_t size>
+template<class Ty, std::size_t size>
 struct array {
     Ty* begin() { return arr; };
     Ty* end() { return arr + size; };
@@ -15,4 +14,4 @@ int main() {
     for (const auto& i : arr) {
         std::cout << i << ' ';
     }
-} 
+}
