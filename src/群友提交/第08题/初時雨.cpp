@@ -7,7 +7,7 @@ struct array {
     Ty arr[size];
 };
 
-::array(int, int, int, int, int) -> ::array<int, 5>;
+array(int, int, int, int, int) -> array<int, 5>;
 
 int main() {
     ::array arr {1, 2, 3, 4, 5};
