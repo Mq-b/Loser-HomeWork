@@ -10,14 +10,14 @@ on:
     paths:
       - 'CMakeLists.txt'
       - '**.cmake'
-      - "$src_path/**"
+      - '${{ env.src_path }}/**'
       - '.github/**'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'CMakeLists.txt'
       - '**.cmake'
-      - "$src_path/**"
+      - '${{ env.src_path }}/**'
       - '.github/**'
 
 jobs:
