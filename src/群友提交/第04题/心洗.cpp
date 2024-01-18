@@ -1,4 +1,4 @@
-﻿//CI-ignore
+//msvc
 import std;
 
 class ComponentBase {
@@ -20,8 +20,6 @@ class A : public Component<A> {};
 class B : public Component<B> {};
 
 class C : public Component<C> {};
-
-#include <iostream>
 
 int main(int argc, char* argv[]) {
     std::cout << "A::id() = " << A::component_type_id() << std::endl;
