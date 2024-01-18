@@ -1,4 +1,4 @@
-﻿//CI-ignore
+﻿//msvc
 import std;
 
 struct Frac
