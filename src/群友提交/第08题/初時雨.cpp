@@ -1,4 +1,3 @@
-//msvc
 #include <iostream>
 
 template<class Ty, size_t size>
