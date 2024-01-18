@@ -1,4 +1,4 @@
-﻿//CI-ignore
+﻿//msvc
 import std;
 
 struct Frac
@@ -26,6 +26,6 @@ void print(auto&& text, auto&&... args)
 
 int main()
 {
-    print(std::string("{}"), Frac f{ 1, 10 });
+    print(std::string("{}"), Frac { 1, 10 });
     return 0;
 }
