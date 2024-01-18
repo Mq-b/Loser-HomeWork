@@ -1,3 +1,4 @@
+//msvc
 import std;
 
 class ComponentBase {
