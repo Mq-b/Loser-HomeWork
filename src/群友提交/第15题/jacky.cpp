@@ -1,3 +1,4 @@
+//!clang
 #include <algorithm>
 #include <functional>
 #include <iostream>

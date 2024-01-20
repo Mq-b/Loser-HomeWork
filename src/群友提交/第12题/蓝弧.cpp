@@ -1,3 +1,4 @@
+//!msvc !clang
 #include <cstdio>
 #include <vector>
 

@@ -1,4 +1,4 @@
-//CI-ignore
+//!all
 #include<iostream>
 #include<cstdint>
 #include<vector>

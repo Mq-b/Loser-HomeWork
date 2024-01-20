@@ -1,3 +1,4 @@
+//!msvc
 #include <bits/stdc++.h>
 
 

@@ -1,3 +1,4 @@
+//!gcc !clang
 import std;
 
 struct init {

@@ -1,4 +1,4 @@
-//msvc
+//!gcc !clang
 import std;
 
 class ComponentBase {

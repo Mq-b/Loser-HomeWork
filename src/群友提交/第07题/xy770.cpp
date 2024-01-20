@@ -1,3 +1,4 @@
+//!gcc !clang
 import std;
 using namespace std;
 struct MyException :std::exception {

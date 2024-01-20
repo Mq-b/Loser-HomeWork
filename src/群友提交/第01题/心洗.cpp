@@ -1,4 +1,5 @@
-﻿import std;
+﻿//!gcc !clang
+import std;
 
 template<typename C, typename F>
 auto operator|(C&& container, F&& func)

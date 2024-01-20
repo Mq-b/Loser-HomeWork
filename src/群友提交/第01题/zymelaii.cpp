@@ -1,3 +1,4 @@
+//!msvc
 #include <type_traits>
 #include <algorithm>
 
