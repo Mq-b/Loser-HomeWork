@@ -1,8 +1,5 @@
 name: Check all loser homework
 
-env:
-  src_path: "src/群友提交"
-
 on:
   workflow_dispatch:
   push:
@@ -34,6 +31,26 @@ jobs:
 
     - name: Build
       run: cmake --build ${{github.workspace}}/build --target build_loser_homework
+
+  build-in-clang:
+    runs-on: ubuntu-latest
+    env:
+      cxx_compiler: clang++-17
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang 17
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          echo | sudo ./llvm.sh 17
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
+
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
 
   build-in-msvc:
     runs-on: windows-2022
