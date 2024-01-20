@@ -24,4 +24,6 @@ if (MSVC)
 endif ()
 
 add_custom_target(build_loser_homework ALL)
-add_dependencies(build_loser_homework ${targets_list})
+if(targets_list)
+    add_dependencies(build_loser_homework ${targets_list})
+endif ()

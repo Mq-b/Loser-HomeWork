@@ -1,24 +1,33 @@
 name: Check all loser homework
 
 on:
+  fork:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths:
-      - 'CMakeLists.txt'
-      - '**.cmake'
-      - 'src/群友提交/**'
-      - '.github/**'
   pull_request:
-    branches: [ "main" ]
+    types:
+      - closed
     paths:
-      - 'CMakeLists.txt'
+      - '.github/workflows/**'
       - '**.cmake'
+      - 'CMakeLists.txt'
       - 'src/群友提交/**'
-      - '.github/**'
 
 jobs:
+  echo-event:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.event_name }}
+
+  if-trigger:
+    if: github.event.pull_request.merged == true ||
+      github.event_name == 'workflow_dispatch' ||
+      github.event_name == 'fork'
+    runs-on: ubuntu-latest
+    steps:
+        - run: echo trigger all build
+
   build-in-gcc:
+    needs: if-trigger
     runs-on: ubuntu-latest
     env:
       cxx_compiler: g++-13
@@ -33,6 +42,7 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --target build_loser_homework
 
   build-in-clang:
+    needs: if-trigger
     runs-on: ubuntu-latest
     env:
       cxx_compiler: clang++-17
@@ -53,6 +63,7 @@ jobs:
         run: cmake --build ${{github.workspace}}/build --target build_loser_homework
 
   build-in-msvc:
+    needs: if-trigger
     runs-on: windows-2022
 
     steps:
