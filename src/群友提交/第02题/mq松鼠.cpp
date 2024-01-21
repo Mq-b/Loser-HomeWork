@@ -1,18 +1,18 @@
-//!gcc !clang
+//msvc
 #include <format>
 #include <iostream>
 #include <numbers>
 
 struct myType {
     constexpr myType(std::string str_):str(str_) {}
-
-    std::string operator()(auto &&... args) {
+    template<class ...T>
+    std::string operator()(T &&... args) {
         return std::vformat(str, std::make_format_args(args...));
     }
 
     std::string str;
 };
-myType operator ""_f(const char* str , unsigned long long size) {
+myType operator ""_f(const char* str , size_t x) {
     return {str};
 }
 int main(){
