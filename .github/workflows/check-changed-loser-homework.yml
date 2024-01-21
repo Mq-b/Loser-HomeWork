@@ -29,6 +29,7 @@ jobs:
         id: changed-cpp-files
         uses: tj-actions/changed-files@v42
         with:
+          separator: ";"
           quotepath: "false"
           files: |
             **.cpp
@@ -39,7 +40,8 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-cpp-files.outputs.all_changed_files }}
         run: |
-          for file in "$ALL_CHANGED_FILES"; do
+          IFS=';' read -ra FILES <<< "$ALL_CHANGED_FILES"
+          for file in "${FILES[@]}"; do
             echo "$file was changed"
           done
 
@@ -58,12 +60,14 @@ jobs:
           ALL_CHANGED_FILES: ${{ needs.get-changed-files.outputs.changed_cpp_files }}
         run: |
           exclude_path=""
-          IFS=' ' read -ra FILES <<< "$ALL_CHANGED_FILES"
+          IFS=';' read -ra FILES <<< "$ALL_CHANGED_FILES"
           for file in "${FILES[@]}"; do
-            exclude_path="$exclude_path ! -path $file"
+            file=$(echo "$file" | sed 's/\\//g')
+            exclude_path="$exclude_path ! -path '$file'"
           done
-          find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \) $exclude_path -exec rm {} \;
-          echo $exclude_path
+          find_command="find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \) $exclude_path -delete"
+          echo $find_command
+          eval "$find_command"
           find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \)
 
       - name: Configure CMake
@@ -89,12 +93,14 @@ jobs:
           ALL_CHANGED_FILES: ${{ needs.get-changed-files.outputs.changed_cpp_files }}
         run: |
           exclude_path=""
-          IFS=' ' read -ra FILES <<< "$ALL_CHANGED_FILES"
+          IFS=';' read -ra FILES <<< "$ALL_CHANGED_FILES"
           for file in "${FILES[@]}"; do
-            exclude_path="$exclude_path ! -path $file"
+            file=$(echo "$file" | sed 's/\\//g')
+            exclude_path="$exclude_path ! -path '$file'"
           done
-          find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \) $exclude_path -exec rm {} \;
-          echo $exclude_path
+          find_command="find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \) $exclude_path -delete"
+          echo $find_command
+          eval "$find_command"
           find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \)
 
       - name: Install clang 17
@@ -126,7 +132,7 @@ jobs:
         run: |
           $allChangedFiles = "${{ env.ALL_CHANGED_FILES }}"
           $allChangedFiles = $allChangedFiles -replace '\\', ''
-          $allChangedFiles = $allChangedFiles -split ' '
+          $allChangedFiles = $allChangedFiles -split ';'
           
           $absolutePaths = @()
           foreach ($file in $allChangedFiles) {
