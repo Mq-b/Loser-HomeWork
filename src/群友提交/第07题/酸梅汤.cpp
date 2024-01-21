@@ -1,3 +1,4 @@
+//!msvc
 #include <bits/stdc++.h>
 struct MyException : std::exception {
     const char* data{};

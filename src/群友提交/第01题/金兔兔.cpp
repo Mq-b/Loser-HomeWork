@@ -1,4 +1,5 @@
-﻿import std;
+﻿//!gcc !clang
+import std;
 
 template<typename T>
 struct Lazy

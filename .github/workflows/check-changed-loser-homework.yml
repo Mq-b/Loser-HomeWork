@@ -1,0 +1,150 @@
+name: Check changed loser homework
+
+env:
+  src_path: "src/群友提交"
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'src/群友提交/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'src/群友提交/**'
+
+jobs:
+  get-changed-files:
+    runs-on: ubuntu-latest
+    name: Get changed cpp files
+    outputs:
+      changed_cpp_files: ${{ steps.changed-cpp-files.outputs.all_changed_files }}
+      any_changed: ${{ steps.changed-cpp-files.outputs.any_changed }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get changed cpp files
+        id: changed-cpp-files
+        uses: tj-actions/changed-files@v42
+        with:
+          quotepath: "false"
+          files: |
+            **.cpp
+            **.cc
+            **.cxx
+
+      - name: List all changed cpp files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-cpp-files.outputs.all_changed_files }}
+        run: |
+          for file in "$ALL_CHANGED_FILES"; do
+            echo "$file was changed"
+          done
+
+  build-in-gcc:
+    needs: get-changed-files
+    runs-on: ubuntu-latest
+    env:
+      cxx_compiler: g++-13
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Only keep cpp changed files
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ needs.get-changed-files.outputs.changed_cpp_files }}
+        run: |
+          exclude_path=""
+          IFS=' ' read -ra FILES <<< "$ALL_CHANGED_FILES"
+          for file in "${FILES[@]}"; do
+            exclude_path="$exclude_path ! -path $file"
+          done
+          find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \) $exclude_path -exec rm {} \;
+          echo $exclude_path
+          find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \)
+
+      - name: Configure CMake
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
+
+      - name: Build
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
+
+  build-in-clang:
+    needs: get-changed-files
+    runs-on: ubuntu-latest
+    env:
+      cxx_compiler: clang++-17
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Only keep cpp changed files
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ needs.get-changed-files.outputs.changed_cpp_files }}
+        run: |
+          exclude_path=""
+          IFS=' ' read -ra FILES <<< "$ALL_CHANGED_FILES"
+          for file in "${FILES[@]}"; do
+            exclude_path="$exclude_path ! -path $file"
+          done
+          find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \) $exclude_path -exec rm {} \;
+          echo $exclude_path
+          find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \)
+
+      - name: Install clang 17
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: |
+          wget https://apt.llvm.org/llvm.sh
+          chmod u+x llvm.sh
+          echo | sudo ./llvm.sh 17
+
+      - name: Configure CMake
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
+
+      - name: Build
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
+
+  build-in-msvc:
+    needs:  get-changed-files
+    runs-on: windows-2022
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Only keep cpp changed files
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        env:
+          ALL_CHANGED_FILES: ${{ needs.get-changed-files.outputs.changed_cpp_files }}
+        run: |
+          $allChangedFiles = "${{ env.ALL_CHANGED_FILES }}"
+          $allChangedFiles = $allChangedFiles -replace '\\', ''
+          $allChangedFiles = $allChangedFiles -split ' '
+          
+          $absolutePaths = @()
+          foreach ($file in $allChangedFiles) {
+            $absolutePath = Convert-Path $file
+            $absolutePaths += $absolutePath
+          }
+          
+          $cppFiles = Get-ChildItem -Path ${{ env.src_path }} -Recurse -File -Include *.cpp, *.cxx, *.cc
+          foreach ($cppFile in $cppFiles) {
+            if ($absolutePaths -NotContains $cppFile.FullName) {
+              Remove-Item $cppFile.FullName
+            }
+          }
+
+      - name: Configure CMake
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake -B ${{github.workspace}}/build
+
+      - name: Build
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake --build ${{github.workspace}}/build --target build_loser_homework

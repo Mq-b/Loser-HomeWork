@@ -1,4 +1,5 @@
-﻿import std;
+﻿//!gcc !clang
+import std;
 
 #define USE_LAMBDA
 #ifdef USE_LAMBDA
