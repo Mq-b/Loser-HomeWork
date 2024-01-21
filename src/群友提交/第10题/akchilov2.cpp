@@ -18,10 +18,10 @@ namespace possibilities
         template<class T> struct convert_forbid
         {
             using type = T;
-            template<class U,class En = std::enable_if_t<std::is_same_v<T, U>>> operator U();
+            template<class U, class En = std::enable_if_t<std::is_same_v<T, U>>> operator U();
         };
         //计算成员数量,生成构造列表
-        template<bool, class T, class construct_list, std::size_t cnt> struct count_size{};
+        template<bool, class T, class construct_list, std::size_t cnt> struct count_size {};
         template<class T, template<class...> class construct_list, std::size_t cnt, class ...types>
         struct count_size<true, T, construct_list<types...>, cnt>
         {
@@ -31,14 +31,14 @@ namespace possibilities
         template<class T, template<class ...> class construct_list, std::size_t cnt, class First, class ...rest>
         struct count_size<false, T, construct_list<First, rest...>, cnt>
         {
-            using next = count_size<std::is_constructible_v<T, First, rest...>,T, std::conditional_t<
-                std::is_constructible_v<T, First, rest...>, construct_list<First, rest...>, construct_list<rest...>>, 
+            using next = count_size<std::is_constructible_v<T, First, rest...>, T, std::conditional_t<
+                std::is_constructible_v<T, First, rest...>, construct_list<First, rest...>, construct_list<rest...>>,
                 (std::is_constructible_v<T, First, rest...> ? cnt : cnt - 1)>;
-            static constexpr std::size_t value =next::value;
+            static constexpr std::size_t value = next::value;
             using CTL = typename next::CTL;
         };
         //工具类，用于替换构造列表中的元素
-        template<std::size_t N, class pre, class bck, class T> struct replace_at{};
+        template<std::size_t N, class pre, class bck, class T> struct replace_at {};
         template<std::size_t N, template<class...> class pre, template<class...> class bck, class RP, class bck_first, class ...preargs, class... bckargs>
         struct replace_at<N, pre<preargs...>, bck<bck_first, bckargs...>, RP>
         {
@@ -53,7 +53,9 @@ namespace possibilities
 
         template<class TL, template<class...> class Name> struct as_ {};
         template<template<class...>class TL, template<class...>class Name, class ...Args> struct as_<TL<Args...>, Name>
-        { using type = Name<Args...>; };
+        {
+            using type = Name<Args...>;
+        };
         //在列表中选择元素
         template<std::size_t N, class TL> struct select_element { using type = std::tuple_element_t<N, typename as_<TL, std::tuple>::type>; };
     }
@@ -84,11 +86,11 @@ namespace possibilities
             std::conditional_t<cstible, mem_type_list<first, Args...>, mem_type_list<Args...>>>::type;
     };
 
-    template<std::size_t N, class T, template<class...> class mem_type_list, class first, class ...Args> 
-    struct constructible_at_try<true, N, T, mem_type_list<first, Args...>> {using type = first;};
+    template<std::size_t N, class T, template<class...> class mem_type_list, class first, class ...Args>
+    struct constructible_at_try<true, N, T, mem_type_list<first, Args...>> { using type = first; };
     //工具类，生成成员列表
     template<std::size_t N, class T, class TL, class saved> struct make_construct_list {};
-    template<class T, template<class...> class TL, template<class...> class saved, class ...Args, class ...savedArgs> 
+    template<class T, template<class...> class TL, template<class...> class saved, class ...Args, class ...savedArgs>
     struct make_construct_list<0, T, TL<Args...>, saved<savedArgs...>>
     {
         using current_type = typename constructible_at_try<false, 0, T, TL<Args...>>::type;
@@ -103,32 +105,38 @@ namespace possibilities
     template<class T, class Poss> using possibility = typename make_construct_list<possibilities::size<T>() - 1, T, Poss, tl<>>::type;
 }
 
-namespace offset_pointer{
-    //offset_ptr模拟成员在结构体中的分布， advance：跨越一个指定的size的成员， forward_offset:寻找下一个成员的首地址
-    template<std::size_t pack_size, std::size_t layer_offset, std::size_t offset> struct offset_ptr
+namespace offset_pointer {
+    //编译时计算
+    //offset_ptr模拟成员在结构体中的分布， advance：跨越一个指定的size， forward_offset:寻找下一个成员的首地址
+    template<std::size_t pack_size, std::size_t layer_offset, std::size_t offset> struct align_offset_ptr
     {
         static_assert(pack_size <= 8, "An alignment size exceeds 8 is not tested!");
         static constexpr std::size_t layer = layer_offset;//alignment layer as base
         static constexpr std::size_t value = offset;//当前层偏移指针
         static constexpr std::size_t half_pack = pack_size / 2;//层的半对齐
         //工具：移动到下一内存对齐的层， 层偏移指针置零
-        template<std::size_t N> using advance_layer = offset_ptr<pack_size, layer + N, 0>;
+        template<std::size_t N> using advance_layer = align_offset_ptr<pack_size, layer + N, 0>;
         //当forward offset + 当前层偏移超出或等于内存对齐的值
-        //假如forward offset+value==pack_size， 或则当前层偏移为0时，成员会存在当前层， 移动 size/pack_size + 1层，
-        //否则当size%pack_size == 0, size/pack_size + 2层，因为它会被放在下一层
-        //否则当size%pack_size != 0, size/pack_size + 3层(暂时没见过这种情况，数组可能会出现，但是这个类不让使用数组)
+        //假如forward offset+value==pack_size， 或则当前层偏移为0时，成员会存在当前层， 移动 size/pack_size 层，
+        //否则当size%pack_size == 0, size/pack_size + 1层，因为它会被放在下一层
+        //否则当size%pack_size != 0, size/pack_size + 2层(暂时没见过这种情况，数组可能会出现，但是这个类不让数组推导)
+        //因为不会出现一个成员的一部分和另外一个成员在同一层的情况
         template<bool offset_overflow_pack, std::size_t forward_offset> struct advance_impl
         {
             static constexpr std::size_t forward_base = forward_offset / pack_size;
             static constexpr bool has_rest = static_cast<bool>(forward_offset % pack_size);
             static constexpr std::size_t forward_base_fixed = has_rest ? forward_base + 1 : forward_base;
-            using type = advance_layer<(((forward_offset + value) == 8) ? 0 : (value == 0 ? 0 : 1)) + forward_base_fixed>;
+            using type = advance_layer<(((forward_offset + value) == pack_size) ? 0 : (value == 0 ? 0 : 1)) + forward_base_fixed>;
         };
         //当forward offset + 当前层偏移小于内存对齐的值，位移不超过当前层
         //但是当forward offset超过半对齐，成员就会存储在后一半层， 否则直接移动forward offset
         template<std::size_t forward_offset> struct advance_impl<false, forward_offset>
         {
-            using type = offset_ptr<pack_size, layer, (value + forward_offset >= half_pack) ? pack_size : value + forward_offset>;
+            using type_impl = align_offset_ptr<pack_size, layer,
+                (((value + forward_offset) > half_pack) && (forward_offset >= half_pack)) ?
+                pack_size :
+                value + forward_offset>;
+            using type = std::conditional_t<type_impl::value == 8, advance_layer<1>, type_impl>;
         };
         //工具：使指针越过一个成员的位置
         template<std::size_t forward_offset> using advance = typename advance_impl<((value + forward_offset) >= pack_size), forward_offset>::type;
@@ -136,11 +144,11 @@ namespace offset_pointer{
         //枚举了给定的指针是否超过半对齐，内存对齐的情况
         template<std::size_t forward_size> struct forward_impl
         {
-            using type = std::conditional_t<(forward_size >= pack_size), 
-            advance_layer<(value == 0)?0:1>, offset_ptr<pack_size, layer, 
-            ((forward_size >= half_pack) ? ((value == 0) ? 0 : half_pack) : 0) >>;
+            using type = std::conditional_t<(forward_size >= pack_size),
+                advance_layer<(value == 0) ? 0 : 1>, align_offset_ptr<pack_size, layer,
+                ((forward_size >= half_pack) ? ((value == 0) ? 0 : half_pack) : value) >>;
         };
-        template<std::size_t forward_size> using forward_offset = typename forward_impl<forward_size>::type;
+        template<std::size_t forward_size> using seek = typename forward_impl<forward_size>::type;
         //基于当前的层偏移，使用探索指针寻找给定的类型的首地址
         template<class T, class type> static type& get(T* ptr)
         {
@@ -148,8 +156,8 @@ namespace offset_pointer{
             return *(reinterpret_cast<type*>(
                 reinterpret_cast<unsigned char*>(ptr) +
                 (
-                    forward_offset<sizeof(type)>::layer * pack_size +
-                    forward_offset<sizeof(type)>::value
+                    seek<sizeof(type)>::layer * pack_size +
+                    seek<sizeof(type)>::value
                     )));
         }
     };
@@ -172,14 +180,14 @@ namespace offset_pointer{
     //封装成函数
     template<std::size_t I, class CTL, class T> auto& get_member(T* x)
     {
-        using types_iter = offset_iter<I, offset_ptr<alignof(T), 0, 0>, CTL>;
+        using types_iter = offset_iter<I, align_offset_ptr<alignof(T), 0, 0>, CTL>;
         return types_iter::iter_type::template get<T, typename types_iter::type>(x);
     }
 }
 
 using namespace possibilities;
 using namespace offset_pointer;
-using possible = tl<int, std::string, double, char>;
+using possible = tl<int, std::string, double, char, int>;
 
 template<class T, class F, size_t ...I> constexpr void for_each_member_impl(T&& x, F&& f, std::index_sequence<I...>)
 {
@@ -192,8 +200,18 @@ template<class T, class F> constexpr void for_each_member(T&& x, F&& f)
 }
 
 int main() {
-    struct X { std::string s{ " " }; }x;
-    struct Y { double a{}, b{}, c{}, d{}; }y;
+    struct X
+    {
+        char cc{ 'k' };
+        int a{ 10 };
+        char c{ 'l' };
+        char e{ '3' };
+        char h{ 'o' };
+        int ac{ 19 };
+        double b{ 2.33 };
+        double bbg{ 4.55 };
+        char j{ 'j' };
+    } x{};    struct Y { double a{}, b{}, c{}, d{}; }y;
     std::cout << size<X>() << '\n';
     std::cout << size<Y>() << '\n';
 
