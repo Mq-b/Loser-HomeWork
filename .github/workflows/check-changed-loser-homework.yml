@@ -7,11 +7,15 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'src/群友提交/**'
+      - 'src/群友提交/**.cpp'
+      - 'src/群友提交/**.cxx'
+      - 'src/群友提交/**.cc'
   pull_request:
     branches: [ "main" ]
     paths:
-      - 'src/群友提交/**'
+      - 'src/群友提交/**.cpp'
+      - 'src/群友提交/**.cxx'
+      - 'src/群友提交/**.cc'
 
 jobs:
   get-changed-files:
