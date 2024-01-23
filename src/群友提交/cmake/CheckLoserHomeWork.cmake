@@ -71,13 +71,56 @@ function(is_target_compiler cpp_file _ret)
     set(${_ret} true PARENT_SCOPE)
 endfunction()
 
-function(add_homework_target target question_index cpp_file_path)
+function(add_homework_target target question_index cpp_file)
     message(STATUS "add executable: ${target_name} ${cpp_file}")
     add_executable (${target} ${cpp_file})
+    set_target_properties(${target}
+            PROPERTIES cpp_file ${cpp_file})
 endfunction()
 
-function(handle_homework homework_dir _targets_list)
+function(add_run_homework_target target homework_target _ret)
+    set(ret false)
+    get_target_property(cpp_file ${homework_target} cpp_file)
+    get_filename_component(file_dir ${cpp_file} DIRECTORY)
+    set(input_file "${file_dir}/input.txt")
+    set(output_file "${file_dir}/output.txt")
+    if(EXISTS ${output_file})
+        find_program(POWERSHELL_PATH NAMES powershell)
+        find_program(BASH_PATH NAMES bash)
+        if (POWERSHELL_PATH)
+            add_custom_target(${target}
+                    COMMAND powershell -File
+                    ${CMAKE_CURRENT_SOURCE_DIR}/script/RunHomework.ps1
+                    -Execution $<TARGET_FILE:${homework_target}>
+                    -OutputName ${homework_target}
+                    -CorrectExecOutput ${output_file}
+                    -ExecInput ${input_file}
+                    COMMENT "check ${homework_target} run"
+                    DEPENDS ${target}
+                    USES_TERMINAL
+            )
+            set(ret true)
+        elseif (BASH_PATH)
+            add_custom_target(${target}
+                    COMMAND bash
+                    ${CMAKE_CURRENT_SOURCE_DIR}/script/run_homework.sh
+                    -e $<TARGET_FILE:${homework_target}>
+                    -o ${homework_target}
+                    -c ${output_file}
+                    -i ${input_file}
+                    COMMENT "check ${homework_target} run"
+                    DEPENDS ${target}
+            )
+            set(ret true)
+        endif ()
+    endif ()
+
+    set(${_ret} ${ret} PARENT_SCOPE)
+endfunction()
+
+function(handle_homework homework_dir _targets_list _run_targets_list)
     set(targets_list "")
+    set(run_targets_list "")
     get_subdirs(${homework_dir} subdirs_list)
     foreach(subdir ${subdirs_list})
         to_question_index(${subdir} index)
@@ -89,11 +132,16 @@ function(handle_homework homework_dir _targets_list)
                     get_homework_target_name(${index} ${cpp_file} target)
                     add_homework_target(${target} ${index} ${cpp_file})
                     list(APPEND targets_list ${target})
+                    add_run_homework_target("run_${target}" ${target} add_run_ret)
+                    if (add_run_ret)
+                        list(APPEND run_targets_list "run_${target}")
+                    endif ()
                 endif ()
             endforeach ()
         endif ()
     endforeach()
     set(${_targets_list} ${targets_list} PARENT_SCOPE)
+    set(${_run_targets_list} ${run_targets_list} PARENT_SCOPE)
 endfunction()
 
 function(enable_msvc_build_stl_modules)

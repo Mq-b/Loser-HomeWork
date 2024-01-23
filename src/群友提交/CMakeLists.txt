@@ -15,7 +15,7 @@ if (MSVC)
 endif ()
 
 set(homework_dir ${CMAKE_CURRENT_SOURCE_DIR})
-handle_homework(${homework_dir} targets_list)
+handle_homework(${homework_dir} targets_list run_targets_list)
 
 if (MSVC)
     foreach (target ${targets_list})
@@ -23,7 +23,12 @@ if (MSVC)
     endforeach ()
 endif ()
 
-add_custom_target(build_loser_homework ALL)
+add_custom_target(build_loser_homework)
 if(targets_list)
     add_dependencies(build_loser_homework ${targets_list})
+endif ()
+
+add_custom_target(run_loser_homework)
+if(run_targets_list)
+    add_dependencies(run_loser_homework ${run_targets_list})
 endif ()
