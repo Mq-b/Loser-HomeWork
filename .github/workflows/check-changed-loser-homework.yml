@@ -16,10 +16,10 @@ on:
 jobs:
   get-changed-files:
     runs-on: ubuntu-latest
-    name: Get changed cpp files
     outputs:
       changed_cpp_files: ${{ steps.changed-cpp-files.outputs.all_changed_files }}
       any_changed: ${{ steps.changed-cpp-files.outputs.any_changed }}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,7 +45,7 @@ jobs:
             echo "$file was changed"
           done
 
-  build-in-gcc:
+  check-in-gcc:
     needs: get-changed-files
     runs-on: ubuntu-latest
     env:
@@ -78,7 +78,11 @@ jobs:
         if: needs.get-changed-files.outputs.any_changed == 'true'
         run: cmake --build ${{github.workspace}}/build --target build_loser_homework
 
-  build-in-clang:
+      - name: Check run
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+
+  check-in-clang:
     needs: get-changed-files
     runs-on: ubuntu-latest
     env:
@@ -118,7 +122,11 @@ jobs:
         if: needs.get-changed-files.outputs.any_changed == 'true'
         run: cmake --build ${{github.workspace}}/build --target build_loser_homework
 
-  build-in-msvc:
+      - name: Check run
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+
+  check-in-msvc:
     needs:  get-changed-files
     runs-on: windows-2022
 
@@ -154,3 +162,7 @@ jobs:
       - name: Build
         if: needs.get-changed-files.outputs.any_changed == 'true'
         run: cmake --build ${{github.workspace}}/build --target build_loser_homework
+
+      - name: Check run
+        if: needs.get-changed-files.outputs.any_changed == 'true'
+        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
