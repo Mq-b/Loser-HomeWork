@@ -1,3 +1,4 @@
+//!check-run
 /*
 测试能够正确运行的编译环境：
 x86-64 gcc 13.2 : https://godbolt.org/z/oG53ff16n
