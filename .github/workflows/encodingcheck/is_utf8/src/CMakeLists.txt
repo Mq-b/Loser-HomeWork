@@ -1,0 +1,38 @@
+add_library(is_utf8-include-source INTERFACE)
+target_include_directories(is_utf8-include-source INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+add_library(is_utf8-source INTERFACE)
+target_sources(is_utf8-source INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/is_utf8.cpp)
+target_link_libraries(is_utf8-source INTERFACE is_utf8-include-source)
+add_library(is_utf8 STATIC is_utf8.cpp)
+target_include_directories(is_utf8 PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}> )
+target_include_directories(is_utf8 PUBLIC "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>")
+
+if(IS_UTF8_SANITIZE)
+  target_compile_options(is_utf8 INTERFACE -fsanitize=address  -fno-omit-frame-pointer -fno-sanitize-recover=all)
+  target_compile_definitions(is_utf8 INTERFACE ASAN_OPTIONS=detect_leaks=1)
+  target_link_libraries(is_utf8 INTERFACE -fsanitize=address  -fno-omit-frame-pointer -fno-sanitize-recover=all)
+endif()
+
+if(MSVC)
+  if("${MSVC_TOOLSET_VERSION}" STREQUAL "140")
+    target_compile_options(is_utf8 INTERFACE /W0 /sdl)
+    set(is_utf8_LEGACY_VISUAL_STUDIO TRUE)
+  else()
+    target_compile_options(is_utf8 INTERFACE /WX /W3 /sdl /w34714) # https://docs.microsoft.com/en-us/cpp/error-messages/compiler-warnings/compiler-warning-level-4-c4714?view=vs-2019
+  endif()
+else(MSVC)
+  if(NOT WIN32)
+    target_compile_options(is_utf8 INTERFACE -fPIC)
+  endif()
+  target_compile_options(is_utf8 PRIVATE -Wall -Wextra -Weffc++)
+  target_compile_options(is_utf8 PRIVATE -Wfatal-errors -Wsign-compare -Wshadow -Wwrite-strings -Wpointer-arith -Winit-self -Wconversion -Wno-sign-conversion)
+endif(MSVC)
+
+# workaround for GNU GCC poor AVX load/store code generation
+if ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") AND (CMAKE_SYSTEM_PROCESSOR MATCHES "^(i.86|x86(_64)?)$"))
+  target_compile_options(is_utf8 PRIVATE -mno-avx256-split-unaligned-load -mno-avx256-split-unaligned-store)
+endif()
+
+if(MSVC AND BUILD_SHARED_LIBS)
+  set(is_utf8_WINDOWS_DLL TRUE)
+endif()

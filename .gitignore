@@ -21,3 +21,4 @@ build
 # Clion
 .idea
 cmake-build-*
+.cache

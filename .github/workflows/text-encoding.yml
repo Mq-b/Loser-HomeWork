@@ -4,48 +4,37 @@ on:
   workflow_dispatch:
   push:
     branches: [ "main" ]
-    paths:
-      - '**.cpp'
-      - '**.cxx'
-      - '**.cc'
-      - '**.tex'
-      - '**.md'
-      - '**.yaml'
-      - '**.yml'
-      - '**.toml'
-      - '**.rs'
-      - '**.py'
-      - '**.json'
-      - '**.jsonc'
-      - '**.txt'
-      - '**.cmake'
-      - 'CODEOWNERS'
-      - 'LICENSE'
-      - '.gitignore'
   pull_request:
     branches: [ "main" ]
-    paths:
-      - '**.cpp'
-      - '**.cxx'
-      - '**.cc'
-      - '**.tex'
-      - '**.md'
-      - '**.yaml'
-      - '**.yml'
-      - '**.toml'
-      - '**.rs'
-      - '**.py'
-      - '**.json'
-      - '**.jsonc'
-      - '**.txt'
-      - '**.cmake'
-      - 'CODEOWNERS'
-      - 'LICENSE'
-      - '.gitignore'
 
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - 
+      - name: Get checker hash
+        id: computehash
+        uses: seepine/hash-files@v1
+        with:
+          # The working dir for the action.
+          # Default: ${{ github.workspace }}
+          # workdir: ''
+      
+          # The patterns used to match files.
+          patterns: '.github/workflows/encodingcheck/**'
+      - name: Cache
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: .github/workflows/encodingcheck/build/encodingcheck
+          key: check-build-cache-${{ steps.computehash.outputs.hash }}
+      - name: Build
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          cd .github/workflows/encodingcheck
+          mkdir build && cd build
+
+          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
+          cmake --build . -t encodingcheck -j
+      - name: Check
+        run: .github/workflows/encodingcheck/build/encodingcheck
