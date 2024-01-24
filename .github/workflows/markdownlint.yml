@@ -12,30 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-
-    - name: Get checker hash
-      id: computehash
-      uses: seepine/hash-files@v1
+    - uses: xt0rted/markdownlint-problem-matcher@v2.0.0
+    - uses: DavidAnson/markdownlint-cli2-action@v15
       with:
-        # The working dir for the action.
-        # Default: ${{ github.workspace }}
-        # workdir: ''
-    
-        # The patterns used to match files.
-        patterns: 'check/**'
-
-    - name: Cache
-      id: cache
-      uses: actions/cache@v3
-      with:
-        path: check/target/release/check
-        key: check-build-cache-${{ steps.computehash.outputs.hash }}
-
-    - name: Build
-      if: steps.cache.outputs.cache-hit != 'true'
-      run: |
-        cd check
-        cargo build --release
-
-    - name: Check
-      run: check/target/release/check
+        globs: '**/*.md'
