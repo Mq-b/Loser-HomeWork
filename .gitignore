@@ -16,7 +16,7 @@
 /check/target
 /check/Cargo.lock
 __pycache__
-build/*
+build
 !build/.gitkeep
 # Clion
 .idea
