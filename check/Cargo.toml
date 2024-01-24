@@ -1,7 +1,0 @@
-[package]
-name = "check"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-comrak = "0.20"
