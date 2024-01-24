@@ -1,0 +1,51 @@
+name: Check file encoding
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '**.cpp'
+      - '**.cxx'
+      - '**.cc'
+      - '**.tex'
+      - '**.md'
+      - '**.yaml'
+      - '**.yml'
+      - '**.toml'
+      - '**.rs'
+      - '**.py'
+      - '**.json'
+      - '**.jsonc'
+      - '**.txt'
+      - '**.cmake'
+      - 'CODEOWNERS'
+      - 'LICENSE'
+      - '.gitignore'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '**.cpp'
+      - '**.cxx'
+      - '**.cc'
+      - '**.tex'
+      - '**.md'
+      - '**.yaml'
+      - '**.yml'
+      - '**.toml'
+      - '**.rs'
+      - '**.py'
+      - '**.json'
+      - '**.jsonc'
+      - '**.txt'
+      - '**.cmake'
+      - 'CODEOWNERS'
+      - 'LICENSE'
+      - '.gitignore'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - 
