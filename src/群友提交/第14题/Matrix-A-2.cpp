@@ -1,3 +1,4 @@
+//!check-run
 #include<iostream>
 
 // 宏，把 a 变成带有初始化的变量

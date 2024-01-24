@@ -1,3 +1,4 @@
+//!check-run
 #include<iostream>
 
 namespace ss {

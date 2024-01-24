@@ -9,35 +9,23 @@ on:
       - '.github/workflows/**'
       - '**.cmake'
       - 'CMakeLists.txt'
-      - '**/input.txt'
-      - '**/output.txt'
+      - 'src/群友提交/**'
+      - '!src/群友提交/**.cpp'
+      - '!src/群友提交/**.cxx'
+      - '!src/群友提交/**.cc'
   pull_request:
-    types:
-      - closed
     branches: [ "main" ]
     paths:
       - '.github/workflows/**'
       - '**.cmake'
       - 'CMakeLists.txt'
       - 'src/群友提交/**'
+      - '!src/群友提交/**.cpp'
+      - '!src/群友提交/**.cxx'
+      - '!src/群友提交/**.cc'
 
 jobs:
-  echo-event:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo ${{ github.event_name }}
-
-  if-trigger:
-    if: github.event.pull_request.merged == true ||
-      github.event_name == 'push' ||
-      github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'fork'
-    runs-on: ubuntu-latest
-    steps:
-        - run: echo trigger all build
-
   check-in-gcc:
-    needs: if-trigger
     runs-on: ubuntu-latest
     env:
       cxx_compiler: g++-13
@@ -55,7 +43,6 @@ jobs:
       run: cmake --build ${{github.workspace}}/build --target run_loser_homework
 
   check-in-clang:
-    needs: if-trigger
     runs-on: ubuntu-latest
     env:
       cxx_compiler: clang++-17
@@ -79,7 +66,6 @@ jobs:
         run: cmake --build ${{github.workspace}}/build --target run_loser_homework
 
   check-in-msvc:
-    needs: if-trigger
     runs-on: windows-2022
 
     steps:
