@@ -1,12 +1,11 @@
 # How to make a PR
 
 - [How to make a PR](#how-to-make-a-pr)
-  - [网页直接操作](#网页直接操作)
-  - [复制到本地操作](#复制到本地操作)
-  - [总结](#总结)
+  + [网页直接操作](#网页直接操作)
+  + [复制到本地操作](#复制到本地操作)
+  + [总结](#总结)
 
 我们以一个[卢瑟的仓库](https://github.com/OpenTritium/Snowflakes)为例。
-
 
 打开的样子就是下面：
 
@@ -65,7 +64,7 @@ Repository name（仓库名） 必须写，用默认也行， Description（说�
 
 我们已经 fork 了仓库，复制它的链接。
 
-我用户名是 Mq-b，我 fork 了这个仓库的链接是:https://github.com/Mq-b/Snowflakes_loser （你们不能用）
+我用户名是 Mq-b，我 fork 了这个仓库的链接是:<https://github.com/Mq-b/Snowflakes_loser> （你们不能用）
 
 其实直接去自己的的仓库列表找到这个仓库然后点进去复制链接就好。
 
@@ -105,7 +104,7 @@ Repository name（仓库名） 必须写，用默认也行， Description（说�
 
 ![提交和推送](image/pr/20.png)
 
-回到我们自己的 github 仓库中会看到：
+回到我们自己的 GitHub 仓库中会看到：
 
 ![看到](image/pr/21.png)
 
@@ -123,10 +122,10 @@ Repository name（仓库名） 必须写，用默认也行， Description（说�
 
 ## 总结
 
-你不要和我聊你没 github 账号，没下载 vscode，自己整。
+你不要和我聊你没 GitHub 账号，没下载 vscode，自己整。
 
 还有令牌之类的事情，自己整。
 
 需要注意的是**网页版的示例我们没新建分支，这很不好**。
 
-值得一提的是，github 使用 utf8 编码，如果你发现你上传的东西乱码，很正常，国内的 windows 电脑默认使用国标 GB2312 或 GB18030，自行处理。
+值得一提的是，GitHub 使用 utf8 编码，如果你发现你上传的东西乱码，很正常，国内的 windows 电脑默认使用国标 GB2312 或 GB18030，自行处理。

@@ -122,7 +122,7 @@ static_assert(size<Point>() == 2);
 
 然后……
 
-```
+```cpp
 <source>:48:12: error: call to 'size_' is ambiguous
     return size_<T>(); // highest supported number
            ^~~~~~~~

@@ -1,5 +1,5 @@
 <div id="img" align=center>
-    
+
 [![视频教程](https://img.shields.io/badge/%E8%A7%86%E9%A2%91%E6%95%99%E7%A8%8B-bilibili-cyan)](https://www.bilibili.com/video/BV1Zj411r7eP)
 [![QQ 群](https://img.shields.io/badge/QQ%E7%BE%A4-%E5%8D%A2%E7%91%9F%E5%B8%9D%E5%9B%BD-blue)](https://qm.qq.com/cgi-bin/qm/qr?k=X-ouAYdQzPDQGUR7R-vECHDpXb7Uihdm&jump_from=webapi&authKey=5XYoNIfb913mo5Ff3P1nOhVy1pJgCM4Q6wAykQ+rpiDQSRu+tCXMN6yGOkjxIIrl)
 [![知乎](https://img.shields.io/badge/%E7%9F%A5%E4%B9%8E-mq%E7%99%BD-yello)](https://www.zhihu.com/people/o4ze4r)
@@ -21,65 +21,65 @@
 
 - [前言](#前言)
 - [`01` 实现管道运算符](#01-实现管道运算符)
-  - [运行结果](#运行结果)
-  - [群友提交](#群友提交)
-  - [标准答案](#标准答案)
-  - [解析](#解析)
+  + [运行结果](#运行结果)
+  + [群友提交](#群友提交)
+  + [标准答案](#标准答案)
+  + [解析](#解析)
 - [`02` 实现自定义字面量 `_f`](#02-实现自定义字面量-_f)
-  - [运行结果](#运行结果-1)
-  - [群友提交](#群友提交-1)
-  - [标准答案](#标准答案-1)
-  - [解析](#解析-1)
+  + [运行结果](#运行结果-1)
+  + [群友提交](#群友提交-1)
+  + [标准答案](#标准答案-1)
+  + [解析](#解析-1)
 - [`03` 实现 `print` 以及特化 `std::formatter`](#03-实现-print-以及特化-stdformatter)
-  - [运行结果](#运行结果-2)
-  - [群友提交](#群友提交-2)
-  - [标准答案](#标准答案-2)
-  - [解析](#解析-2)
+  + [运行结果](#运行结果-2)
+  + [群友提交](#群友提交-2)
+  + [标准答案](#标准答案-2)
+  + [解析](#解析-2)
 - [`04` 给定类模板修改，让其对每一个不同类型实例化有不同 ID](#04-给定类模板修改让其对每一个不同类型实例化有不同-id)
-  - [运行结果](#运行结果-3)
-  - [群友提交](#群友提交-3)
-  - [标准答案](#标准答案-3)
+  + [运行结果](#运行结果-3)
+  + [群友提交](#群友提交-3)
+  + [标准答案](#标准答案-3)
 - [`05` 实现 `scope_guard` 类型](#05-实现-scope_guard-类型)
-  - [运行结果](#运行结果-4)
-  - [群友提交](#群友提交-4)
-  - [标准答案](#标准答案-4)
+  + [运行结果](#运行结果-4)
+  + [群友提交](#群友提交-4)
+  + [标准答案](#标准答案-4)
 - [`06` 解释 `std::atomic` 初始化](#06-解释-stdatomic-初始化)
-  - [群友提交](#群友提交-5)
-  - [标准答案](#标准答案-5)
+  + [群友提交](#群友提交-5)
+  + [标准答案](#标准答案-5)
 - [`07` `throw new MyException`](#07-throw-new-myexception)
-  - [运行结果](#运行结果-5)
-  - [群友提交](#群友提交-6)
-  - [标准答案](#标准答案-6)
+  + [运行结果](#运行结果-5)
+  + [群友提交](#群友提交-6)
+  + [标准答案](#标准答案-6)
 - [`08` 定义`array`推导指引](#08-定义array推导指引)
-  - [运行结果](#运行结果-6)
-  - [群友提交](#群友提交-7)
-  - [标准答案](#标准答案-7)
+  + [运行结果](#运行结果-6)
+  + [群友提交](#群友提交-7)
+  + [标准答案](#标准答案-7)
 - [`09` 名字查找的问题](#09-名字查找的问题)
-  - [运行结果](#运行结果-7)
-  - [群友提交](#群友提交-8)
-  - [标准答案](#标准答案-8)
+  + [运行结果](#运行结果-7)
+  + [群友提交](#群友提交-8)
+  + [标准答案](#标准答案-8)
 - [`10` 遍历任意类数据成员](#10-遍历任意类数据成员)
-  - [运行结果](#运行结果-8)
-  - [群友提交](#群友提交-9)
-  - [标准答案](#标准答案-9)
+  + [运行结果](#运行结果-8)
+  + [群友提交](#群友提交-9)
+  + [标准答案](#标准答案-9)
     - [`C++17` 写法](#c17-写法)
     - [`C++20` 写法](#c20-写法)
-  - [补充说明](#补充说明)
+  + [补充说明](#补充说明)
 - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
-  - [群友提交](#群友提交-10)
-  - [标准答案](#标准答案-10)
+  + [群友提交](#群友提交-10)
+  + [标准答案](#标准答案-10)
 - [`12` 实现`make_vector()`](#12-实现make_vector)
-  - [运行结果](#运行结果-9)
-  - [群友提交](#群友提交-11)
-  - [标准答案](#标准答案-11)
+  + [运行结果](#运行结果-9)
+  + [群友提交](#群友提交-11)
+  + [标准答案](#标准答案-11)
     - [运行结果](#运行结果-10)
 - [`13` 关于 `return std::move`](#13-关于-return-stdmove)
-  - [群友提交](#群友提交-12)
-  - [标准答案](#标准答案-12)
+  + [群友提交](#群友提交-12)
+  + [标准答案](#标准答案-12)
 - [`14` 以特殊方法修改命名空间中声明的对象](#14-以特殊方法修改命名空间中声明的对象)
-  - [运行结果](#运行结果-11)
-  - [群友提交](#群友提交-13)
-  - [标准答案](#标准答案-13)
+  + [运行结果](#运行结果-11)
+  + [群友提交](#群友提交-13)
+  + [标准答案](#标准答案-13)
     - [利用符号来解决](#利用符号来解决)
     - [直接修改内存](#直接修改内存)
     - [利用名字查找规则](#利用名字查找规则)
@@ -87,6 +87,14 @@
 
 </details>
 
+<!-- []: https://zh.cppreference.com/w/ -->
+
+[Mq-b/Cookbook/7.6]: https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC
+[cpp/language/range-for]: https://zh.cppreference.com/w/cpp/language/range-for
+[cpp/utility/functional/function]: https://zh.cppreference.com/w/cpp/utility/functional/function
+[cpp/utility/tuple]: https://zh.cppreference.com/w/cpp/utility/tuple
+[cpp/ranges/range]: https://zh.cppreference.com/w/cpp/ranges/range
+[cpp/language/user_literal]: https://zh.cppreference.com/w/cpp/language/user_literal
 ---
 
 ## 前言
@@ -214,18 +222,24 @@ std::vector<int>& operator|(auto& v1, const auto& f) {
 ```
 
 **各种其他答案的范式无非就是这些改来改去了，没必要再写。**
+
 ### 解析
+
 很明显我们需要重载管道运算符 |，根据我们的调用形式 `v | f2 | f`, 这种链式的调用，以及根据给出运行结果，我们可以知道，重载函数应当返回 v 的引用，并且 v 会被修改。
 `v | f2` 调用 `operator |`，operator | 中使用 f2 遍历了 v 中的每一个元素，然后返回 v 的引用，再 | f。
 
 ```c++
-template<typename  U,typename F>
+template<typename U, typename F>
 requires std::regular_invocable<F, U&> //我们可以认为对模板形参U，F满足std::regular_invocable的约束
 ```
 
 如果没接触过约束表达式，没关系，下面将简要的介绍。
 
-requires 表达式如同一个返回 bool 的函数，而 U 和 F 作为类型填入 std::regular_invocable 的实参列表里，只要作为类型的 U，F 满足该表达式则返回 true;不满足则返回 false，称为“不满足约束”。不满足约束的类型自然不会执行后续的代码。而 [std::regular_invocable](https://zh.cppreference.com/w/cpp/concepts/invocable) 我们可以简单看成对类型 U 的每一个值，我们是否可以调用函数 F，即调用 `std::invoke` 。相当于我们在编译期对运行期做了想象，想象一下可以对 U 在运行期执行 F 吗？如果可以那满足约束。
+requires 表达式如同一个返回 bool 的函数，而 U 和 F 作为类型填入 std::regular_invocable 的实参列表里，只要作为类型的 U、F 满足该表达式则返回 true；不满足则返回 false，称为“不满足约束”。不满足约束的类型自然不会执行后续的代码。
+
+而 [std::regular_invocable](https://zh.cppreference.com/w/cpp/concepts/invocable) 我们可以简单看成对类型 U 的每一个值，我们是否可以调用函数 F，即调用 `std::invoke` 。
+
+这就相当于我们在编译期对运行期做了想象，想象是否可以对 U 在运行期执行 F。如果可以那满足约束。
 
 而函数主体则极为简单
 
@@ -238,9 +252,10 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 }
 ```
 
-其中[范围表达式](https://zh.cppreference.com/w/cpp/language/range-for) `for (auto& i : v1)`,如同`for(auto i=v.begin();i=v.end();++i){f(*i)}` 我们对*vector*（范围）中的每一个元素应用一次**f**函数。返回时照常返回 v1。
+其中[范围表达式][cpp/language/range-for] `for (auto& i : v1)`，如同 `for(auto i=v.begin();i!=v.end();++i){f(*i)}`：我们对 *vector*（范围）中的每一个元素应用一次 **f** 函数。返回时照常返回 v1。
 
-如若不使用模板，则我们的形参列表得用 [std::function](https://zh.cppreference.com/w/cpp/utility/functional/function) 来接住我们使用的函数。对范围中的每个成员应用**f**不需要返回值且需要对范围中的元素进行修改，所以第二个形参为 `std::function<void(int&)>`，并且我们不需要对传进来的函数 **f** 进行修改与拷贝，所以加上 **const** 限定是个好习惯。
+如若不使用模板，则我们的形参列表得用 [std::function][cpp/utility/functional/function] 来接住我们使用的函数：<br/>
+对范围中的每个成员应用 **f** 不需要返回值且需要对范围中的元素进行修改，所以第二个形参为 `std::function<void(int&)>`。并且我们不需要对传进来的函数 **f** 进行修改与拷贝，所以加上 **const** 限定是个好习惯。
 
 同样的我们可以不使用范围 for 而是更简单的 `std::ranges::for_each(v1, f);` 即同上一样对范围 v1内的每个元素，应用一次函数 **f**。
 
@@ -248,7 +263,7 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 
 ```c++
 std::vector<int>& operator|(auto& v1, const auto& f) 
-``` 
+```
 
 它和原形式相同。
 
@@ -337,7 +352,8 @@ constexpr auto operator""_f(const char* fmt, size_t) {
 
 ### 解析
 
-我们需要使用到 C++11 用户定义字面量，`""_f` 正是[用户自定义字面量](https://zh.cppreference.com/w/cpp/language/user_literal)，但**字面量运算符**（用户定义字面量所调用的函数被称为字面量运算符）的形参列表有一些限制，我们需要的是 `(const char *,std::size_t)` 这样的形参列表，恰好这是允许的；而字面量运算符的返回类型，我们需要自定义，这个类型需要在内部重载 **`()`** 运算符，以满足上述字面量像函数一样调用的要求。
+我们需要使用到 C++11 用户定义字面量，`""_f` 正是[用户自定义字面量][cpp/language/user_literal]。<br/>
+但**字面量运算符**（用户定义字面量所调用的函数被称为字面量运算符）的形参列表有一些限制，我们需要的是 `const char *, std::size_t` 这样的形参列表，恰好这是允许的；而字面量运算符的返回类型需要自定义，这个类型需要在内部重载 **`operator()`**，以满足上述字面量像函数一样调用的要求。
 
 我们一步一步来：
 
@@ -393,7 +409,8 @@ impl::Helper operator""_f(const char* s, std::size_t len) noexcept {
 
 **重点只在于 `operator()`。** 它是一个变参模板，用来接取我们传入的任意类型和个数的参数，然后返回格式化后的字符串。
 
-这里用到的是 `std::vformat` 进行格式化，它的第一个参数是格式字符串，也就是我们要按照什么样的规则去格式化；第二个参数是要格式化的参数，但是我们没有办法直接进行形参包展开，它第二个参数的类型实际上是 `std::format_args`。 我们必须使用 `std::make_format_args` 函数传入我们的参数，它会返回 `std::format_args` 类型，其实也就是相当于转换一下，合理。
+这里用到的是 `std::vformat` 进行格式化，它的第一个参数是格式字符串，也就是我们要按照什么样的规则去格式化；第二个参数是要格式化的参数，但是我们没有办法直接进行形参包展开，它第二个参数的类型实际上是 `std::format_args`。
+我们必须使用 `std::make_format_args` 函数传入我们的参数，它会返回 `std::format_args` 类型，其实也就是相当于转换一下，合理。
 
 不过显然标准答案不是这样的，还能简化，直接让 `""_f` 返回一个 lambda 表达式即可。
 
@@ -456,8 +473,8 @@ void print(std::string_view fmt,auto&&...args){
 ```
 
 我们只是非常简单的支持了**题目要求**的形式，给 `std::formatter` 进行特化，如果要支持比如那些 `{:6}` 之类的格式化的话，显然不行，这涉及到更多的操作。
-简单的特化以及 [`std::formatter`](https://zh.cppreference.com/w/cpp/utility/format/formatter) 支持的形式可以参见[**文档**](https://zh.cppreference.com/w/cpp/utility/format/formatter)。
-一些复杂的特化，up 之前也有写过，在 [**`Cookbook`**](https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC) 中，里面有对 [`std::ranges::range`](https://zh.cppreference.com/w/cpp/ranges/range) 和 [`std::tuple`](https://zh.cppreference.com/w/cpp/utility/tuple) 的特化，支持所有形式。
+简单的特化以及 [`std::formatter`](cpp/utility/format/formatter) 支持的形式可以参见[**文档**](cpp/utility/format/formatter)。
+一些复杂的特化，up 之前也有写过，在 [**Cookbook**][Mq-b/Cookbook/7.6] 中，里面有对 [`std::ranges::range`][cpp/ranges/range] 和 [`std::tuple`][cpp/utility/tuple] 的特化，支持所有形式。
 
 ### 解析
 
@@ -480,21 +497,28 @@ std::forward<decltype(args3)>(args3),...
 
 这样我们对每个应用到的参数用 decltype 取他的类型再作为完美转发的模板参数。这样调用 `vformat`,返回 string,可以使用 cout 直接输出。
 
-而自定义类型，特化 std::formatter;我们需要知道的是:想要自定义**std::formatter** 模板特化需要提供两个函数，**parse 和 format**,**parse** 用来处理格式说明，并且设置相关的成员变量,相对于本题我们不需要如此麻烦的写此成员函数;我们选择继承`std::formatter<char>`的 **parse** 函数，独立实现 **format** 函数。此处模板特化的语法,不了解请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
+而关于自定义 `std::formatter` 特化，我们需要知道的是：想要自定义 **std::formatter** 模板特化需要提供两个函数，**parse** 和 **format**。
+
+**parse** 用来处理格式说明，并且设置相关的成员变量，对于本题我们不需要麻烦地实现此成员函数；<br/>
+我们选择继承 `std::formatter<char>` 的 **parse** 函数，独立实现 **format** 函数。如果不了解此处模板特化的语法，请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
 
 ```c++
 template<>
-struct std::formatter<Frac>:std::formatter<char>{
+struct std::formatter<Frac> : std::formatter<char> {
     auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
         return std::format_to(ctx.out(), "{}/{}", frac.a, frac.b);
     }
 };
 ```
 
-我们同样使用**auto**作占位符的简写函数模板，对于**format**函数，首个参数为我们传递的自定义类，第二个参数(**ctx**)为我们要传递给`std::format_to`输出迭代器的格式字符串。在函数体中我们直接返回`std::format_to()`调用表达式的结果,此函数返回输出迭代器;返回值我们使用**auto**占位符进行返回值推导。在函数实参中,`ctx.out`即为输出迭代器，第二个参数为可转换为**std::string_view**或**std::wstring_view**,而转换结果是常量表达式和 Args 的合法格式字符串。本题中我们填入我们需要的形式即`{}/{}`我们想要两个参数塞到 **{ }**,就如我们使用`printf(%d,x)`一样；最后两个参数为“需要塞进 **{ }** 的值”,即要格式化的参数。
+我们同样使用 **auto** 作占位符的简写函数模板，对于 **format** 函数，首个参数为我们传递的自定义类，第二个参数（**ctx**）为我们要传递给 `std::format_to` 输出迭代器的格式字符串。
+
+在函数体中我们直接返回 `std::format_to()` 调用表达式的结果，此函数返回输出迭代器；返回值我们使用 **auto** 占位符进行返回值推导。
+
+在函数实参中，`ctx.out()` 即为输出迭代器，第二个参数为可转换为 `std::string_view` 或 `std::wstring_view`，而转换结果是常量表达式和 Args 的合法格式字符串。本题中我们填入我们需要的形式，即 `{}/{}`。<br/>
+我们想要两个参数塞进 `{}`，就如我们使用 `printf(%d,x)` 一样；最后两个参数为“需要塞进 `{}` 的值”，即要格式化的参数。
 
 ---
-
 
 ## `04` 给定类模板修改，让其对每一个不同类型实例化有不同 ID
 
@@ -961,7 +985,12 @@ this->f();
 
 我们找到**模板定义**：
 
-> 对于在模板的定义中所使用的**非待决名**，当**检查该模板的定义时将进行无限定的名字查找**。在这个位置与声明之间的绑定并不会受到在实例化点可见的声明的影响。而对于在模板定义中所使用的**待决名**，**它的查找会推迟到得知它的模板实参之时**。此时，ADL 将同时在模板的定义语境和在模板的实例化语境中检查可见的具有外部连接的 (C++11 前)函数声明，而非 ADL 的查找只会检查在模板的定义语境中可见的具有外部连接的 (C++11 前)函数声明。（换句话说，在模板定义之后添加新的函数声明，除非通过 ADL 否则仍是不可见的。）如果在 ADL 查找所检查的命名空间中，在某个别的翻译单元中声明了一个具有外部连接的更好的匹配声明，或者如果当同样检查这些翻译单元时其查找会导致歧义，那么行为未定义。无论哪种情况，如果某个基类取决于某个模板形参，**那么无限定名字查找不会检查它的作用域（在定义点和实例化点都不会）**。
+> 对于在模板的定义中所使用的**非待决名**，当**检查该模板的定义时将进行无限定的名字查找**。在这个位置与声明之间的绑定并不会受到在实例化点可见的声明的影响。
+> 而对于在模板定义中所使用的**待决名**，**它的查找会推迟到得知它的模板实参之时**。
+> 此时，ADL 将同时在模板的定义语境和在模板的实例化语境中检查可见的具有外部连接的（C++11 前）函数声明，而非 ADL 的查找只会检查在模板的定义语境中可见的具有外部连接的（C++11 前）函数声明。
+>（换句话说，在模板定义之后添加新的函数声明，除非通过 ADL 否则仍是不可见的。）
+> 如果在 ADL 查找所检查的命名空间中，在某个别的翻译单元中声明了一个具有外部连接的更好的匹配声明，或者如果当同样检查这些翻译单元时其查找会导致歧义，那么行为未定义。
+> 无论哪种情况，如果某个基类取决于某个模板形参，**那么无限定名字查找不会检查它的作用域（在定义点和实例化点都不会）**。
 
 原文很长，但是看我们加粗的也足够了。如果你没有学习过[待决名](https://zh.cppreference.com/w/cpp/language/dependent_name)，那这又会引入一个问题了。
 
@@ -1329,7 +1358,8 @@ int main(){
 11. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{} } }`，显然同 `2` `5` `8` 返回 **`false`**，不进入分支。
 12. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
 13. **第五次** 进入 `size` 函数，此时形参包 `Args` 有**四个**参数 `init`。（**注意，重点要来了，`X` 类型只有三个成员**）
-14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
+14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。
+所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
 15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4` ，再 `-1`，也就是  **`3`**。**得到最终结果**。
 
 到此，我们介绍完了 `C++20`写法的 获取聚合类型的 `size` 函数。
@@ -1433,9 +1463,6 @@ int main(){
 我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用1.82.0版本。
 
 参见 [示例代码](src/群友提交/第10题/with_boost_pfr.md)
-
-
-
 
 ---
 
@@ -1722,45 +1749,45 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 
 1. 全局函数，返回局部对象，使用 `std::move`。
 
-```cpp
-#include<iostream>
+    ```cpp
+    #include<iostream>
 
-struct X{//后续代码不再重复X类
-    X() { puts("X()"); }
-    X(const X&) { puts("X(const X&)"); }
-    X(X&&)noexcept { puts("X(X&&)"); }
-    ~X() { puts("~X()"); }
-};
+    struct X{//后续代码不再重复X类
+        X() { puts("X()"); }
+        X(const X&) { puts("X(const X&)"); }
+        X(X&&)noexcept { puts("X(X&&)"); }
+        ~X() { puts("~X()"); }
+    };
 
-X f(){
-    X x;
-    return std::move(x);
-}
+    X f(){
+        X x;
+        return std::move(x);
+    }
 
-int main(){
-    X x = f();
-}
-```
+    int main(){
+        X x = f();
+    }
+    ```
 
 2. 全局函数，返回局部的引用，使用 `std::move`。
 
-```cpp
-X&& f(){
-    X x;
-    return std::move(x);
-}
-```
+    ```cpp
+    X&& f(){
+        X x;
+        return std::move(x);
+    }
+    ```
 
 3. 类中成员函数，返回数据成员，使用 `std::move`。
 
-```cpp
-struct Test {
-    X x;
-    X f() {
-        return std::move(x);
-    }
-};
-```
+    ```cpp
+    struct Test {
+        X x;
+        X f() {
+            return std::move(x);
+        }
+    };
+    ```
 
 - 难度:**★★★☆☆**
 

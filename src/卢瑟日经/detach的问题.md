@@ -12,9 +12,9 @@
 
 反正就是不保证实现，也可以看看 POSIX 的说法：
 
->*[pthread_detach()](https://pubs.opengroup.org/onlinepubs/009696899/functions/pthread_detach.html) 函数应该向实现表明，当线程终止时，线程的存储空间可以被回收。如果线程没有终止，pthread_detach() 将不会导致它终止。多个 pthread_detach() 调用对同一目标线程的影响是未指定的。*
-
->The pthread_detach() function shall indicate to the implementation that storage for the thread thread can be reclaimed when that thread terminates. If thread has not terminated, pthread_detach() shall not cause it to terminate. The effect of multiple pthread_detach() calls on the same target thread is unspecified.
+> *[pthread_detach()](https://pubs.opengroup.org/onlinepubs/009696899/functions/pthread_detach.html) 函数应该向实现表明，当线程终止时，线程的存储空间可以被回收。如果线程没有终止，pthread_detach() 将不会导致它终止。多个 pthread_detach() 调用对同一目标线程的影响是未指定的。*
+>
+> The pthread_detach() function shall indicate to the implementation that storage for the thread thread can be reclaimed when that thread terminates. If thread has not terminated, pthread_detach() shall not cause it to terminate. The effect of multiple pthread_detach() calls on the same target thread is unspecified.
 
 当然了，这种问题显然不会这么单纯的聊，说说实现和举例子是必须的。
 
