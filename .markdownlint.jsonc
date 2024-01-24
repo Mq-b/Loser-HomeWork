@@ -1,0 +1,32 @@
+{
+    "default": true,
+    "MD003": {
+        "style": "atx"
+    },
+    "MD004": {
+        "style": "sublist"
+    },
+    "MD024": {
+        "siblings_only": true
+    },
+    "MD033": false,
+    "MD041": false,
+    "MD043": false,
+    "MD044": {
+        "code_blocks": false,
+        "html_elements": false,
+        "names": [
+            "JavaScript",
+            "GitHub"
+        ]
+    },
+    "MD046": {
+        "style": "fenced"
+    },
+    "MD054": {
+        "url_inline": false
+    },
+    "MD055": {
+        "style": "leading_and_trailing"
+    }
+}

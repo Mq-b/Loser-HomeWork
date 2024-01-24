@@ -1,4 +1,4 @@
-name: Check
+name: Lint Markdown files
 
 on:
   workflow_dispatch:
