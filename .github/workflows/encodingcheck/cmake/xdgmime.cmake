@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
-# project(xdgmime LANGUAGES C)
+project(extxdgmime LANGUAGES C)
 
 add_library(libxdgmime STATIC
     ${xdgmime_SOURCE_DIR}/src/xdgmime.c
