@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - uses: xt0rted/markdownlint-problem-matcher@v2.0.0
     - uses: DavidAnson/markdownlint-cli2-action@v15
       with:
         globs: '**/*.md'
