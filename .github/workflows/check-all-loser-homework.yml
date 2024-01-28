@@ -1,7 +1,6 @@
 name: Check all loser homework
 
 on:
-  fork:
   workflow_dispatch:
   push:
     branches: [ "main" ]
