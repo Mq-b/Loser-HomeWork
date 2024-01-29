@@ -1,11 +1,12 @@
 #include<iostream>
 #include<vector>
 #include<functional>
+#include<algorithm>
 
-template<typename T, typename Formatter>
-T &operator|(T &arr, const Formatter &func) {
-    std::for_each(std::begin(arr), std::end(arr), func);
-    return arr;
+template<typename T, typename F>
+std::vector<T> &operator|(std::vector<T> &v, const F &func) {
+    std::for_each(v.begin(), v.end(), func);
+    return v;
 }
 
 int main() {

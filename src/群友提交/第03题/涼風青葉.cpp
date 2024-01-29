@@ -7,14 +7,14 @@ struct Frac {
 
 template<>
 struct std::formatter<Frac> : std::formatter<char> {
-    auto format(const Frac &arg, std::format_context &ctx) const {
-        return std::format_to(ctx.out(), "{}/{}", arg.a, arg.b);
+    auto format(const Frac &frac, std::format_context &ctx) const {
+        return std::format_to(ctx.out(), "{}/{}", frac.a, frac.b);
     }
 };
 
-template<typename T, typename ...U>
-void print(T fmt, U ...args) {
-    std::cout << std::vformat(fmt, std::make_format_args(args...));
+template<typename T, typename ...Args>
+void print(const T &fmt, Args &&...args) {
+    std::cout << std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
 }
 
 int main() {

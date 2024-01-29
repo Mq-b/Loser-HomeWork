@@ -5,11 +5,11 @@
 struct Formatter {
     const std::string_view fmt;
 
-    Formatter(const char *s) : fmt(s) { }
+    Formatter(const char *s) : fmt(s) {}
 
-    template<typename ...T>
-    std::string operator()(const T &...args) const {
-        return std::vformat(fmt, std::make_format_args(args...));
+    template<typename ...Args>
+    std::string operator()(Args &&...args) const {
+        return std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
     }
 };
 
