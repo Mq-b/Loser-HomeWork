@@ -9,7 +9,7 @@
     #include<iostream>
     class ComponentBase{
     protected:
-        static inline size_t component_type_count = 0;
+        static inline std::size_t component_type_count = 0;
     };
     template<typename T>
     class Component : public ComponentBase{
