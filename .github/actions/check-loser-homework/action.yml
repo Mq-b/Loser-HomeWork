@@ -13,9 +13,15 @@ inputs:
     description: 'extra cmake generation parameters'
     required: false
     default: ''
+  use-ninja:
+    description: 'use ninja to build'
+    required: false
+    default: true
 runs:
   using: "composite"
   steps: 
+    - uses: seanmiddleditch/gha-setup-ninja@master
+      if: inputs.use-ninja == 'true'
     - uses: actions/setup-python@v5
       with:
         python-version: '3.12'
@@ -24,13 +30,31 @@ runs:
       shell: ${{ inputs.shell }}
 
     - name: Configure CMake
+      if: inputs.use-ninja == 'false'
       run: cmake -B ${{ inputs.build-path }} ${{ inputs.extra-gen-params}}
       shell: ${{ inputs.shell }}
 
     - name: Build
+      if: inputs.use-ninja == 'false'
       run: cmake --build ${{ inputs.build-path }} --target build_loser_homework
       shell: ${{ inputs.shell }}
 
     - name: Check run
+      if: inputs.use-ninja == 'false'
       run: cmake --build ${{ inputs.build-path }} --target run_loser_homework
+      shell: ${{ inputs.shell }}
+
+    - name: Configure CMake with Ninja
+      if: inputs.use-ninja == 'true'
+      run: cmake -B ${{ inputs.build-path }} -G Ninja ${{ inputs.extra-gen-params}}
+      shell: ${{ inputs.shell }}
+
+    - name: Build with Ninja
+      if: inputs.use-ninja == 'true'
+      run: ninja -C ${{ inputs.build-path }} build_loser_homework
+      shell: ${{ inputs.shell }}
+
+    - name: Check run with Ninja
+      if: inputs.use-ninja == 'true'
+      run: ninja -C ${{ inputs.build-path }} run_loser_homework
       shell: ${{ inputs.shell }}

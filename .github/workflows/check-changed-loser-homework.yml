@@ -155,3 +155,4 @@ jobs:
         with:
           build-path: ${{github.workspace}}/build
           shell: pwsh
+          use-ninja: false

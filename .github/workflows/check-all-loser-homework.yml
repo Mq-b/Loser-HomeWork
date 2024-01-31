@@ -6,6 +6,7 @@ on:
     branches: [ "main" ]
     paths:
       - '.github/workflows/**'
+      - '.github/actions/**'
       - '**.cmake'
       - 'CMakeLists.txt'
       - 'src/群友提交/**'
@@ -16,6 +17,7 @@ on:
     branches: [ "main" ]
     paths:
       - '.github/workflows/**'
+      - '.github/actions/**'
       - '**.cmake'
       - 'CMakeLists.txt'
       - 'src/群友提交/**'
@@ -69,3 +71,4 @@ jobs:
         with:
           build-path: ${{github.workspace}}/build
           shell: pwsh
+          use-ninja: false
