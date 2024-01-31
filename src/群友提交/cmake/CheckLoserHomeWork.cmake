@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
+include(Slugify)
+
 function(get_subdirs path _subdirs_list)
     file(GLOB all_childs
             CONFIGURE_DEPENDS "${path}/*")
@@ -35,11 +37,11 @@ endfunction()
 
 function(get_homework_target_name question_index cpp_file_path _target_name)
     get_filename_component(file_name ${cpp_file_path} NAME_WLE)
-    is_valid_target_name(${file_name} ret)
+    is_valid_target_name("${file_name}" ret)
     if (NOT ret)
-        message(NOTICE "not valid target name: ${file_name}")
-        string(MD5 hash_file_name ${file_name})
-        set(target_name "${question_index}_${hash_file_name}")
+        slugify("${file_name}" slug)
+        message(NOTICE "not valid target name: ${question_index}_${file_name}, use: ${slug}")
+        set(target_name "${question_index}_${slug}")
     else ()
         set(target_name "${question_index}_${file_name}")
     endif ()
