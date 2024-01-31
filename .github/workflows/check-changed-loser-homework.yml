@@ -57,6 +57,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
 
       - name: Only keep cpp changed files
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -73,10 +78,6 @@ jobs:
           echo $find_command
           eval "$find_command"
           find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \)
-        
-      - name: Install python-slugigy
-        run: |
-          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -98,6 +99,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
 
       - name: Only keep cpp changed files
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -121,10 +127,6 @@ jobs:
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           echo | sudo ./llvm.sh 17
-        
-      - name: Install python-slugigy
-        run: |
-          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -144,6 +146,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
 
       - name: Only keep cpp changed files
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -166,10 +173,6 @@ jobs:
               Remove-Item $cppFile.FullName
             }
           }
-
-      - name: Install python-slugigy
-        run: |
-          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         if: needs.get-changed-files.outputs.any_changed == 'true'

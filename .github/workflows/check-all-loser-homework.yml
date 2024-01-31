@@ -30,20 +30,21 @@ jobs:
       cxx_compiler: g++-13
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
 
-    - name: Install python-slugigy
-      run: |
-        pip install python-slugify[unidecode]
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
 
-    - name: Configure CMake
-      run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
+      - name: Build
+        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
 
-    - name: Build
-      run: cmake --build ${{github.workspace}}/build --target build_loser_homework
-
-    - name: Check run
-      run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+      - name: Check run
+        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
 
   check-in-clang:
     runs-on: ubuntu-latest
@@ -52,16 +53,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
 
       - name: Install clang 17
         run: |
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           echo | sudo ./llvm.sh 17
-      
-      - name: Install python-slugigy
-        run: |
-          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
@@ -77,10 +79,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        
-      - name: Install python-slugigy
-        run: |
-          pip install python-slugify[unidecode]
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build
