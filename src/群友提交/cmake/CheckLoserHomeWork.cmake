@@ -29,7 +29,7 @@ endfunction()
 
 function(is_valid_target_name name _ret)
     set(ret true)
-    if(NOT name MATCHES "^[a-zA-Z0-9_\\-\\+\\.]+$")
+    if(NOT name MATCHES "^[a-zA-Z0-9_\+\.\-]+$")
         set(ret false)
     endif ()
     set(${_ret} ${ret} PARENT_SCOPE)
