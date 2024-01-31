@@ -9,7 +9,7 @@ function(slugify str _retname)
         COMMAND ${PYTHON_EXECUTABLE} "-m" "slugify" "--stdin"
         TIMEOUT 10
         INPUT_FILE ${CMAKE_BINARY_DIR}/slugify-${strhash}.txt
-        OUTPUT_NAME sluggish
+        OUTPUT_VARIABLE sluggish
         COMMAND_ERROR_IS_FATAL ANY
     )
     set(${_retname} ${sluggish} PARENT_SCOPE)
