@@ -73,6 +73,10 @@ jobs:
           echo $find_command
           eval "$find_command"
           find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \)
+        
+      - name: Install python-slugigy
+        run: |
+          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -117,6 +121,10 @@ jobs:
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           echo | sudo ./llvm.sh 17
+        
+      - name: Install python-slugigy
+        run: |
+          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -158,6 +166,10 @@ jobs:
               Remove-Item $cppFile.FullName
             }
           }
+
+      - name: Install python-slugigy
+        run: |
+          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         if: needs.get-changed-files.outputs.any_changed == 'true'

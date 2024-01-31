@@ -32,6 +32,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install python-slugigy
+      run: |
+        pip install python-slugify[unidecode]
+
     - name: Configure CMake
       run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
 
@@ -54,6 +58,10 @@ jobs:
           wget https://apt.llvm.org/llvm.sh
           chmod u+x llvm.sh
           echo | sudo ./llvm.sh 17
+      
+      - name: Install python-slugigy
+        run: |
+          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
@@ -69,6 +77,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        
+      - name: Install python-slugigy
+        run: |
+          pip install python-slugify[unidecode]
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build
