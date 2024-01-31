@@ -1,0 +1,20 @@
+name: Build TeX files
+
+on:
+  workflow_dispatch: 
+
+jobs:
+  build-to-lfs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install ghostscript and latexmk
+      run: |
+        sudo apt update
+        sudo apt install ghostscript latexmk
+    
+    - name: Install TeX Live
+      uses: zauguin/install-texlive@v3
+      with:
+        package_file: .github/tl_packages
