@@ -6,11 +6,12 @@ function(slugify str _retname)
     string(MD5 strhash ${str})
     file(WRITE ${CMAKE_BINARY_DIR}/slugify-${strhash}.txt "${str}")
     execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} "-m" "slugify" "--stdin"
+        COMMAND ${Python_EXECUTABLE} "-m" "slugify" "--stdin"
         TIMEOUT 10
         INPUT_FILE ${CMAKE_BINARY_DIR}/slugify-${strhash}.txt
         OUTPUT_VARIABLE sluggish
         COMMAND_ERROR_IS_FATAL ANY
     )
+    string(STRIP ${sluggish} sluggish)
     set(${_retname} ${sluggish} PARENT_SCOPE)
 endfunction()
