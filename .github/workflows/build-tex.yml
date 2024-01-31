@@ -18,3 +18,10 @@ jobs:
       uses: zauguin/install-texlive@v3
       with:
         package_file: .github/tl_packages
+    
+    - name: Configure CMake
+      run: |
+        cmake -B ${{github.workspace}}/build -DBUILD_DOCS=ON -DBUILD_PROG=OFF
+    
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build
