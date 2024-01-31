@@ -57,11 +57,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
 
       - name: Only keep cpp changed files
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -79,17 +74,12 @@ jobs:
           eval "$find_command"
           find ${{ env.src_path }} -type f \( -name "*.cpp" -o -name "*.cxx" -o -name "*.cc" \)
 
-      - name: Configure CMake
+      - name: Check loser homework 
         if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
-
-      - name: Build
-        if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
-
-      - name: Check run
-        if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+        uses: ./.github/actions/check-loser-homework
+        with:
+          build-path: ${{github.workspace}}/build
+          extra-gen-params: "-DCMAKE_CXX_COMPILER=$cxx_compiler"
 
   check-in-clang:
     needs: get-changed-files
@@ -99,11 +89,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
 
       - name: Only keep cpp changed files
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -128,17 +113,12 @@ jobs:
           chmod u+x llvm.sh
           echo | sudo ./llvm.sh 17
 
-      - name: Configure CMake
+      - name: Check loser homework
         if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
-
-      - name: Build
-        if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
-
-      - name: Check run
-        if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+        uses: ./.github/actions/check-loser-homework
+        with:
+          build-path: ${{github.workspace}}/build
+          extra-gen-params: "-DCMAKE_CXX_COMPILER=$cxx_compiler"
 
   check-in-msvc:
     needs:  get-changed-files
@@ -146,11 +126,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
 
       - name: Only keep cpp changed files
         if: needs.get-changed-files.outputs.any_changed == 'true'
@@ -174,14 +149,9 @@ jobs:
             }
           }
 
-      - name: Configure CMake
+      - name: Check loser homework
         if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake -B ${{github.workspace}}/build
-
-      - name: Build
-        if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
-
-      - name: Check run
-        if: needs.get-changed-files.outputs.any_changed == 'true'
-        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+        uses: ./.github/actions/check-loser-homework
+        with:
+          build-path: ${{github.workspace}}/build
+          shell: pwsh

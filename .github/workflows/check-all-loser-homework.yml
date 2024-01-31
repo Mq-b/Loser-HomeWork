@@ -31,20 +31,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Check loser homework 
+        uses: ./.github/actions/check-loser-homework
         with:
-          python-version: '3.12'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
-
-      - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
-
-      - name: Build
-        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
-
-      - name: Check run
-        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+          build-path: ${{github.workspace}}/build
+          extra-gen-params: "-DCMAKE_CXX_COMPILER=$cxx_compiler"
 
   check-in-clang:
     runs-on: ubuntu-latest
@@ -53,11 +45,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
 
       - name: Install clang 17
         run: |
@@ -65,31 +52,20 @@ jobs:
           chmod u+x llvm.sh
           echo | sudo ./llvm.sh 17
 
-      - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_CXX_COMPILER=$cxx_compiler
-
-      - name: Build
-        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
-
-      - name: Check run
-        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+      - name: Check loser homework 
+        uses: ./.github/actions/check-loser-homework
+        with:
+          build-path: ${{github.workspace}}/build
+          extra-gen-params: "-DCMAKE_CXX_COMPILER=$cxx_compiler"
 
   check-in-msvc:
     runs-on: windows-2022
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Check loser homework 
+        uses: ./.github/actions/check-loser-homework
         with:
-          python-version: '3.12'
-          cache: 'pip'
-      - run: pip install -r requirements.txt
-
-      - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build
-
-      - name: Build
-        run: cmake --build ${{github.workspace}}/build --target build_loser_homework
-
-      - name: Check run
-        run: cmake --build ${{github.workspace}}/build --target run_loser_homework
+          build-path: ${{github.workspace}}/build
+          shell: pwsh
