@@ -30,7 +30,7 @@
 
 #]================================================================]
 
-cmake_minimum_required(VERSION @CMAKE_MINIMUM_REQUIRED_VERSION@ FATAL_ERROR)
+cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
 
 # Don't do duplicate work if necessary
 if (TARGET Latexmk::Latexmk)
