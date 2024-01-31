@@ -73,6 +73,14 @@ function(is_target_compiler cpp_file _ret)
     set(${_ret} true PARENT_SCOPE)
 endfunction()
 
+function(is_use_modules cpp_file _ret)
+    set(${_ret} false PARENT_SCOPE)
+    file(STRINGS ${cpp_file} lines)
+    if("${lines}" MATCHES "import")
+        set(${_ret} true PARENT_SCOPE)
+    endif ()
+endfunction()
+
 function(add_homework_target target question_index cpp_file)
     message(STATUS "add executable: ${target_name} ${cpp_file}")
     add_executable (${target} ${cpp_file})
@@ -146,6 +154,13 @@ function(handle_homework homework_dir _targets_list _run_targets_list)
                     get_homework_target_name(${index} ${cpp_file} target)
                     add_homework_target(${target} ${index} ${cpp_file})
                     list(APPEND targets_list ${target})
+                    is_use_modules(${cpp_file} use_modules)
+                    set_target_properties(${target}
+                        PROPERTIES use_modules ${use_modules})
+                    if(use_modules)
+                        message(NOTICE "${target}: use modules")
+                    endif()
+                    
                     is_check_run(${cpp_file} check_run)
                     if(check_run)
                         add_run_homework_target("run_${target}" ${target} add_run_ret)
@@ -159,25 +174,4 @@ function(handle_homework homework_dir _targets_list _run_targets_list)
     endforeach()
     set(${_targets_list} ${targets_list} PARENT_SCOPE)
     set(${_run_targets_list} ${run_targets_list} PARENT_SCOPE)
-endfunction()
-
-function(enable_msvc_build_stl_modules)
-    if( MSVC_VERSION GREATER_EQUAL 1936 AND MSVC_IDE ) # 17.6+
-        # When using /std:c++latest, "Build ISO C++23 Standard Library Modules" defaults to "Yes".
-        # Default to "No" instead.
-        #
-        # As of CMake 3.26.4, there isn't a way to control this property
-        # (https://gitlab.kitware.com/cmake/cmake/-/issues/24922),
-        # We'll use the MSBuild project system instead
-        # (https://learn.microsoft.com/en-us/cpp/build/reference/vcxproj-file-structure)
-        file( CONFIGURE OUTPUT "${CMAKE_BINARY_DIR}/Directory.Build.props" CONTENT [==[
-<Project>
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <BuildStlModules>true</BuildStlModules>
-    </ClCompile>
-  </ItemDefinitionGroup>
-</Project>
-]==] @ONLY )
-    endif()
 endfunction()
