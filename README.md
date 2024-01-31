@@ -529,7 +529,7 @@ struct std::formatter<Frac> : std::formatter<char> {
 #include<iostream>
 class ComponentBase{
 protected:
-    static inline size_t component_type_count = 0;
+    static inline std::size_t component_type_count = 0;
 };
 template<typename T>
 class Component : public ComponentBase{
@@ -582,8 +582,8 @@ int main()
 template<typename T>
 class Component : public ComponentBase{
 public:
-    static size_t component_type_id(){
-        static size_t ID = component_type_count++;
+    static std::size_t component_type_id(){
+        static std::size_t ID = component_type_count++;
         return ID;
     }
 };
