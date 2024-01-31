@@ -22,7 +22,7 @@ message(xdgmime_SOURCE_DIR=${xdgmime_SOURCE_DIR})
 
 set(xdgmime_SOURCE_DIR ${xdgmime_SOURCE_DIR})
 
-include(xdgmime.cmake)
+include(cmake/xdgmime.cmake)
 
 add_executable(encodingcheck encodingcheck.cpp)
 target_link_libraries(encodingcheck PRIVATE libxdgmime is_utf8::is_utf8)
