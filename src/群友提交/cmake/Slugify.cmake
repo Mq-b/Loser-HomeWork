@@ -10,7 +10,7 @@ function(slugify str _retname)
         TIMEOUT 10
         INPUT_FILE ${CMAKE_BINARY_DIR}/slugify-${strhash}.txt
         OUTPUT_NAME sluggish
-        COMMAND_ERROR_IS_FATAL
+        COMMAND_ERROR_IS_FATAL ANY
     )
     set(${_retname} ${sluggish} PARENT_SCOPE)
 endfunction()
