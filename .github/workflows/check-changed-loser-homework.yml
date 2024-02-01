@@ -103,8 +103,12 @@ jobs:
           extra-gen-params: "-DCMAKE_CXX_COMPILER=$cxx_compiler"
 
   check-in-msvc:
-    needs:  get-changed-files
+    needs: get-changed-files
     runs-on: windows-2022
+
+    env:
+      PYTHONIOENCODING: "utf-8"
+      DOTNET_CLI_FORCE_UTF8_ENCODING: "true"
 
     steps:
       - uses: actions/checkout@v4
