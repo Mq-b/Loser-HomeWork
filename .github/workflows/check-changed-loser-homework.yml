@@ -108,7 +108,6 @@ jobs:
 
     env:
       PYTHONIOENCODING: "utf-8"
-      DOTNET_CLI_UI_LANGUAGE: "zh-cn"
       DOTNET_CLI_FORCE_UTF8_ENCODING: "true"
 
     steps:
