@@ -62,7 +62,7 @@ jobs:
         if: needs.get-changed-files.outputs.any_changed == 'true'
         env:
           ALL_CHANGED_FILES: ${{ needs.get-changed-files.outputs.changed_cpp_files }}
-        shell: powershell
+        shell: pwsh
         run: ./.github/workflows/Remove-UnchangedFile.ps1
 
       - name: Check loser homework 
@@ -85,7 +85,7 @@ jobs:
         if: needs.get-changed-files.outputs.any_changed == 'true'
         env:
           ALL_CHANGED_FILES: ${{ needs.get-changed-files.outputs.changed_cpp_files }}
-        shell: powershell
+        shell: pwsh
         run: ./.github/workflows/Remove-UnchangedFile.ps1
 
       - name: Install clang 17
@@ -113,7 +113,7 @@ jobs:
         if: needs.get-changed-files.outputs.any_changed == 'true'
         env:
           ALL_CHANGED_FILES: ${{ needs.get-changed-files.outputs.changed_cpp_files }}
-        shell: powershell
+        shell: pwsh
         run: ./.github/workflows/Remove-UnchangedFile.ps1
 
       - name: Check loser homework
