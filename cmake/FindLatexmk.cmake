@@ -37,6 +37,8 @@ if (TARGET Latexmk::Latexmk)
     return()
 endif()
 
+include(Slugify)
+
 # Define the function to locate latexmk
 function(_latexmk__find_latexmk)
     # First, check if the environment specifies a valid latexmk
@@ -54,7 +56,7 @@ function(_latexmk__find_latexmk)
 
     # Check if latexmk has been loaded.
     if (NOT DEFINED LATEX_FOUND)
-        find_package(LATEX)
+        find_package(LATEX REQUIRED)
     endif()
     if (NOT LATEX_FOUND)
         message(FATAL_ERROR "No underlying LaTeX found")
@@ -170,7 +172,9 @@ function(add_latex_document source)
     else()
         set(_all)
     endif()
-    add_custom_target(${target} ${_all}
+
+    slugify(${target} target_slug)
+    add_custom_target(${target_slug} ${_all}
                       COMMAND Latexmk::Latexmk ${flags}
                               -output-directory=${CMAKE_CURRENT_BINARY_DIR}
                               ${Latexmk_FLAGS}
