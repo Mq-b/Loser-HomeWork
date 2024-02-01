@@ -1,9 +1,12 @@
 ctex
-graphicx
+graphics
 geometry
 xcolor
 fancyhdr
 minted
 tcolorbox
-pifont
-colorlinks
+everysel
+fancyvrb
+upquote
+environ
+psnfss
