@@ -1,0 +1,48 @@
+日期：2023/12/5 出题人：mq白\\
+
+给出以下代码，不得修改，要求不得以
+
+\begin{itemize}
+    \item \mintinline{c++}{ss::a}
+    
+    \item \mintinline{c++}{using namespace ss}
+    
+    \item \mintinline{c++}{namespace x = ss, x::a}
+    
+    \item \mintinline{c++}{using ss::a}
+    
+    \item 直接在 ss 命名空间中通过声明引用或指针指向 a ，然后再去修改 a
+\end{itemize}
+
+这些方式去修改命名空间 \textbf{ss} 中的对象 \textbf{a}，并且满足运行结果。\\
+
+需要真的修改了 a，而不是别的东西，诸如更改入口函数等。\\
+
+\textbf{不要求你的做法完全符合标准}。
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    #include<iostream>
+
+    namespace ss {
+        int a = 0;
+    }
+
+    int main() {
+        // todo..
+        std::cout << ss::a << '\n'; 
+    }
+\end{minted}
+
+\begin{tcolorbox}[title = {运行结果},
+    fonttitle = \bfseries, fontupper = \sffamily, fontlower = \itshape]
+    100
+\end{tcolorbox}
+
+\begin{itemize}
+    \item \textbf{难度}： \hardscore{4}
+\end{itemize}
