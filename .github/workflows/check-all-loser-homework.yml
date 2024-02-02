@@ -5,8 +5,9 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - '.github/**'
-      - '**/**.cmake'
+      - '.github/actions/**'
+      - '.github/workflows/check-all-loser-homework.yml'
+      - '**.cmake'
       - '**/CMakeLists.txt'
       - 'src/群友提交/script/*'
       - 'src/群友提交/**/input.txt'
@@ -14,8 +15,9 @@ on:
   pull_request:
     branches: [ "main" ]
     paths:
-      - '.github/**'
-      - '**/**.cmake'
+      - '.github/actions/**'
+      - '.github/workflows/check-all-loser-homework.yml'
+      - '**.cmake'
       - '**/CMakeLists.txt'
       - 'src/群友提交/script/*'
       - 'src/群友提交/**/input.txt'
@@ -36,25 +38,35 @@ jobs:
           build-path: ${{github.workspace}}/build
           extra-gen-params: "-DCMAKE_CXX_COMPILER=$cxx_compiler"
 
+  lower-repo:
+    runs-on: ubuntu-latest
+    outputs:
+      repo_lower: ${{ steps.lower-github-repo.outputs.REPO_LC }}
+    steps:
+      - name: lower GITHUB_REPOSITORY
+        id: lower-github-repo
+        run: |
+          echo "REPO_LC=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+
   check-in-clang:
+    needs: lower-repo
     runs-on: ubuntu-latest
     env:
       cxx_compiler: clang++-17
+    container:
+      image: ghcr.io/${{ needs.lower-repo.outputs.repo_lower }}/clang17
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install clang 17
-        run: |
-          wget https://apt.llvm.org/llvm.sh
-          chmod u+x llvm.sh
-          echo | sudo ./llvm.sh 17
 
       - name: Check loser homework 
         uses: ./.github/actions/check-loser-homework
         with:
           build-path: ${{github.workspace}}/build
-          extra-gen-params: "-DCMAKE_CXX_COMPILER=$cxx_compiler"
+          extra-gen-params: '-DCMAKE_C_COMPILER=clang-17 -DCMAKE_CXX_COMPILER=$cxx_compiler -DCMAKE_CXX_FLAGS="-stdlib=libc++"'
 
   check-in-msvc:
     runs-on: windows-2022
