@@ -100,8 +100,8 @@ function(is_check_run cpp_file _ret)
     set(${_ret} true PARENT_SCOPE)
 endfunction()
 
-find_package(Powershell)
-find_package(BASH)
+find_package(PowerShell QUIET)
+find_package(BASH QUIET)
 
 function(add_run_homework_target target homework_target _ret)
     set(ret false)
