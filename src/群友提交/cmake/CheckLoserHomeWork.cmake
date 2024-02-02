@@ -100,6 +100,9 @@ function(is_check_run cpp_file _ret)
     set(${_ret} true PARENT_SCOPE)
 endfunction()
 
+find_package(Powershell)
+find_package(BASH)
+
 function(add_run_homework_target target homework_target _ret)
     set(ret false)
     get_target_property(cpp_file ${homework_target} cpp_file)
@@ -107,9 +110,7 @@ function(add_run_homework_target target homework_target _ret)
     set(input_file "${file_dir}/input.txt")
     set(output_file "${file_dir}/output.txt")
     if(EXISTS ${output_file})
-        find_program(POWERSHELL_PATH NAMES powershell)
-        find_program(BASH_PATH NAMES bash)
-        if (POWERSHELL_PATH)
+        if (POWERSHELL_FOUND)
             add_custom_target(${target}
                     COMMAND powershell -File
                     ${CMAKE_CURRENT_SOURCE_DIR}/script/RunHomework.ps1
@@ -122,7 +123,7 @@ function(add_run_homework_target target homework_target _ret)
                     USES_TERMINAL
             )
             set(ret true)
-        elseif (BASH_PATH)
+        elseif (BASH_FOUND)
             add_custom_target(${target}
                     COMMAND bash
                     ${CMAKE_CURRENT_SOURCE_DIR}/script/run_homework.sh
