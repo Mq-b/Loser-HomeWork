@@ -5,25 +5,21 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - '.github/workflows/**'
-      - '.github/actions/**'
-      - '**.cmake'
-      - 'CMakeLists.txt'
-      - 'src/群友提交/**'
-      - '!src/群友提交/**.cpp'
-      - '!src/群友提交/**.cxx'
-      - '!src/群友提交/**.cc'
+      - '.github/**'
+      - '**/**.cmake'
+      - '**/CMakeLists.txt'
+      - 'src/群友提交/script/*'
+      - 'src/群友提交/**/input.txt'
+      - 'src/群友提交/**/output.txt'
   pull_request:
     branches: [ "main" ]
     paths:
-      - '.github/workflows/**'
-      - '.github/actions/**'
-      - '**.cmake'
-      - 'CMakeLists.txt'
-      - 'src/群友提交/**'
-      - '!src/群友提交/**.cpp'
-      - '!src/群友提交/**.cxx'
-      - '!src/群友提交/**.cc'
+      - '.github/**'
+      - '**/**.cmake'
+      - '**/CMakeLists.txt'
+      - 'src/群友提交/script/*'
+      - 'src/群友提交/**/input.txt'
+      - 'src/群友提交/**/output.txt'
 
 jobs:
   check-in-gcc:
