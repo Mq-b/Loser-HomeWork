@@ -1,4 +1,5 @@
 #include <iostream>
+#include <type_traits>
 
 template <class T>
 concept aggregate = std::is_aggregate_v<std::remove_cvref_t<T>>;

@@ -1,0 +1,110 @@
+name: Check loser homework
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '.github/actions/**'
+      - '.github/workflows/check-loser-homework.yml'
+      - '**.cmake'
+      - '**/CMakeLists.txt'
+      - 'src/群友提交/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '.github/actions/**'
+      - '.github/workflows/check-loser-homework.yml'
+      - '**.cmake'
+      - '**/CMakeLists.txt'
+      - 'src/群友提交/**'
+
+jobs:
+  whether-to-build-all:
+    runs-on: ubuntu-latest
+    outputs:
+      need_build_all: ${{ steps.changed-files.outputs.any_changed }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get the changed files that need to build all
+        id: changed-files
+        uses: tj-actions/changed-files@v42
+        with:
+          files: |
+            .github/actions/**
+            .github/workflows/check-loser-homework.yml
+            **.cmake
+            **/CMakeLists.txt
+            src/群友提交/script/**
+            src/群友提交/**/input.txt
+            src/群友提交/**/output.txt
+
+  convert-repo-to-lowercase:
+    runs-on: ubuntu-latest
+    outputs:
+      repo_lowercase: ${{ steps.github-repo-lowercase.outputs.REPO_LC }}
+    steps:
+      - name: Convert GITHUB_REPOSITORY lowercase
+        id: github-repo-lowercase
+        run: |
+          echo "REPO_LC=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
+
+  check:
+    needs: [ whether-to-build-all, convert-repo-to-lowercase ]
+    strategy:
+      matrix:
+        include:
+          - name: GCC-13
+            os: ubuntu-latest
+            cxx_compiler: g++-13
+            c_compiler: gcc-13
+            shell: bash
+            use-ninja: true
+
+          - name: Clang-17
+            os: ubuntu-latest
+            cxx_compiler: clang++-17
+            c_compiler: clang-17
+            cxx_flags: -stdlib=libc++
+            container: ghcr.io/${{ needs.convert-repo-to-lowercase.outputs.repo_lowercase }}/clang17
+            shell: bash
+            use-ninja: true
+
+          - name: MSVC
+            os: windows-2022
+            shell: pwsh
+            use-ninja: false
+
+    name: check in ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    container:
+      image: ${{ matrix.container}}
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
+    env:
+      PYTHONIOENCODING: "utf-8"
+      DOTNET_CLI_FORCE_UTF8_ENCODING: "true"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: delete unchanged cpp files
+        if: needs.whether-to-build-all.outputs.need_build_all == 'false'
+        uses: ./.github/actions/delete-unchanged-cpp-files
+        with:
+          path: src/群友提交
+          shell: ${{ matrix.shell }}
+
+      - name: Check loser homework
+        uses: ./.github/actions/check-loser-homework
+        with:
+          build-path: ${{github.workspace}}/build
+          extra-gen-params: >
+            -DCMAKE_CXX_COMPILER=${{ matrix.cxx_compiler }}
+            -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+            -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
+          shell: ${{ matrix.shell }}
+          use-ninja: ${{ matrix.use-ninja }}
