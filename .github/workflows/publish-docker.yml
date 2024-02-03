@@ -1,18 +1,18 @@
 name: Publish Docker
 
 on:
-  create:
+  workflow_call:
   workflow_dispatch:
   push:
     branches: [ "main" ]
     paths:
       - '.github/workflows/publish-docker.yml'
       - '.github/docker/**'
-#  pull_request:
-#    branches: [ "main" ]
-#    paths:
-#      - '.github/workflows/publish-docker.yml'
-#      - '.github/docker/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/publish-docker.yml'
+      - '.github/docker/**'
 
 
 jobs:
@@ -35,3 +35,4 @@ jobs:
           registry: ghcr.io
           dockerfile: ${{ matrix.dockerfile }}
           tags: "latest"
+          no_push: ${{ github.event_name == 'pull_request' }}
