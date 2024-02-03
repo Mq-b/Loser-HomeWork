@@ -1,6 +1,11 @@
 name: Check loser homework
 
 on:
+  workflow_call:
+    inputs:
+      docker_namespaces:
+        required: true
+        type: string
   workflow_dispatch:
   push:
     branches: [ "main" ]
@@ -20,10 +25,12 @@ on:
       - 'src/群友提交/**'
 
 jobs:
-  whether-to-build-all:
+  prepare:
     runs-on: ubuntu-latest
     outputs:
-      need_build_all: ${{ steps.changed-files.outputs.any_changed }}
+      need_build_all: ${{ steps.changed-files.outputs.any_changed ||
+        ( github.event_name != 'pull_request' && github.event_name != 'push' ) }}
+      docker_namespaces: ${{ inputs.docker_namespaces == '' && 'mq-b/loser-homework' || inputs.docker_namespaces}}
 
     steps:
       - uses: actions/checkout@v4
@@ -42,18 +49,12 @@ jobs:
             src/群友提交/**/input.txt
             src/群友提交/**/output.txt
 
-  convert-repo-to-lowercase:
-    runs-on: ubuntu-latest
-    outputs:
-      repo_lowercase: ${{ steps.github-repo-lowercase.outputs.REPO_LC }}
-    steps:
-      - name: Convert GITHUB_REPOSITORY lowercase
-        id: github-repo-lowercase
-        run: |
-          echo "REPO_LC=${GITHUB_REPOSITORY@L}" >> $GITHUB_OUTPUT
-
   check:
-    needs: [ whether-to-build-all, convert-repo-to-lowercase ]
+    needs: prepare
+    env:
+      PYTHONIOENCODING: "utf-8"
+      DOTNET_CLI_FORCE_UTF8_ENCODING: "true"
+
     strategy:
       matrix:
         include:
@@ -69,7 +70,7 @@ jobs:
             cxx_compiler: clang++-17
             c_compiler: clang-17
             cxx_flags: -stdlib=libc++
-            container: ghcr.io/${{ needs.convert-repo-to-lowercase.outputs.repo_lowercase }}/clang17
+            container: ghcr.io/${{ needs.prepare.outputs.docker_namespaces }}/clang17
             shell: bash
             use-ninja: true
 
@@ -86,15 +87,12 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
 
-    env:
-      PYTHONIOENCODING: "utf-8"
-      DOTNET_CLI_FORCE_UTF8_ENCODING: "true"
-
     steps:
       - uses: actions/checkout@v4
 
       - name: delete unchanged cpp files
-        if: needs.whether-to-build-all.outputs.need_build_all == 'false'
+        if: |
+          needs.prepare.outputs.need_build_all == 'false'
         uses: ./.github/actions/delete-unchanged-cpp-files
         with:
           path: src/群友提交
