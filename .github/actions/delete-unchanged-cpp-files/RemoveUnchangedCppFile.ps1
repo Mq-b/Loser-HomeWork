@@ -3,8 +3,10 @@ $allChangedFiles = $allChangedFiles -split ';'
 
 $absolutePaths = @()
 foreach ($file in $allChangedFiles) {
-    $absolutePath = Convert-Path $file
-    $absolutePaths += $absolutePath
+    if ($file -ne "") {
+        $absolutePath = Convert-Path $file
+        $absolutePaths += $absolutePath
+    }
 }
 
 $cppFiles = Get-ChildItem -Path $env:TARGET_PATH -Recurse -File -Include *.cpp, *.cxx, *.cc
