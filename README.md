@@ -260,7 +260,7 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 
 同样的我们可以不使用范围 for 而是更简单的 `std::ranges::for_each(v1, f);` 即同上一样对范围 v1内的每个元素，应用一次函数 **f**。
 
-对于使用模板的形式，我们可以使用 c++20 的简写函数模板；简而言之，在函数形参列表中 auto 占位符会为模板形参列表追加一个虚设的模板形参。最开始的模板形式可以写成
+对于使用模板的形式，我们可以使用 C++20 的简写函数模板；简而言之，在函数形参列表中 auto 占位符会为模板形参列表追加一个虚设的模板形参。最开始的模板形式可以写成
 
 ```c++
 std::vector<int>& operator|(auto& v1, const auto& f) 
@@ -1004,7 +1004,7 @@ this->f();
 1. `this->f()` **是待决名**，所以它的查找会推迟到得知它模板实参之时（届时可以确定父类是否有 `f` 函数）。
 2. `f()` **是非待决名**，检查该模板的定义时将进行无限定的名字查找（无法查找父类的定义），按照正常的查看顺序，先类内（查找不到），然后全局（找到）。
 
->补充：如果是 `msvc` 的某些早期版本，或者 c++版本设置在 c++20之前，会打印 `X` `X`。这是因为 `msvc`不支持 [`Two-phase name lookup`](https://learn.microsoft.com/zh-cn/archive/blogs/c/msvc%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81two-phase-name-lookup)。
+>补充：如果是 `msvc` 的某些早期版本，或者 c++版本设置在 C++20之前，会打印 `X` `X`。这是因为 `msvc`不支持 [`Two-phase name lookup`](https://learn.microsoft.com/zh-cn/archive/blogs/c/msvc%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81two-phase-name-lookup)。
 详细的可以看看文档。实测 `Microsoft Visual Studio 17.6.4` 设置 `C++20` 之前的版本都无法得到正确结果。
 
 ---
