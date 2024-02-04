@@ -1,0 +1,38 @@
+name: Publish Docker
+
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/publish-docker.yml'
+      - '.github/docker/**'
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - '.github/workflows/publish-docker.yml'
+      - '.github/docker/**'
+
+
+jobs:
+  build:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - name: 'ghcr.io/${{github.repository}}/clang17'
+            dockerfile: '.github/docker/clang17/dockerfile'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@v5
+        with:
+          name: ${{ matrix.name }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ghcr.io
+          dockerfile: ${{ matrix.dockerfile }}
+          tags: "latest"
+          no_push: ${{ github.event_name == 'pull_request' }}

@@ -1,3 +1,4 @@
+//!clang
 #include<iostream>
 #include<format>
 

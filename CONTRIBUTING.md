@@ -1,8 +1,14 @@
 # 贡献指南
 
-## <https://github.com/Mq-b/Loser-HomeWork/contribute>
+<https://github.com/Mq-b/Loser-HomeWork/contribute>
 
-## 贡献题目
+## Issues
+
+## Discussion
+
+## Pull Requests
+
+### 贡献题目
 
 如果你想要在题库中**添加一道题目**，请遵循如下指南：
 

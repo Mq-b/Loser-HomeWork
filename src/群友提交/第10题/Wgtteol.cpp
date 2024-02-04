@@ -1,4 +1,5 @@
 ﻿#include <iostream>
+#include <type_traits>
 
 struct init
 {
