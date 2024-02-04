@@ -185,10 +185,13 @@ function(add_latex_document source)
     slugify(${target} target_slug)
     set(Latexmk_TARGET ${target_slug} PARENT_SCOPE)
     set(Latexmk_TGNAME ${target} PARENT_SCOPE)
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${source}
+        COMMAND ${CMAKE_COMMAND} -E ${CMAKE_CURRENT_SOURCE_DIR}/${source} ${CMAKE_CURRENT_BINARY_DIR}/
+    )
     add_custom_target(${target_slug} ${_all}
-        COMMAND Latexmk::Latexmk ${flags} -output-directory=${CMAKE_CURRENT_BINARY_DIR} ${Latexmk_FLAGS} ${source}
+        COMMAND Latexmk::Latexmk ${flags} ${Latexmk_FLAGS} ${CMAKE_CURRENT_SOURCE_DIR}/${source}
         DEPENDS ${source} ${latexmk_UNPARSED_ARGUMENTS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         BYPRODUCTS ${byproducts}
     )
 
