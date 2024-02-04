@@ -8,7 +8,7 @@
     gobble=2,
     frame=lines,
     framesep=2mm]{c++}
-    template<class Ty,size_t size>
+    template<class Ty,std::size_t size>
     struct array {
         Ty* begin() { return arr; };
         Ty* end() { return arr + size; };
