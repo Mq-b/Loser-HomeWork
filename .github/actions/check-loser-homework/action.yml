@@ -32,7 +32,7 @@ runs:
 
     - name: Configure CMake
       if: inputs.use-ninja == 'false'
-      run: cmake -B ${{ inputs.build-path }} ${{ inputs.extra-gen-params}}
+      run: cmake -B ${{ inputs.build-path }} -DCMAKE_BUILD_TYPE=Release ${{ inputs.extra-gen-params}}
       shell: ${{ inputs.shell }}
 
     - name: Build
@@ -47,7 +47,7 @@ runs:
 
     - name: Configure CMake with Ninja
       if: inputs.use-ninja == 'true'
-      run: cmake -B ${{ inputs.build-path }} -G Ninja ${{ inputs.extra-gen-params}}
+      run: cmake -B ${{ inputs.build-path }} -G Ninja -DCMAKE_BUILD_TYPE=Release ${{ inputs.extra-gen-params}}
       shell: ${{ inputs.shell }}
 
     - name: Build with Ninja
