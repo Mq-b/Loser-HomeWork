@@ -76,8 +76,10 @@ jobs:
 
           - name: MSVC
             os: windows-2022
+            cxx_compiler: cl
+            c_compiler: cl
             shell: pwsh
-            use-ninja: false
+            use-ninja: true
 
     name: check in ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -89,7 +91,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - name: delete unchanged cpp files
         if: |
           needs.prepare.outputs.need_build_all == 'false'
@@ -97,6 +98,19 @@ jobs:
         with:
           path: src/群友提交
           shell: ${{ matrix.shell }}
+
+      - name: evil chinese path
+        if: ${{ matrix.os == 'windows-2022' }}
+        run: |
+          Rename-Item "src/群友提交" -NewName "hw-submit"
+          $content = Get-Content -Path "CMakeLists.txt"  -encoding UTF8
+          $newContent = $content -replace "src/群友提交", "src/hw-submit"
+          Set-Content -Path "CMakeLists.txt" -Value $newContent
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+        if: ${{ matrix.os == 'windows-2022' }}
 
       - name: Check loser homework
         uses: ./.github/actions/check-loser-homework
