@@ -28,7 +28,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      need_build_all: ${{ steps.changed-files.outputs.any_changed ||
+      need_build_all: ${{ steps.changed-files.outputs.any_changed == 'true' ||
         ( github.event_name != 'pull_request' && github.event_name != 'push' ) }}
       docker_namespaces: ${{ inputs.docker_namespaces == '' && 'mq-b/loser-homework' || inputs.docker_namespaces}}
 
