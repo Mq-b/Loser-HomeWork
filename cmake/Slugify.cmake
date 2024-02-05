@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.17)
+cmake_policy(SET CMP0144 NEW)
 
 find_package(Python COMPONENTS Interpreter REQUIRED)
 
