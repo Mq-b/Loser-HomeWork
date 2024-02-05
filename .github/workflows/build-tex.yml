@@ -26,6 +26,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    # https://github.com/actions/setup-python/issues/719
+    #    cache: 'pip'
+    - run: python3 -m pip install -r requirements.txt
+
     - name: Install ghostscript
       run: |
         sudo apt update
