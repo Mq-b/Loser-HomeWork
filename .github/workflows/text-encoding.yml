@@ -34,7 +34,7 @@ jobs:
           cd .github/workflows/encodingcheck
           mkdir build && cd build
 
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-13 -DCMAKE_CXX_COMPILER=g++-13 ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-13 -DCMAKE_CXX_COMPILER=g++-13 -DBUILD_ENCODINGCHECK=true ..
           cmake --build . -t encodingcheck -j
       - name: Check
         run: .github/workflows/encodingcheck/build/encodingcheck

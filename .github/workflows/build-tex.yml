@@ -1,0 +1,100 @@
+name: Build TeX files
+
+on:
+  workflow_dispatch: 
+  push:
+    branches: [ "main" ]
+    paths: 
+      - "**.tex"
+      - '**.cmake'
+      - '**/CMakeLists.txt'
+      - '.github/workflows/build-tex.yml'
+  pull_request:
+    branches: [ "main" ]
+    paths: 
+      - "**.tex"
+      - '**.cmake'
+      - '**/CMakeLists.txt'
+      - '.github/workflows/build-tex.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-tex:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    # https://github.com/actions/setup-python/issues/719
+    #    cache: 'pip'
+    - run: python3 -m pip install -r requirements.txt
+
+    - name: Install ghostscript
+      run: |
+        sudo apt update
+        sudo apt install ghostscript
+    
+    - name: Install TeX Live
+      uses: zauguin/install-texlive@v3
+      with:
+        package_file: .github/tl_packages
+      
+    - name: Install latexmk
+      run: |
+        tlmgr install latexmk
+    
+    - name: Configure CMake
+      run: |
+        cmake -B ${{github.workspace}}/build -DBUILD_DOCS=ON -DBUILD_PROG=OFF
+    
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --target latexmkdocs
+
+    # - name: Copy build files
+    #   run: cp -r build/docs .
+    
+    # - name: Git commit
+    #   run: |
+    #     git config user.name github-actions
+    #     git config user.email github-actions@github.com
+    #     git add .
+    #     git commit -m "chore: update generated docs"
+    #     git push
+
+    - name: Update artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: docs
+        path: build/docs
+  
+  release:
+    runs-on: ubuntu-latest
+    needs: build-tex
+    if: github.event_name == 'push'
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: docs
+        path: docs
+    
+    - name: Release prerelease
+      uses: softprops/action-gh-release@v1
+      if: true && !startsWith(github.ref, 'refs/tags/')
+      with:
+        name: "Loser-Homework docs git(main)"
+        prerelease: true
+        files: docs/**
+    
+    - name: Release regularly
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        name: "Loser-Homework docs ${{ github.ref }}"
+        draft: true
+        files: docs/**
+
