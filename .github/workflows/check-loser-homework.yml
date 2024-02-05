@@ -102,7 +102,7 @@ jobs:
           path: src/群友提交
           shell: ${{ matrix.shell }}
 
-      - name: evil chinese path
+      - name: rename evil cjk path
         if: ${{ matrix.os == 'windows-2022' }}
         run: |
           Rename-Item "src/群友提交" -NewName "hw-submit"
