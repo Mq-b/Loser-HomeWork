@@ -82,13 +82,18 @@ jobs:
         name: docs
         path: docs
     
+    - name: Archive and compress
+      run: |
+        find docs/ -printf "%P\n" | tar -cvf docs.tar --no-recursion -C docs/ -T -
+        zstd -z -1 docs.tar -o loser-homework-docs-nightly.tar.zst
+    
     - name: Release nightly
       uses: softprops/action-gh-release@v1
       if: true && !startsWith(github.ref, 'refs/tags/')
       with:
         name: "nightly"
         prerelease: true
-        files: docs/**
+        files: loser-homework-docs-nightly.tar.zst
         tag_name: nightly
     
     - name: Release regularly
