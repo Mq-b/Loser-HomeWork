@@ -201,5 +201,6 @@ function(add_latex_document source)
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/docs/${reltree})
     add_custom_command(TARGET ${target_slug} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/* ${CMAKE_BINARY_DIR}/docs/${reltree}/
+        COMMAND ${CMAKE_COMMAND} -E rm -f ${CMAKE_BINARY_DIR}/docs/${reltree}/Makefile ${CMAKE_BINARY_DIR}/docs/${reltree}/*.cmake
     )
 endfunction()
