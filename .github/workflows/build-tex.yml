@@ -103,9 +103,13 @@ jobs:
         echo "TAG_NAME=${TAG_NAME#refs/tags/}" >> $GITHUB_ENV
 
     - if: env.TAG_NAME == 'nightly'
+      env:
+        GH_TOKEN: ${{ github.token }}
       run: |
         echo 'PRERELEASE=true' >> $GITHUB_ENV
         gh release delete nightly --yes || true
+        git config user.name github-actions
+        git config user.email github-actions@github.com
         git push origin :nightly || true
     
     - name: Release
