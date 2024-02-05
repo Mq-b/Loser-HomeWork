@@ -31,7 +31,3 @@ CMake 会要求 Latexmk 和 XeTeX。请确保它们能被 CMake 找到。
 ## Getting started
 
 见 [#270](https://github.com/Mq-b/Loser-HomeWork/discussions/270)。
-
-## Additional settings
-
-在编译 TeX 文档的时候，预期的工作目录为文档所在的目录，auxiliary directory 为
