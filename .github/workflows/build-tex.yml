@@ -33,10 +33,10 @@ jobs:
     #    cache: 'pip'
     - run: python3 -m pip install -r requirements.txt
 
-    - name: Install ghostscript
-      run: |
-        sudo apt update
-        sudo apt install ghostscript
+    # - name: Install ghostscript
+    #   run: |
+    #     sudo apt update
+    #     sudo apt install ghostscript
     
     - name: Install TeX Live
       uses: zauguin/install-texlive@v3
