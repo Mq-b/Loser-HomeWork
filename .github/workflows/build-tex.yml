@@ -87,6 +87,11 @@ jobs:
         find docs/ -printf "%P\n" | tar -cvf docs.tar --no-recursion -C docs/ -T -
         zstd -z -1 docs.tar -o loser-homework-docs-nightly.tar.zst
     
+    - name: Remove nightly release
+      if: true && !startsWith(github.ref, 'refs/tags/')
+      run:
+        gh release delete nightly --yes || true
+    
     - name: Release nightly
       uses: softprops/action-gh-release@v1
       if: true && !startsWith(github.ref, 'refs/tags/')
