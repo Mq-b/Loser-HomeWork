@@ -1,3 +1,4 @@
+//!clang
 #include<iostream>
 #include<format>
 
@@ -7,7 +8,8 @@ struct Frac {
 
 template<>
 struct std::formatter<Frac> : std::formatter<char> {
-    auto format(const Frac &frac, std::format_context &ctx) const {
+    template<typename FmtCtx>
+    auto format(const Frac &frac, FmtCtx &ctx) const {
         return std::format_to(ctx.out(), "{}/{}", frac.a, frac.b);
     }
 };

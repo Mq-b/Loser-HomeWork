@@ -57,7 +57,7 @@ constexpr size_t size()
 ```
 
 2.结构化绑定解包结构体，对每个成员分别调用函数 f()  
-获取完结构体成员数量就可以用`if constexpr`与[c++17的结构化绑定](https://zh.cppreference.com/w/cpp/language/structured_binding)**绑定指定名称到初始化器的子对象或元素。类似引用，结构化绑定是既存对象的别名。不同于引用的是，结构化绑定的类型不必为引用类型**
+获取完结构体成员数量就可以用`if constexpr`与[C++17的结构化绑定](https://zh.cppreference.com/w/cpp/language/structured_binding)**绑定指定名称到初始化器的子对象或元素。类似引用，结构化绑定是既存对象的别名。不同于引用的是，结构化绑定的类型不必为引用类型**
 
 ```c++
 template <typename T, typename F>
@@ -85,4 +85,4 @@ void for_each_member(T const& v, F&& f) {
 
 ## 后记
 
-白老师你这题就是你那个知乎文章吧，我也看了你 c++20的写法，主要区别还是获取成员数量的写法，感觉那个写法比这个打表适用性强，这 tm 结构题成员越多还要写更多重载。
+白老师你这题就是你那个知乎文章吧，我也看了你 C++20的写法，主要区别还是获取成员数量的写法，感觉那个写法比这个打表适用性强，这 tm 结构题成员越多还要写更多重载。

@@ -1,4 +1,4 @@
-//!msvc
+//!msvc !clang
 #include <format>
 #include <iostream>
 

@@ -1,0 +1,35 @@
+FROM ubuntu:22.04
+
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    lsb-release \
+    wget \
+    curl \
+    software-properties-common \
+    gnupg \
+    ca-certificates \
+    gpg \
+    software-properties-common
+
+RUN wget https://apt.llvm.org/llvm.sh && \
+    chmod u+x llvm.sh && \
+    echo | ./llvm.sh 17 all
+
+RUN wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null \
+    | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null && \
+    echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' \
+    | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    cmake \
+    git
+
+RUN add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    python3.12 \
+    python3-pip

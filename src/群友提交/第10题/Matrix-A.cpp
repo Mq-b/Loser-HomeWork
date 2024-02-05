@@ -9,7 +9,8 @@
 #include <utility> 
 #include <tuple> 
 #include <ranges> 
-#include <cstdint> 
+#include <cstdint>
+#include <type_traits>
 
 // 参考文章 https://bitwizeshift.github.io/posts/2021/03/21/reflecting-over-members-of-an-aggregate/
 

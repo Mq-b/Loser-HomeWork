@@ -1,4 +1,4 @@
-//!msvc
+//!msvc !clang
 #include <bits/stdc++.h>
 
 

@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.17)
 
+include(Slugify)
+
 function(get_subdirs path _subdirs_list)
     file(GLOB all_childs
             CONFIGURE_DEPENDS "${path}/*")
@@ -27,7 +29,7 @@ endfunction()
 
 function(is_valid_target_name name _ret)
     set(ret true)
-    if(NOT name MATCHES "^[a-zA-Z0-9_\\-\\+\\.]+$")
+    if(NOT name MATCHES "^[a-zA-Z0-9_\+\.\-]+$")
         set(ret false)
     endif ()
     set(${_ret} ${ret} PARENT_SCOPE)
@@ -35,11 +37,11 @@ endfunction()
 
 function(get_homework_target_name question_index cpp_file_path _target_name)
     get_filename_component(file_name ${cpp_file_path} NAME_WLE)
-    is_valid_target_name(${file_name} ret)
+    is_valid_target_name("${file_name}" ret)
     if (NOT ret)
-        message(NOTICE "not valid target name: ${file_name}")
-        string(MD5 hash_file_name ${file_name})
-        set(target_name "${question_index}_${hash_file_name}")
+        slugify("${file_name}" slug)
+        message(NOTICE "not valid target name: ${file_name}, use: ${slug}")
+        set(target_name "${question_index}_${slug}")
     else ()
         set(target_name "${question_index}_${file_name}")
     endif ()
@@ -71,6 +73,14 @@ function(is_target_compiler cpp_file _ret)
     set(${_ret} true PARENT_SCOPE)
 endfunction()
 
+function(is_use_modules cpp_file _ret)
+    set(${_ret} false PARENT_SCOPE)
+    file(STRINGS ${cpp_file} lines)
+    if("${lines}" MATCHES "import")
+        set(${_ret} true PARENT_SCOPE)
+    endif ()
+endfunction()
+
 function(add_homework_target target question_index cpp_file)
     message(STATUS "add executable: ${target_name} ${cpp_file}")
     add_executable (${target} ${cpp_file})
@@ -90,6 +100,9 @@ function(is_check_run cpp_file _ret)
     set(${_ret} true PARENT_SCOPE)
 endfunction()
 
+find_package(PowerShell QUIET)
+find_package(BASH QUIET)
+
 function(add_run_homework_target target homework_target _ret)
     set(ret false)
     get_target_property(cpp_file ${homework_target} cpp_file)
@@ -97,9 +110,7 @@ function(add_run_homework_target target homework_target _ret)
     set(input_file "${file_dir}/input.txt")
     set(output_file "${file_dir}/output.txt")
     if(EXISTS ${output_file})
-        find_program(POWERSHELL_PATH NAMES powershell)
-        find_program(BASH_PATH NAMES bash)
-        if (POWERSHELL_PATH)
+        if (POWERSHELL_FOUND)
             add_custom_target(${target}
                     COMMAND powershell -File
                     ${CMAKE_CURRENT_SOURCE_DIR}/script/RunHomework.ps1
@@ -112,7 +123,7 @@ function(add_run_homework_target target homework_target _ret)
                     USES_TERMINAL
             )
             set(ret true)
-        elseif (BASH_PATH)
+        elseif (BASH_FOUND)
             add_custom_target(${target}
                     COMMAND bash
                     ${CMAKE_CURRENT_SOURCE_DIR}/script/run_homework.sh
@@ -144,6 +155,13 @@ function(handle_homework homework_dir _targets_list _run_targets_list)
                     get_homework_target_name(${index} ${cpp_file} target)
                     add_homework_target(${target} ${index} ${cpp_file})
                     list(APPEND targets_list ${target})
+                    is_use_modules(${cpp_file} use_modules)
+                    set_target_properties(${target}
+                        PROPERTIES use_modules ${use_modules})
+                    if(use_modules)
+                        message(NOTICE "${target}: use modules")
+                    endif()
+                    
                     is_check_run(${cpp_file} check_run)
                     if(check_run)
                         add_run_homework_target("run_${target}" ${target} add_run_ret)
@@ -157,25 +175,4 @@ function(handle_homework homework_dir _targets_list _run_targets_list)
     endforeach()
     set(${_targets_list} ${targets_list} PARENT_SCOPE)
     set(${_run_targets_list} ${run_targets_list} PARENT_SCOPE)
-endfunction()
-
-function(enable_msvc_build_stl_modules)
-    if( MSVC_VERSION GREATER_EQUAL 1936 AND MSVC_IDE ) # 17.6+
-        # When using /std:c++latest, "Build ISO C++23 Standard Library Modules" defaults to "Yes".
-        # Default to "No" instead.
-        #
-        # As of CMake 3.26.4, there isn't a way to control this property
-        # (https://gitlab.kitware.com/cmake/cmake/-/issues/24922),
-        # We'll use the MSBuild project system instead
-        # (https://learn.microsoft.com/en-us/cpp/build/reference/vcxproj-file-structure)
-        file( CONFIGURE OUTPUT "${CMAKE_BINARY_DIR}/Directory.Build.props" CONTENT [==[
-<Project>
-  <ItemDefinitionGroup>
-    <ClCompile>
-      <BuildStlModules>true</BuildStlModules>
-    </ClCompile>
-  </ItemDefinitionGroup>
-</Project>
-]==] @ONLY )
-    endif()
 endfunction()

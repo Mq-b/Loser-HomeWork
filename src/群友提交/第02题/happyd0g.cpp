@@ -1,4 +1,4 @@
-//!msvc
+#include <numbers>
 #include <format>
 #include <iostream>
 #include <string_view>

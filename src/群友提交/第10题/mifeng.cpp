@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <type_traits>
 
 template <size_t s>
 struct tag : tag<s - 1> {};
