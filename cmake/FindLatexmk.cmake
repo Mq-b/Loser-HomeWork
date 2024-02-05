@@ -185,19 +185,18 @@ function(add_latex_document source)
     slugify(${target} target_slug)
     set(Latexmk_TARGET ${target_slug} PARENT_SCOPE)
     set(Latexmk_TGNAME ${target} PARENT_SCOPE)
-    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${source}
-        COMMAND ${CMAKE_COMMAND} -E ${CMAKE_CURRENT_SOURCE_DIR}/${source} ${CMAKE_CURRENT_BINARY_DIR}/
-    )
+
     add_custom_target(${target_slug} ${_all}
-        COMMAND Latexmk::Latexmk ${flags} ${Latexmk_FLAGS} ${CMAKE_CURRENT_SOURCE_DIR}/${source}
+        COMMAND Latexmk::Latexmk ${flags} -output-directory=${CMAKE_CURRENT_BINARY_DIR} -aux-directory=${CMAKE_CURRENT_SOURCE_DIR} ${Latexmk_FLAGS} ${source}
         DEPENDS ${source} ${latexmk_UNPARSED_ARGUMENTS}
-        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         BYPRODUCTS ${byproducts}
     )
 
     cmake_path(RELATIVE_PATH CMAKE_CURRENT_BINARY_DIR BASE_DIRECTORY ${CMAKE_BINARY_DIR} OUTPUT_VARIABLE reltree)
+    file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/docs/${reltree})
     file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/docs/${reltree})
     add_custom_command(TARGET ${target_slug} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/${target} ${CMAKE_BINARY_DIR}/docs/${reltree}/
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/* ${CMAKE_BINARY_DIR}/docs/${reltree}/
     )
 endfunction()
