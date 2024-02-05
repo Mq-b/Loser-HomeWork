@@ -109,6 +109,8 @@ add_executable(Latexmk::Latexmk IMPORTED)
 set_property(TARGET Latexmk::Latexmk
     PROPERTY IMPORTED_LOCATION "${Latexmk_Executable}")
 
+add_custom_target(latexmkdocs ALL)
+
 function(add_latex_document source)
     cmake_parse_arguments(PARSE_ARGV 1 latexmk "ALL" "ENGINE" "")
 
@@ -192,6 +194,7 @@ function(add_latex_document source)
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         BYPRODUCTS ${byproducts}
     )
+    add_dependencies(latexmkdocs ${target_slug})
 
     cmake_path(RELATIVE_PATH CMAKE_CURRENT_BINARY_DIR BASE_DIRECTORY ${CMAKE_BINARY_DIR} OUTPUT_VARIABLE reltree)
     file(REMOVE_RECURSE ${CMAKE_BINARY_DIR}/docs/${reltree})

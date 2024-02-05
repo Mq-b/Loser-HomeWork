@@ -52,7 +52,7 @@ jobs:
         cmake -B ${{github.workspace}}/build -DBUILD_DOCS=ON -DBUILD_PROG=OFF
     
     - name: Build
-      run: cmake --build ${{github.workspace}}/build
+      run: cmake --build ${{github.workspace}}/build --target latexmkdocs
 
     # - name: Copy build files
     #   run: cp -r build/docs .
