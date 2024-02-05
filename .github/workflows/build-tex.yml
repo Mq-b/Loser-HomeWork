@@ -82,13 +82,14 @@ jobs:
         name: docs
         path: docs
     
-    - name: Release prerelease
+    - name: Release nightly
       uses: softprops/action-gh-release@v1
       if: true && !startsWith(github.ref, 'refs/tags/')
       with:
-        name: "Loser-Homework docs git(main)"
+        name: "nightly"
         prerelease: true
         files: docs/**
+        tag_name: nightly
     
     - name: Release regularly
       uses: softprops/action-gh-release@v1
