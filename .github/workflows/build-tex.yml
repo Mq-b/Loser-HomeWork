@@ -77,7 +77,6 @@ jobs:
     needs: build-tex
     permissions:
       contents: write
-    if: github.event_name == 'push'
     steps:
     - uses: actions/checkout@v4
 
