@@ -74,6 +74,7 @@ jobs:
   release:
     runs-on: ubuntu-latest
     needs: build-tex
+    if: github.event_name == 'push'
     steps:
     - name: Download artifacts
       uses: actions/download-artifact@v3
@@ -83,7 +84,7 @@ jobs:
     
     - name: Release prerelease
       uses: softprops/action-gh-release@v1
-      if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
+      if: true && !startsWith(github.ref, 'refs/tags/')
       with:
         name: "Loser-Homework docs git(main)"
         prerelease: true
@@ -91,7 +92,7 @@ jobs:
     
     - name: Release regularly
       uses: softprops/action-gh-release@v1
-      if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+      if: startsWith(github.ref, 'refs/tags/')
       with:
         name: "Loser-Homework docs ${{ github.ref }}"
         draft: true
