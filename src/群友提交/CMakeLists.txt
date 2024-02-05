@@ -7,7 +7,6 @@ include(CheckLoserHomeWork)
 set(CMAKE_CXX_STANDARD 26)
 
 if (MSVC)
-    set(CMAKE_CXX_SCAN_FOR_MODULES 1)
     set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "aa1f7df0-828a-4fcd-9afc-2dc80491aca7") #for cmake 3.27
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive-")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /permissive-")
@@ -37,6 +36,7 @@ if (MSVC)
         get_target_property(use_modules ${target} use_modules)
         if(use_modules)
             target_compile_options(${target} PRIVATE "/experimental:module")
+            set_target_properties(${target} PROPERTIES CXX_SCAN_FOR_MODULES ON)
             target_link_libraries(${target}
                 PRIVATE
                 std
