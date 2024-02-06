@@ -53,7 +53,7 @@ std::is_constructible_v<X, init, convert_forbid<double>>;//true
 std::is_constructible_v<X, init, convert_forbid<int>>;//false
 ```
 如不使用此模板， std::is_constructible会认为int， double是convertible的， 而都返回true
-#### template<typename T, typename ...Inits> `struct count_size`
+#### template<class T, template<class...> class construct_list, std::size_t cnt, class ...types> `struct count_size`
 用模板递归求解类型T中成员的数量， 并且提供一个用这个数量构成的init类型列表：
 - count_size<...>::value 返回成员的数量
 - typename count_size<...>::CTL 得到T和`value`个`init`所组成的类型列表tl<T, init...>
