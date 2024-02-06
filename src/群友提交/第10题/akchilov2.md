@@ -136,8 +136,7 @@ struct align_offset_ptr{...};
 
 模拟在某种对齐方式下各种数据的分布情况，它将结构体的内存看成是一层层不超过对齐限制的内存层，在这些内存层中寻找某种类型的数据的首地址（一个偏移值），它是在编译期计算的，
 并且使用了模板递归来避免大量函数递归，这让它的使用方式很复杂，但可以使用封装的
-`auto & get_member<std::size_t N, typename CTL,  typename structT>(structT* base_ptr)` 
-快捷使用，
+`auto & get_member<std::size_t N, typename CTL,  typename structT>(structT* base_ptr)`快捷使用，
 CTL（construct type list）可以通过 `possibilities` 得到。
 
 如不使用 `get_member`，可以使用 `align_offset_ptr::layer` * `pack_size` + `align_offset_ptr::value` 得到成员的偏移值
