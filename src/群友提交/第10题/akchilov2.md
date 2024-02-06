@@ -1,6 +1,6 @@
-# 关于 `possibilities` 的详细解释 
+# 关于 `possibilities` 的详细解释
 
-## 定义 
+## 定义
 
 主要使用该命名空间下的类型别名 `possibility`：
 
