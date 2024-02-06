@@ -2,47 +2,17 @@
 #include<algorithm>
 #include<iostream>
 
-//lambda包一下，done
-
-template<class TL, class F>
-struct meta_function {};
-
-template<template<class...> class TL, class F, class ...L>
-struct meta_function<TL<L...>, F>
-{
-	F func;
-	meta_function(TL<L...> const& tl, F const& f) :func(f) {}
-	auto operator()(L...l)
-	{
-		return func.template operator() < L... > (std::forward<L>(l)...);
-	}
-};
-
-template<template<class...> class TL, class F, class ...L>
-meta_function(TL<L...>const& tl, F const& f) -> meta_function<TL<L...>, F>;
-
-template<class TL, class F>
-auto realize_meta(F const& f)
-{
-	return meta_function{ TL(), f };
-}
-template<typename ...> struct tl {};
-
-#define BY_NAME(x) []<typename T, typename ...Args>(T a, Args...args)\
+#define BY_NAME(x) []<typename ...Args>(Args...args)\
 {\
-	return x<T>(a, args...);\
+	return x<std::common_type_t<Args...>>(args...);\
 }\
 
-
-
 template<typename F, class...Args>
-auto foo(F&& f, Args&&...args) {
-	return realize_meta<tl<Args...>>(f)(args...);
+auto foo(F f, Args&&...args) {
+    return f(std::forward<Args>(args)...);
 }
 
-
-
 int main() {
-	const auto result = foo(BY_NAME(std::min), 2, 3);
-	std::cout << result << '\n';
+    const auto result = foo(BY_NAME(std::min), 2, 3);
+    std::cout << result << '\n';
 }
