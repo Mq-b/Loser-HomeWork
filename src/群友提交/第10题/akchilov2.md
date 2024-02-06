@@ -30,10 +30,10 @@ int main()
 {
     //猜测X的成员类型
     using XL = possibilities::possibility<X,possi>;
-    //T = possibilities::tl<int ,double>
+    //XL = possibilities::tl<int ,double>
     //猜测Y的成员类型
     using YL = possibilities::possibility<Y,possi>;
-    //U = possibilities::tl<int ,std::string ,char>
+    //YL = possibilities::tl<int ,std::string ,char>
 }
 ```
 ## 实现
