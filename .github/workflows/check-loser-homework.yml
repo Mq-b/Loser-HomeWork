@@ -28,7 +28,7 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     outputs:
-      need_build_all: ${{ steps.changed-files.outputs.any_changed ||
+      need_build_all: ${{ steps.changed-files.outputs.any_changed == 'true' ||
         ( github.event_name != 'pull_request' && github.event_name != 'push' ) }}
       docker_namespaces: ${{ inputs.docker_namespaces == '' && 'mq-b/loser-homework' || inputs.docker_namespaces}}
 
@@ -40,6 +40,9 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v42
         with:
+          separator: ";"
+          quotepath: false
+          safe_output: false
           files: |
             .github/actions/**
             .github/workflows/check-loser-homework.yml
@@ -76,8 +79,10 @@ jobs:
 
           - name: MSVC
             os: windows-2022
+            cxx_compiler: cl
+            c_compiler: cl
             shell: pwsh
-            use-ninja: false
+            use-ninja: true
 
     name: check in ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -89,7 +94,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
       - name: delete unchanged cpp files
         if: |
           needs.prepare.outputs.need_build_all == 'false'
@@ -97,6 +101,22 @@ jobs:
         with:
           path: src/群友提交
           shell: ${{ matrix.shell }}
+
+      - name: rename evil cjk path
+        if: ${{ matrix.os == 'windows-2022' }}
+        run: |
+          Rename-Item "src/群友提交" -NewName "hw-submit"
+          $cmakeLists = Get-ChildItem -Recurse -Filter "CMakeLists.txt"
+          foreach ($file in $cmakeLists) {
+            $content = Get-Content -Path $file.FullName  -encoding UTF8
+            $newContent = $content -replace "群友提交", "hw-submit"
+            Set-Content -Path $file.FullName -Value $newContent
+          }
+
+      - uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+        if: ${{ matrix.os == 'windows-2022' }}
 
       - name: Check loser homework
         uses: ./.github/actions/check-loser-homework
