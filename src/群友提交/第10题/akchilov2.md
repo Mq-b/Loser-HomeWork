@@ -68,7 +68,7 @@ std::is_constructible_v<X, init, convert_forbid<int>>;    // false
 
 如不使用此模板，`std::is_constructible` 会认为 `int`、 `double` 是 `convertible` 的，而都返回 `true`。
 
-#### `template<typename T, typename ...Inits> struct count_size`
+#### `template<class T, template<class ...> class construct_list, std::size_t cnt, class First, class ...rest>`
 
 用模板递归求解类型 `T` 中成员的数量，并且提供一个用这个数量构成的 `init` 类型列表：
 
