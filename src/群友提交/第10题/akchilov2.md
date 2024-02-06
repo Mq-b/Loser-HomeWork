@@ -71,6 +71,7 @@ std::is_constructible_v<X, init, convert_forbid<int>>;    // false
 #### `template<typename T, typename ...Inits> struct count_size`
 
 用模板递归求解类型 `T` 中成员的数量，并且提供一个用这个数量构成的 `init` 类型列表：
+
 - `count_size<...>::value` 返回成员的数量
 - `typename count_size<...>::CTL` 得到 `T` 和 `value` 个 `init` 所组成的类型列表 `tl<T, init...>`
 
@@ -125,6 +126,7 @@ struct align_offset_ptr{...};
 ```
 
 其中：
+
 - `pack_size` 为内存对齐长度
 - `layer_offset` 为当前所处的内存层
 - `offset` 为当前所处内存层的偏移值
@@ -138,6 +140,7 @@ CTL（construct type list）可以通过 `possibilities` 得到。
 如不使用 `get_member`，可以使用 `align_offset_ptr::layer` * `pack_size` + `align_offset_ptr::value` 得到成员的偏移值
 
 `align_offset_ptr` 的寻址分为两个部分：
+
 - `typename align_offset_ptr::template seek<std::size_t seek_size>` 寻找某种 size 的类型基于当前偏移值的首地址偏移
 - `typename align_offset_ptr::template advance<std::size_t advance_size>` 越过某个类型的长度后的偏移
 
