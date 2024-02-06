@@ -1,0 +1,78 @@
+日期：2024/2/6 出题人：mq白\\
+
+函数模板不是函数，所以如果要传递，必须实例化，指明模板参数，比如以下代码无法通过编译：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    template< class T >
+    const T& min(const T& a, const T& b) {
+        return a < b ? a : b;
+    }
+
+    template<typename F,class...Args>
+    auto foo(F f,Args&&...args) {
+        return f(std::forward<Args>(args)...);
+    }
+
+    int main() {
+        const auto result = foo(::min, 2, 3);
+        std::cout << result << '\n';
+    }
+\end{minted}
+
+除非我们把里面的 \mintinline{c++}{::min} 换成 \mintinline{c++}{::min<int>}。这显然很麻烦，而且很多时候依然会有问题，比如这个函数模板有多个类型模板参数，又或者它有多个重载：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    template< class T >
+    const T& min(const T& a, const T& b) {
+        return a < b ? a : b;
+    }
+    template< class T >
+    T min(std::initializer_list<T> ilist) {
+        return std::min(ilist, std::less<>{});
+    }
+
+    template<typename F, class...Args>
+    auto foo(F f, Args&&...args) {
+        return f(std::forward<Args>(args)...);
+    }
+
+    int main() {
+        const auto result = foo(::min<int>, 2, 3);
+        std::cout << result << '\n';
+    }
+\end{minted}
+
+重载决议根本没有任何办法处理。因此，\href{https://en.cppreference.com/w/cpp/utility/functional#Transparent_function_objects}{通透函数对象（Transparent function objects）} 应运而生。\\
+
+我们要解决以上问题，实现 \mintinline{c++}{BY_NAME} 宏，从函数模板名创造通透函数对象，使以下代码能够成功编译：
+
+\begin{minted}[mathescape,	
+    linenos,
+    numbersep=5pt,
+    gobble=2,
+    frame=lines,
+    framesep=2mm]{c++}
+    template<typename F, class...Args>
+    auto foo(F f, Args&&...args) {
+        return f(std::forward<Args>(args)...);
+    }
+
+    int main() {
+        const auto result = foo(BY_NAME(std::min), 2, 3);
+        std::cout << result << '\n';
+    }
+\end{minted}
+
+\begin{itemize}
+    \item \textbf{难度}： \hardscore{2}
+\end{itemize}
