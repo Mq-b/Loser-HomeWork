@@ -2109,7 +2109,7 @@ int main()
 
 ### 标准答案
 
-## `16` 通透函数宏
+## `16` 制造传递函数模板的宏
 
 日期：**`2024/2/6`** 出题人：**`mq白`**
 
@@ -2155,9 +2155,9 @@ int main() {
 }
 ```
 
-重载决议根本没有任何办法处理。
+重载决议根本没有任何办法处理。因此，[通透函数对象（Transparent function objects）](https://en.cppreference.com/w/cpp/utility/functional#Transparent_function_objects)应运而生。
 
-我们要解决以上问题，要求实现 ***`BY_NAME`*** 宏，使以下代码能够成功编译：
+我们要解决以上问题，实现 ***`BY_NAME`*** 宏，从函数模板名创造通透函数对象，使以下代码能够成功编译：
 
 ```cpp
 template<typename F, class...Args>
