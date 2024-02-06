@@ -82,11 +82,11 @@ std::is_constructible_v<X, init, convert_forbid<int>>;    // false
 
 - `typename replace_at<...>::type`
 
-#### `template<template<typename...> typename my_alias> struct as_`
+#### `template<TL, template<typename...> typename my_alias> struct as_`
 
 用来替换别名
 
-- `typename as_<my_alias>::type;`
+- `typename as_<TL, my_alias>::type;`
 
 ```cpp
 using b = as_<A<int, double>, B>::type; // b = B<int, double>;
