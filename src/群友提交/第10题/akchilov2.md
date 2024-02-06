@@ -14,7 +14,7 @@ using possibility = typename make_construct_list<
 
 其中 `T` 为所要猜测的聚合体， `Poss` 为单词 "_possibility_" 的缩写，即可能的类型列表。
 
-返回（如果成功）：`possibilities::tl<T` 的成员类型...>。
+返回（如果成功）：`possibilities::tl<T 的成员类型...>`。
 
 如果失败，则编译失败。
 
@@ -167,7 +167,7 @@ using Y_char_ptr = Y_ptr2::seek<sizeof(char)>; // Y_char_ptr = struct align_offs
 在上述的例子中，`align_offset_ptr` 越过了 `Y` 中的 `int`、 `string`，并使用 `seek` 得到 `Y` 中 `char` 的偏移值为 `6 * 8 + 0` 即 48。
 可以使用函数 `read_from_align_offset` 应用这个偏移值在某个 `Y` 的实例中。
 
-需要注意的是， `align_offset_ptr` 的计算是无关类型的，除了内置的静态函数 `get` 需要类型信息，因此可以无限 `advance` 和 `seek`， 你甚至可以直接 `new` 一段内存然后用 `align_offset_ptr` 在其中模拟一个结构体的分布。
+需要注意的是， `align_offset_ptr` 的计算是无关类型的，除了内置的静态函数 `get` 需要类型信息，因此可以无限 `advance` 和 `seek`。
 
 ## 总结
 
