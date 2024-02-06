@@ -84,6 +84,11 @@
     - [直接修改内存](#直接修改内存)
     - [利用名字查找规则](#利用名字查找规则)
 - [`15` 表达式模板](#15-表达式模板)
+  + [群友提交](#群友提交-14)
+  + [标准答案](#标准答案-14)
+- [`16` 通透函数宏](#16-通透函数宏)
+  + [群友提交](#群友提交-15)
+  + [标准答案](#标准答案-15)
 
 </details>
 
@@ -2101,5 +2106,73 @@ int main()
 - [std::valarray](https://zh.cppreference.com/w/cpp/numeric/valarray) 在一些 STL 实现中使用了表达式模板
 
 ### [群友提交](src/群友提交/第15题)
+
+### 标准答案
+
+## `16` 通透函数宏
+
+日期：**`2024/2/6`** 出题人：**`mq白`**
+
+函数模板不是函数，所以如果要传递，必须实例化，指明模板参数，比如以下代码无法通过编译：
+
+```cpp
+template< class T >
+const T& min(const T& a, const T& b) {
+    return a < b ? a : b;
+}
+
+template<typename F,class...Args>
+auto foo(F f,Args&&...args) {
+    return f(std::forward<Args>(args)...);
+}
+
+int main() {
+    const auto result = foo(::min, 2, 3);
+    std::cout << result << '\n';
+}
+```
+
+除非我们把里面的 `::min` 换成 `::min<int>`。这显然很麻烦，而且很多时候依然会有问题，比如这个函数模板有多个类型模板参数，又或者它有多个重载：
+
+```cpp
+template< class T >
+const T& min(const T& a, const T& b) {
+    return a < b ? a : b;
+}
+template< class T >
+T min(std::initializer_list<T> ilist) {
+    return std::min(ilist, std::less<>{});
+}
+
+template<typename F, class...Args>
+auto foo(F f, Args&&...args) {
+    return f(std::forward<Args>(args)...);
+}
+
+int main() {
+    const auto result = foo(::min<int>, 2, 3);
+    std::cout << result << '\n';
+}
+```
+
+重载决议根本没有任何办法处理。
+
+我们要解决它，要求实现 ***`BY_NAME`*** 宏，使以下代码能够成功编译：
+
+```cpp
+template<typename F, class...Args>
+auto foo(F f, Args&&...args) {
+    return f(std::forward<Args>(args)...);
+}
+
+int main() {
+    const auto result = foo(BY_NAME(std::min), 2, 3);
+    std::cout << result << '\n';
+}
+```
+
+- 难度：**★★☆☆☆**
+
+### [群友提交](src/群友提交/第16题)
 
 ### 标准答案
