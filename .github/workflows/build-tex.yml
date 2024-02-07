@@ -101,6 +101,7 @@ jobs:
       run: |
         TAG_NAME=${{ github.ref }}
         echo "TAG_NAME=${TAG_NAME#refs/tags/}" >> $GITHUB_ENV
+        echo "DRAFT=true" >> $GITHUB_ENV
 
     - if: env.TAG_NAME == 'nightly'
       env:
@@ -120,5 +121,6 @@ jobs:
         prerelease: ${{ env.PRERELEASE != '' }}
         files: loser-homework-docs-nightly.tar.zst
         tag_name: ${{ env.TAG_NAME }}
+        draft: ${{ env.DRAFT != '' }}
 
 
