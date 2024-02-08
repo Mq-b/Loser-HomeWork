@@ -1,0 +1,17 @@
+{
+  "name": "mit2html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mit2html.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "rsp4jack",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "markdown-it": "^14.0.0",
+    "markdown-it-container": "^4.0.0",
+    "markdown-it-emoji": "^3.0.0",
+    "markdown-it-multimd-table": "^4.2.3"
+  }
+}

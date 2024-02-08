@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script> -->
+    <style>
+        @media print {
+            .break-a {
+                break-after: page;
+            }
+        }
+        @page {
+            size: a4 portrait;
+            margin: 1in 1in;
+        }
+
+        .p-section {
+            display: flow-root;
+            /* margin: 1em auto; */
+        }
+
+        html {
+            font-family: 'STIX Two Text', '思源宋体', Unifont;
+        }
+
+        code {
+            font-family: '等距更纱黑体 SC', Unifont !important;
+        }
+
+        pre, code {
+            white-space: pre-wrap !important;
+            /*line-break: anywhere !important;*/
+        }
+    </style>
+    <style>
+        .hljs {
+            display: block;
+            overflow-x: auto;
+            padding: 0.5em;
+            color: #333;
+            background: #f8f8f8
+        }
+        
+        .hljs-comment,.hljs-quote {
+            color: #998;
+            font-style: italic
+        }
+        
+        .hljs-keyword,.hljs-selector-tag,.hljs-subst {
+            color: #333;
+            font-weight: bold
+        }
+        
+        .hljs-number,.hljs-literal,.hljs-variable,.hljs-template-variable,.hljs-tag .hljs-attr {
+            color: #008080
+        }
+        
+        .hljs-string,.hljs-doctag {
+            color: #d14
+        }
+        
+        .hljs-title,.hljs-section,.hljs-selector-id {
+            color: #900;
+            font-weight: bold
+        }
+        
+        .hljs-subst {
+            font-weight: normal
+        }
+        
+        .hljs-type,.hljs-class .hljs-title {
+            color: #458;
+            font-weight: bold
+        }
+        
+        .hljs-tag,.hljs-name,.hljs-attribute {
+            color: #000080;
+            font-weight: normal
+        }
+        
+        .hljs-regexp,.hljs-link {
+            color: #009926
+        }
+        
+        .hljs-symbol,.hljs-bullet {
+            color: #990073
+        }
+        
+        .hljs-built_in,.hljs-builtin-name {
+            color: #0086b3
+        }
+        
+        .hljs-meta {
+            color: #999;
+            font-weight: bold
+        }
+        
+        .hljs-deletion {
+            background: #fdd
+        }
+        
+        .hljs-addition {
+            background: #dfd
+        }
+        
+        .hljs-emphasis {
+            font-style: italic
+        }
+        
+        .hljs-strong {
+            font-weight: bold
+        }        
+    </style>
+</head>
+<body>
+    <article>
+        <header class="break-a" style="text-align: center; margin-top: 2in;">
+            <h1>现代 C++ 题目</h1>
+            <p>卢瑟帝国</p>
+            <time datetime="2024-02-08">2024 年 2 月 8 日</time>
+        </header>
+
+        <section class="break-a">
+            <p>TOC</p>
+        </section>
+
+        <section class="p-section">
+            <h2>卢瑟白的成功之路</h2>
+            <p>Pay for his majesty!</p>
+        </section>
+
+        <section class="p-section">
+            <h2>卢瑟白的失败之路</h2>
+            <p>NOT MY KING!</p>
+        </section>
+
+        <section class="p-section">
+            <h2>卢瑟白，我滴亲王！</h2>
+<pre class="hljs language-cpp"><code><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;algorithm&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;functional&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iostream&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;iterator&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;ranges&gt;</span></span>
+<span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;vector&gt;</span></span>
+
+<span class="hljs-comment">// 为std::vector增加一个自定义的赋值函数</span>
+<span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;
+    <span class="hljs-keyword">requires</span> std::disjunction_v&lt;std::is_integral&lt;T&gt;, std::is_floating_point&lt;T&gt;&gt;
+<span class="hljs-keyword">class</span> <span class="hljs-title class_">vector</span> : <span class="hljs-keyword">public</span> std::vector&lt;T&gt; {
+<span class="hljs-keyword">public</span>:
+    <span class="hljs-keyword">using</span> std::vector&lt;T&gt;::vector;
+    <span class="hljs-keyword">using</span> std::vector&lt;T&gt;::size;
+    <span class="hljs-keyword">using</span> std::vector&lt;T&gt;::<span class="hljs-keyword">operator</span>[];
+    <span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> E&gt;
+    vector&lt;T&gt;&amp; <span class="hljs-keyword">operator</span>=(<span class="hljs-type">const</span> E&amp; e)
+    {
+        <span class="hljs-type">const</span> <span class="hljs-keyword">auto</span> count = std::<span class="hljs-built_in">min</span>(<span class="hljs-built_in">size</span>(), e.<span class="hljs-built_in">size</span>());
+        <span class="hljs-keyword">this</span>-&gt;<span class="hljs-built_in">resize</span>(count);
+        <span class="hljs-keyword">for</span> (std::<span class="hljs-type">size_t</span> idx { <span class="hljs-number">0</span> }; idx &lt; count; ++idx) {
+            <span class="hljs-keyword">this</span>-&gt;<span class="hljs-keyword">operator</span>[](idx) = e[idx];
+        }
+        <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;
+    }
+};
+
+<span class="hljs-keyword">auto</span> <span class="hljs-keyword">operator</span>+(std::ranges::range <span class="hljs-keyword">auto</span>&amp;&amp; lhs, std::ranges::range <span class="hljs-keyword">auto</span>&amp;&amp; rhs)
+{
+    <span class="hljs-keyword">return</span> std::ranges::views::<span class="hljs-built_in">zip</span>(lhs, rhs) | std::ranges::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-keyword">auto</span>&amp;&amp; pair) {
+        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">0</span>&gt;(pair) + std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">1</span>&gt;(pair);
+    });
+}
+
+<span class="hljs-keyword">auto</span> <span class="hljs-keyword">operator</span>-(std::ranges::range <span class="hljs-keyword">auto</span>&amp;&amp; lhs, std::ranges::range <span class="hljs-keyword">auto</span>&amp;&amp; rhs)
+{
+    <span class="hljs-keyword">return</span> std::ranges::views::<span class="hljs-built_in">zip</span>(lhs, rhs) | std::ranges::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-keyword">auto</span>&amp;&amp; pair) {
+        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">0</span>&gt;(pair) - std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">1</span>&gt;(pair);
+    });
+}
+
+<span class="hljs-keyword">auto</span> <span class="hljs-keyword">operator</span>*(std::ranges::range <span class="hljs-keyword">auto</span>&amp;&amp; lhs, std::ranges::range <span class="hljs-keyword">auto</span>&amp;&amp; rhs)
+{
+    <span class="hljs-keyword">return</span> std::ranges::views::<span class="hljs-built_in">zip</span>(lhs, rhs) | std::ranges::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-keyword">auto</span>&amp;&amp; pair) {
+        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">0</span>&gt;(pair) * std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">1</span>&gt;(pair);
+    });
+}
+
+<span class="hljs-keyword">auto</span> <span class="hljs-keyword">operator</span>/(std::ranges::range <span class="hljs-keyword">auto</span>&amp;&amp; lhs, std::ranges::range <span class="hljs-keyword">auto</span>&amp;&amp; rhs)
+{
+    <span class="hljs-keyword">return</span> std::ranges::views::<span class="hljs-built_in">zip</span>(lhs, rhs) | std::ranges::views::<span class="hljs-built_in">transform</span>([](<span class="hljs-keyword">auto</span>&amp;&amp; pair) {
+        <span class="hljs-keyword">return</span> std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">0</span>&gt;(pair) / std::<span class="hljs-built_in">get</span>&lt;<span class="hljs-number">1</span>&gt;(pair);
+    });
+}
+</code></pre>
+        </section>
+    </article>
+</body>
+</html>

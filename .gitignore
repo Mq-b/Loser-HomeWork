@@ -24,3 +24,4 @@ build
 .idea
 cmake-build-*
 .cache
+node_modules
