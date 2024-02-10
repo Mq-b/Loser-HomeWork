@@ -33,7 +33,7 @@ struct vector_expr {
 
     virtual double operator[](std::size_t idx) const = 0;
 
-    std::size_t size() const { return this->e1.size(); }
+    std::size_t size() const { return std::min(e1.size(), e2.size()); }
 };
 
 template<typename E1, typename E2>
@@ -65,22 +65,22 @@ struct vector_div : vector_expr<E1, E2> {
 };
 
 template<typename E1, typename E2>
-vector_add<E1, E2> operator+(E1 e1, E2 e2) {
+vector_add<E1, E2> operator+(const E1 &e1, const E2 &e2) {
     return { e1, e2 };
 }
 
 template<typename E1, typename E2>
-vector_sub<E1, E2> operator-(E1 e1, E2 e2) {
+vector_sub<E1, E2> operator-(const E1 &e1, const E2 &e2) {
     return { e1, e2 };
 }
 
 template<typename E1, typename E2>
-vector_mul<E1, E2> operator*(E1 e1, E2 e2) {
+vector_mul<E1, E2> operator*(const E1 &e1, const E2 &e2) {
     return { e1, e2 };
 }
 
 template<typename E1, typename E2>
-vector_div<E1, E2> operator/(E1 e1, E2 e2) {
+vector_div<E1, E2> operator/(const E1 &e1, const E2 &e2) {
     return { e1, e2 };
 }
 
