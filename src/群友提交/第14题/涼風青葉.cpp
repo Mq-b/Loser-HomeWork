@@ -1,3 +1,4 @@
+//!msvc
 #include<iostream>
 
 extern "C" {
