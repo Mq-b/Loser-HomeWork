@@ -1514,7 +1514,7 @@ error: new initializer expression list treated as compound expression [-fpermiss
 
 实际上是因为在 C++20 中增加了 “**括号形式的聚合初始化**”（用词并不准确，当字面意思凑合理解即可）。按照[文档](https://zh.cppreference.com/w/cpp/language/direct_initialization)的描述
 
->如果目标类型是（可能有 cv 限定）的 **聚合类**，则 **按聚合初始化** 中所述进行初始化，但允许窄化转换，不允许指派初始化器，不延长引用所绑定到的临时量的生存期，不进行花括号消除，并值初始化任何无初始化器的元素。
+> 如果目标类型是（可能有 cv 限定）的 **聚合类**，则 **按聚合初始化** 中所述进行初始化，但允许窄化转换，不允许指派初始化器，不延长引用所绑定到的临时量的生存期，不进行花括号消除，并值初始化任何无初始化器的元素。
 
 我们不需要关注那么多，我们用一段代码来演示：
 
@@ -1661,9 +1661,7 @@ constexpr auto make_vector(Args&&...args) {
 
 即：**为什么需要 `std::vector({})` 这种形式？如果我不这么做呢？只用 `()` 或者 `{}` 呢？有什么替代方式吗？**
 
-我们如果去掉外面的 `()` 进行编译，会发生一个**编译错误**，编译器提示我们是`static_assert` 中的 `requires` 表达式出错了，但是看不出是哪个错误。
-
-我们去掉 `requires` 表达式中的：
+我们如果去掉外面的 `()` 进行编译，会发生一个**编译错误**，编译器提示我们是 `static_assert` 中一个 `requires` 表达式的条件无法被满足：
 
 ```cpp
 {
@@ -1671,8 +1669,7 @@ constexpr auto make_vector(Args&&...args) {
 } -> std::same_as<std::vector<std::vector<int>>>;
 ```
 
-这段代码，发现就可以通过编译了。那么问题很简单了，就是：
-`make_vector(std::vector{1, 2, 3})` 这段代码无法得到 `std::vector<std::vector<int>>` 类型（前提是我们去掉了 `()` ）。
+那么问题很简单了，就是 `make_vector(std::vector{1, 2, 3})` 这段代码无法得到 `std::vector<std::vector<int>>` 类型（前提是我们去掉了 `()` ）。
 
 那么这个问题的本质是什么？
 
