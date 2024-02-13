@@ -769,7 +769,7 @@ int main() {
 }
 ```
 
-解释，为什么以上[代码](https://godbolt.org/z/sfEzP8136)在 C++17 后可以通过编译， C++17 前不行？
+解释，为什么以上[代码](https://godbolt.org/z/sfEzP8136)在 C++17 后可以通过编译，C++17 前不行？
 
 ![图片](image/第06题/01展示.png)
 
@@ -805,7 +805,7 @@ atomic( const atomic& ) = delete;
 
 C++17 的改动是：**复制消除变为强制要求**。
 纯右值表达式作为构造对象的参数，不会再调用移动构造，也不会去检测，而是原位构造。
->说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如 `X x{X{}}` ，即使移动/复制构造函数**都被 delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
+>说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如 `X x{X{}}`，即使移动/复制构造函数**都被 delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
 
 ---
 
@@ -1192,16 +1192,16 @@ template<>
 struct tag<0> {};
 ```
 
-假设我们实例化了 `tag<4>` ，那么相当于
+假设我们实例化了 `tag<4>`，那么相当于
 
 ```cpp
 template<4>
 struct tag :tag<3> {};
 ```
 
-然后递归，以此类推，最终到 `tag<0>` ，结束。
+然后递归，以此类推，最终到 `tag<0>`，结束。
 
-也就是说 `tag<4>` 继承自 `tag<3>` ，`tag<2>` 继承自 `tag<1>` ，`tag<1>` 继承自 `tag<0>`。
+也就是说 `tag<4>` 继承自 `tag<3>`，`tag<2>` 继承自 `tag<1>`，`tag<1>` 继承自 `tag<0>`。
 
 然后看到 `size_<T>(tag<4>{});` 以及 `size_` 模板的几个重载。
 
@@ -1283,7 +1283,7 @@ int main() {
 [代码运行](https://godbolt.org/z/dbTPGhvKd)
 
 我们来描述一下`size`模板函数的实现。
->他的设计非常的巧妙，如你所见，它是一个递归函数，还是编译期的递归，使用到了 **编译期 `if`** ；并且这个函数是以 [`consteval`](https://zh.cppreference.com/w/cpp/language/consteval) 修饰 ，是立即函数，即必须在编译期执行，**产生编译时常量**。
+>他的设计非常的巧妙，如你所见，它是一个递归函数，还是编译期的递归，使用到了 **编译期 `if`** ；并且这个函数是以 [`consteval`](https://zh.cppreference.com/w/cpp/language/consteval) 修饰，是立即函数，即必须在编译期执行，**产生编译时常量**。
 
 好，我们正式进入这个函数。首先看到函数前两行，模板和 `C++20` 简写模板，这是一个形参包，万能引用。`typename T` 的 `T` 是指代外部传入的，需要获取成员个数的聚合体类型。
 
@@ -1353,10 +1353,10 @@ int main(){
 
 1. 进入 `size` 函数，`T` 是 `X`类型，形参包 `Args` 为**空**。
 2. 编译期 `if` 中，条件表达式等价于 `! requires{ X{}; }` 。显然 `X{}` 符合语法，`requires` 表达式会返回 `true` 但是有 **`!`**，那就是  **`false`**。不进入这个分支。
-3. 进入 `else` ，直接相当于 `return size<X>(init{})` 。
+3. 进入 `else`，直接相当于 `return size<X>(init{})` 。
 4. **第二次** 进入 `size` 函数，此时形参包 `Args` 有**一个**参数 `init`。
 5. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{} }; }`。显然 `X{ init{} }` 符合语法。同 `2` 返回 **`false`**，不进入分支。
-6. 进入 `else` ，直接相当于 `return size<X>(init{},init{})`。
+6. 进入 `else`，直接相当于 `return size<X>(init{},init{})`。
 7. **第三次** 进入 `size` 函数，此时形参包 `Args` 有**两个**参数 `init`。
 8. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{} } }`。显然同 `2` `5` 返回 **`false`**，不进入分支。
 9. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{})`。
@@ -1365,8 +1365,8 @@ int main(){
 12. 进入 `else`，直接相当于 `return size<X>(init{},init{},init{},init{})`。
 13. **第五次** 进入 `size` 函数，此时形参包 `Args` 有**四个**参数 `init`。（**注意，重点要来了，`X` 类型只有三个成员**）
 14. 编译期 `if` 中，条件表达式等价于 `! requires{ X{ init{},init{},init{},init{} } }`，即 `X{ init{},init{},init{},init{} }`不符合语法（`X` 类型只有三个成员）。
-所以 `requires` 表达式返回 `false`，然后因为 **`!`** ，表达式结果为 **`true`**，进入分支。
-15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4` ，再 `-1`，也就是  **`3`**。**得到最终结果**。
+所以 `requires` 表达式返回 `false`，然后因为 **`!`**，表达式结果为 **`true`**，进入分支。
+15. `return sizeof...(Args) - 1;` 注意，我们说了，第五次进入的时候，形参包 `Args` 已经有四个参数，所以`sizeof...(Args)`会返回 `4`，再 `-1`，也就是  **`3`**。**得到最终结果**。
 
 到此，我们介绍完了 `C++20`写法的 获取聚合类型的 `size` 函数。
 
@@ -1821,7 +1821,7 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
   
 - using ss::a
 
-- 直接在 ss 命名空间中通过声明引用或指针指向 a ，然后再去修改 a
+- 直接在 ss 命名空间中通过声明引用或指针指向 a，然后再去修改 a
 
 这些方式去修改命名空间 `ss` 中的对象 **a**，并且满足运行结果。
 
@@ -1912,9 +1912,9 @@ int main() {
 }
 ```
 
-> 利用符号解决，[实测](https://godbolt.org/z/os3WM4b9W)三平台通用（但显然不是标准规定的）。
+> 利用 `extern "C"`，去除额外符号修饰解决，[实测](https://godbolt.org/z/os3WM4b9W)三平台通用（但显然不是标准规定的）。
 
-`extern "C"{ }` 包含了命名空间 `ss` ，让对象 `a` 没有了额外的符号修饰，就是单纯的 `a`，如果不使用 `extern "C"` 包含，`ss::a` 的符号得是 **`_ZN2ss1aE`**。
+`extern "C"{ }` 包含了命名空间 `ss`，让对象 `a` 没有了额外的符号修饰，就是单纯的 `a`，如果不使用 `extern "C"` 包含，`ss::a` 的符号得是 **`_ZN2ss1aE`**。
 
 全局作用域的 `extern "C" int a;` 使用 `extern "C"` 能让对象 `a` 没有额外的符号修饰。也就是操作这个 `a` 等价于 `ss::a`，因为他们**编译后的符号是一样的**。
 
