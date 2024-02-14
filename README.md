@@ -139,6 +139,9 @@ int main(){
 
 - 难度：**★☆☆☆☆**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第01题)
 
 答题者：[**`andyli`**](src/群友提交/第01题/andyli.cpp)
@@ -194,6 +197,11 @@ int main(){
 
 > 评价：闲的没事多写个重载，裱起来。
 
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
+
 ### 标准答案
 
 ```cpp
@@ -228,6 +236,11 @@ std::vector<int>& operator|(auto& v1, const auto& f) {
 ```
 
 **各种其他答案的范式无非就是这些改来改去了，没必要再写。**
+
+</details>
+
+<details>
+    <summary style="font-size:150%">解析</summary>
 
 ### 解析
 
@@ -273,6 +286,8 @@ std::vector<int>& operator|(auto& v1, const auto& f)
 
 它和原形式相同。
 
+</details>
+
 ---
 
 ## `02` 实现自定义字面量 `_f`
@@ -312,6 +327,9 @@ int main(){
 提示：C++11 用户定义字面量、C++20 format 库。
 难度：**★★☆☆☆**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第02题)
 
 答题者：[**`andyli`**](src/群友提交/第02题/andyli.cpp)
@@ -348,6 +366,11 @@ int main() {
 }
 ```
 
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
+
 ### 标准答案
 
 ```cpp
@@ -355,6 +378,11 @@ constexpr auto operator""_f(const char* fmt, size_t) {
     return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
 }
 ```
+
+</details>
+
+<details>
+    <summary style="font-size:150%">解析</summary>
 
 ### 解析
 
@@ -420,6 +448,8 @@ impl::Helper operator""_f(const char* s, std::size_t len) noexcept {
 
 不过显然标准答案不是这样的，还能简化，直接让 `""_f` 返回一个 lambda 表达式即可。
 
+</details>
+
 ---
 
 ## `03` 实现 `print` 以及特化 `std::formatter`
@@ -462,7 +492,15 @@ print("{}", f);// 结果为1/10
 
 ![图片](image/第03题/01展示.jpg)
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第03题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -481,6 +519,11 @@ void print(std::string_view fmt,auto&&...args){
 我们只是非常简单的支持了**题目要求**的形式，给 `std::formatter` 进行特化，如果要支持比如那些 `{:6}` 之类的格式化的话，显然不行，这涉及到更多的操作。
 简单的特化以及 [`std::formatter`](cpp/utility/format/formatter) 支持的形式可以参见[**文档**](cpp/utility/format/formatter)。
 一些复杂的特化，up 之前也有写过，在 [**Cookbook**][Mq-b/Cookbook/7.6] 中，里面有对 [`std::ranges::range`][cpp/ranges/range] 和 [`std::tuple`][cpp/utility/tuple] 的特化，支持所有形式。
+
+</details>
+
+<details>
+    <summary style="font-size:150%">解析</summary>
 
 ### 解析
 
@@ -523,6 +566,8 @@ struct std::formatter<Frac> : std::formatter<char> {
 
 在函数实参中，`ctx.out()` 即为输出迭代器，第二个参数为可转换为 `std::string_view` 或 `std::wstring_view`，而转换结果是常量表达式和 Args 的合法格式字符串。本题中我们填入我们需要的形式，即 `{}/{}`。<br/>
 我们想要两个参数塞进 `{}`，就如我们使用 `printf(%d,x)` 一样；最后两个参数为“需要塞进 `{}` 的值”，即要格式化的参数。
+
+</details>
 
 ---
 
@@ -579,7 +624,15 @@ int main()
 
 ![图片](image/第04题/01展示.png)
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第04题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -627,6 +680,8 @@ int main(){
 这段代码很轻易的就展示了**静态数据成员属于模板实例化后的具体类型**。`Test<void>::n` 和 `Test<int>::n` 不是相同的 n，并且 `Test<void>` 和 `Test<int>` 也不是一种类型（静态成员函数同理）。
 
 所以我们的解法利用的是：不同的类型实例化 `Component` 类模板，也是不同的静态成员函数，静态成员函数里面的静态局部也都是唯一的，并且在第一次调用的时候才会初始化，后面就不会。
+
+</details>
 
 ---
 
@@ -712,7 +767,15 @@ X()
 
 - 难度:**★★★★☆**（完全满足要求的情况下）
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第05题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -754,6 +817,8 @@ scope_guard(F&&, Args&&...) -> scope_guard<std::decay_t<F>, std::decay_t<Args>..
 
 ![第五题答案动画](video/第五题答案动画.gif)
 
+</details>
+
 ---
 
 ## `06` 解释 `std::atomic` 初始化
@@ -775,7 +840,15 @@ int main() {
 
 - 难度:**★★★☆☆**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第06题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -806,6 +879,8 @@ atomic( const atomic& ) = delete;
 C++17 的改动是：**复制消除变为强制要求**。
 纯右值表达式作为构造对象的参数，不会再调用移动构造，也不会去检测，而是原位构造。
 >说句题外话，C++17后纯右值不可能再调用移动构造。没有移动构造或者复制构造不影响使用同类型纯右值初始化对象，如 `X x{X{}}`，即使移动/复制构造函数**都被 delete**，也无所谓，[`code`](https://godbolt.org/z/Kdncxcc3o)。
+
+</details>
 
 ---
 
@@ -847,7 +922,15 @@ new Exception异常....
 > 某些 IDE 或者平台可能会将打印的异常信息标为红色放到第一行，即
 > new Exception 异常.... 这句话也可能在第一行（一般终端运行不会，默认 vs 也无此功能）
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第07题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -865,6 +948,8 @@ int main() {
 实际上本题是用来讽刺将 Java 的写法带入到其他语言中，也就是很经典的：**Java 人写什么都是 Java**。
 只是看我们这道题，实际上你非要说 `new` 有什么不好，倒也没什么非常不行的地方，只是，没有理由自己多写一个 `delete` 表达式（或者包个智能指针）。
 > 我希望不要有人开始幻想：`throw new MyException("new Exception 异常....")`因为是 `throw` 一个指针类型，所以按指针传递，效率更高。不要让我看到这种逆天想法。如果你想到这一点，那不妨思考一下，构造临时对象的开销，以及使用 `new` 表达式？说实话挺无聊的问题，只是防止有人想到这些点，以及抬杠罢了。
+
+</details>
 
 ---
 
@@ -901,7 +986,15 @@ int main() {
 
 - 难度: **★★★☆☆**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第08题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -917,6 +1010,8 @@ array(Ty, Args...) -> array<Ty, 1 + sizeof...(Args)>;
 > 如此强调只是因为大部分人对此有很多错误认知
 
 推导指引实际上是按照你构造器传入的东西，来进行的这种推导，我觉得我视频里说的已经很清楚了。
+
+</details>
 
 ---
 
@@ -967,7 +1062,15 @@ X
 
 提示：[**名字查找**](https://zh.cppreference.com/w/cpp/language/lookup)
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第09题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -1011,6 +1114,8 @@ this->f();
 
 >补充：如果是 `msvc` 的某些早期版本，或者 c++版本设置在 C++20之前，会打印 `X` `X`。这是因为 `msvc`不支持 [`Two-phase name lookup`](https://learn.microsoft.com/zh-cn/archive/blogs/c/msvc%E5%B7%B2%E7%BB%8F%E6%94%AF%E6%8C%81two-phase-name-lookup)。
 详细的可以看看文档。实测 `Microsoft Visual Studio 17.6.4` 设置 `C++20` 之前的版本都无法得到正确结果。
+
+</details>
 
 ---
 
@@ -1057,7 +1162,15 @@ int main() {
 
 提示：[学习](https://akrzemi1.wordpress.com/2020/10/01/reflection-for-aggregates/)
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第10题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -1463,12 +1576,19 @@ int main(){
 
 懒得改。
 
+</details>
+
+<details>
+    <summary style="font-size:150%">补充说明</summary>
+
 ### 补充说明
 
 我们给出的 `C++20` 或 `C++17` 的 `size` 的实现是有问题的，简单的说，**它没办法处理聚合类型存储数组的问题**，包括引用、不可移动类型。在题目开头我们也说了。
 我们拿 [`boost::pfr`](https://www.boost.org/doc/libs/1_82_0/doc/html/boost_pfr/tutorial.html) 的行为作为参考，我们采用1.82.0版本。
 
 参见 [示例代码](src/群友提交/第10题/with_boost_pfr.md)
+
+</details>
 
 ---
 
@@ -1494,7 +1614,15 @@ int main(){
 
 - 难度:**★★☆☆☆**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第11题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -1530,6 +1658,8 @@ int main(){
 ```
 
 所以说白了，就是 `T(std::forward<Args>(args)...)` 这里用的小括号进行初始化，直到 C++20才允许聚合类型使用小括号初始化。
+
+</details>
 
 ---
 
@@ -1614,6 +1744,9 @@ test end
 
 - 难度:**★★★☆☆**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第12题)
 
 答题者：[`yuzhiy`](src/群友提交/第12题/yuzhiy.cpp)
@@ -1638,6 +1771,11 @@ auto make_vector(auto&&... args) {
 ```
 
 > 用 `emplace_back()` 比直接往 `vector` 的初始化器里面传入参数要少拷贝。可[自行测试](https://gcc.godbolt.org/z/3bo7oKfEq)。
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -1743,6 +1881,8 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 
 可参见[文档](https://oleksandrkvl.github.io/2021/04/02/cpp-20-overview.html#fix-init-list-ctad)描述。
 
+</details>
+
 ---
 
 ## `13` 关于 `return std::move`
@@ -1797,7 +1937,15 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 
 - 难度:**★★★☆☆**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第13题)
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -1806,6 +1954,8 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 1. 函数局部的 `x` 对象是隐式可移动实体，可以调用移动构造，显式 `std::move` 毫无意义，甚至会影响 `NRVO` 优化。
 2. 返回局部的引用，这是悬垂的。
 3. 类的数据成员不是隐式可移动实体,如果不 `std::move`，而是直接 `return x`，重载决议不会选择移动构造。所以有意义。
+
+</details>
 
 ## `14` 以特殊方法修改命名空间中声明的对象
 
@@ -1862,6 +2012,9 @@ int arr[] = {
 
 > **即使这种形式基本上没有任何的实际用途和价值，但是它能教会各位，让各位印象深刻，那也足够了。**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第14题)
 
 答题者：[**`Matrix-A`**](src/群友提交/第14题/Matrix-A.cpp)
@@ -1890,6 +2043,11 @@ int main() {
     std::cout << ss::a << '\n';
 }
 ```
+
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
 
@@ -2014,6 +2172,10 @@ int main() {
 
 参见[文档](https://zh.cppreference.com/w/cpp/language/unqualified_lookup#.E5.9C.A8.E5.91.BD.E5.90.8D.E7.A9.BA.E9.97.B4.E5.A4.96.E8.BF.9B.E8.A1.8C.E5.AE.9A.E4.B9.89)。
 
+</details>
+
+---
+
 ## `15` 表达式模板
 
 日期：`2024/1/7` 出题人：[`Matrix-A`](https://github.com/Matrix-A)（[#159](https://github.com/Mq-b/Loser-HomeWork/issues/159)）
@@ -2105,9 +2267,21 @@ int main()
 - [C++语言的表达式模板：表达式模板的入门性介绍](https://blog.csdn.net/magisu/article/details/12964911)
 - [std::valarray](https://zh.cppreference.com/w/cpp/numeric/valarray) 在一些 STL 实现中使用了表达式模板
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第15题)
 
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
+
 ### 标准答案
+
+</details>
+
+---
 
 ## `16` 制造传递函数模板的宏
 
@@ -2173,6 +2347,16 @@ int main() {
 
 - 难度：**★★☆☆☆**
 
+<details>
+    <summary style="font-size:150%">群友提交</summary>
+
 ### [群友提交](src/群友提交/第16题)
 
+</details>
+
+<details>
+    <summary style="font-size:150%">标准答案</summary>
+
 ### 标准答案
+
+</details>
