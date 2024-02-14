@@ -92,15 +92,6 @@
 
 </details>
 
-<!-- []: https://zh.cppreference.com/w/ -->
-
-[Mq-b/Cookbook/7.6]: https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC
-[cpp/language/range-for]: https://zh.cppreference.com/w/cpp/language/range-for
-[cpp/utility/functional/function]: https://zh.cppreference.com/w/cpp/utility/functional/function
-[cpp/utility/tuple]: https://zh.cppreference.com/w/cpp/utility/tuple
-[cpp/ranges/range]: https://zh.cppreference.com/w/cpp/ranges/range
-[cpp/language/user_literal]: https://zh.cppreference.com/w/cpp/language/user_literal
-
 ---
 
 ## 前言
@@ -234,7 +225,7 @@ std::vector<int>& operator|(auto& v1, const auto& f) {
 很明显我们需要重载管道运算符 |，根据我们的调用形式 `v | f2 | f`, 这种链式的调用，以及根据给出运行结果，我们可以知道，重载函数应当返回 v 的引用，并且 v 会被修改。
 `v | f2` 调用 `operator |`，operator | 中使用 f2 遍历了 v 中的每一个元素，然后返回 v 的引用，再 | f。
 
-```c++
+```cpp
 template<typename U, typename F>
 requires std::regular_invocable<F, U&> //我们可以认为对模板形参U，F满足std::regular_invocable的约束
 ```
@@ -249,7 +240,7 @@ requires 表达式如同一个返回 bool 的函数，而 U 和 F 作为类型�
 
 而函数主体则极为简单
 
-```c++
+```cpp
 std::vector<U>& operator|(std::vector<U>& v1, const F f) {
     for (auto& i : v1) {
         f(i);
@@ -258,16 +249,16 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 }
 ```
 
-其中[范围表达式][cpp/language/range-for] `for (auto& i : v1)`，如同 `for(auto i=v.begin();i!=v.end();++i){f(*i)}`：我们对 *vector*（范围）中的每一个元素应用一次 **f** 函数。返回时照常返回 v1。
+其中[范围表达式](https://zh.cppreference.com/w/cpp/language/range-for) `for (auto& i : v1)`，如同 `for(auto i=v.begin();i!=v.end();++i){f(*i)}`：我们对 *vector*（范围）中的每一个元素应用一次 **f** 函数。返回时照常返回 v1。
 
-如若不使用模板，则我们的形参列表得用 [std::function][cpp/utility/functional/function] 来接住我们使用的函数：<br/>
+如若不使用模板，则我们的形参列表得用 [std::function](https://zh.cppreference.com/w/cpp/utility/functional/function) 来接住我们使用的函数：<br/>
 对范围中的每个成员应用 **f** 不需要返回值且需要对范围中的元素进行修改，所以第二个形参为 `std::function<void(int&)>`。并且我们不需要对传进来的函数 **f** 进行修改与拷贝，所以加上 **const** 限定是个好习惯。
 
 同样的我们可以不使用范围 for 而是更简单的 `std::ranges::for_each(v1, f);` 即同上一样对范围 v1内的每个元素，应用一次函数 **f**。
 
 对于使用模板的形式，我们可以使用 C++20 的简写函数模板；简而言之，在函数形参列表中 auto 占位符会为模板形参列表追加一个虚设的模板形参。最开始的模板形式可以写成
 
-```c++
+```cpp
 std::vector<int>& operator|(auto& v1, const auto& f) 
 ```
 
@@ -358,12 +349,12 @@ constexpr auto operator""_f(const char* fmt, size_t) {
 
 ### 解析
 
-我们需要使用到 C++11 用户定义字面量，`""_f` 正是[用户自定义字面量][cpp/language/user_literal]。<br/>
+我们需要使用到 C++11 用户定义字面量，`""_f` 正是[用户自定义字面量](https://zh.cppreference.com/w/cpp/language/user_literal)。<br/>
 但**字面量运算符**（用户定义字面量所调用的函数被称为字面量运算符）的形参列表有一些限制，我们需要的是 `const char *, std::size_t` 这样的形参列表，恰好这是允许的；而字面量运算符的返回类型需要自定义，这个类型需要在内部重载 **`operator()`**，以满足上述字面量像函数一样调用的要求。
 
 我们一步一步来：
 
-```c++
+```cpp
 void operator""_test(const char* str, std::size_t){
     std::cout << str << '\n';
 }
@@ -480,13 +471,13 @@ void print(std::string_view fmt,auto&&...args){
 
 我们只是非常简单的支持了**题目要求**的形式，给 `std::formatter` 进行特化，如果要支持比如那些 `{:6}` 之类的格式化的话，显然不行，这涉及到更多的操作。
 简单的特化以及 [`std::formatter`](cpp/utility/format/formatter) 支持的形式可以参见[**文档**](cpp/utility/format/formatter)。
-一些复杂的特化，up 之前也有写过，在 [**Cookbook**][Mq-b/Cookbook/7.6] 中，里面有对 [`std::ranges::range`][cpp/ranges/range] 和 [`std::tuple`][cpp/utility/tuple] 的特化，支持所有形式。
+一些复杂的特化，up 之前也有写过，在 [**Cookbook**](https://github.com/Mq-b/Cpp20-STL-Cookbook-src#76%E4%BD%BF%E7%94%A8%E6%A0%BC%E5%BC%8F%E5%BA%93%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%96%87%E6%9C%AC) 中，里面有对 [`std::ranges::range`](https://zh.cppreference.com/w/cpp/ranges/range) 和 [`std::tuple`](https://zh.cppreference.com/w/cpp/utility/tuple) 的特化，支持所有形式。
 
 ### 解析
 
 实现一个 print 很简单，我们只要按第二题的思路来就行了，一个格式化字符串，用 std::string_view 做第一个形参，另外需要任意参数和个数，使用形参包即可。
 
-```c++
+```cpp
 void print(std::string_view fmt,auto&&...args){
     std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
 }
@@ -495,7 +486,7 @@ void print(std::string_view fmt,auto&&...args){
 此处我们没有显示声明模板形参，所以展开时不能使用以往的模板形参做完美转发的模板实参，但是根据形参包展开的规则。例
 `args...`展开成`args1,args2,args3...`,而上式展开成
 
-```c++
+```cpp
 std::forward<decltype(args1)>(args1),
 std::forward<decltype(args2)>(arsg2),
 std::forward<decltype(args3)>(args3),... 
@@ -508,7 +499,7 @@ std::forward<decltype(args3)>(args3),...
 **parse** 用来处理格式说明，并且设置相关的成员变量，对于本题我们不需要麻烦地实现此成员函数；<br/>
 我们选择继承 `std::formatter<char>` 的 **parse** 函数，独立实现 **format** 函数。如果不了解此处模板特化的语法，请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
 
-```c++
+```cpp
 template<>
 struct std::formatter<Frac> : std::formatter<char> {
     auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
