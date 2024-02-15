@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        window.PagedConfig = {
+            before: () => {
+                // See https://github.com/pagedjs/pagedjs/issues/45
+                $("table .line").contents().filter(function () {
+                    return this.nodeType === 3;
+                }).wrap("<pre class=\"whitespace-wrapper\" style=\"display: inline;\"></pre>");
+
+                $('.p-body h2').each(function (i) {
+                    $(this).attr('data-before', (i + 1) + '. ');
+                });
+            },
+            auto: false
+        }
+    </script>
+    <script src="{{ relresdir }}/pagedjs/dist/paged.polyfill.min.js"></script>
+    <script src="{{ relresdir }}/pagedjs/createToc.js"></script>
+    <script>
+        class handlers extends Paged.Handler {
+            constructor(chunker, polisher, caller) {
+                super(chunker, polisher, caller);
+            }
+
+            beforeParsed(content) {
+                createToc({
+                    content: content,
+                    tocElement: '#my-toc',
+                    titleElements: ['.p-body h2']
+                });
+            }
+        }
+        Paged.registerHandlers(handlers);
+    </script>
+
+    <style>
+        @media print {
+            #list-toc-generated {
+                list-style: none;
+            }
+            #list-toc-generated .toc-element a::after {
+                content: target-counter(attr(href), page);
+                float: right;
+            }
+            #list-toc-generated .toc-element-level-1 {
+                margin-top: 25px;
+                font-weight: bold;
+            }
+            #list-toc-generated .toc-element-level-2 {
+                margin-left: 25px;
+            }
+
+
+            /* target-text(attr(href), before) doesn't work for now, replace with counters (see below)*/
+            /* #list-toc-generated .toc-element a::before{
+                content: target-text(attr(href), before);
+            } */
+            /* counters */
+
+            #list-toc-generated {
+                counter-reset: counterTocLevel1;
+            }
+            #list-toc-generated .toc-element-level-1 {
+                counter-increment: counterTocLevel1;
+                counter-reset: counterTocLevel2;
+            }
+            #list-toc-generated .toc-element-level-1::before {
+                content: counter(counterTocLevel1) ". ";
+                padding-right: 5px;
+            }
+            #list-toc-generated .toc-element-level-2 {
+                counter-increment: counterTocLevel2;
+            }
+            #list-toc-generated .toc-element-level-2::before {
+                content: counter(counterTocLevel1) ". " counter(counterTocLevel2) ". ";
+                padding-right: 5px;
+            }
+
+            /*  leader() doesn't work for now, replace with the hack bellow */
+            /* #list-toc-generated .toc-element a::after{
+                content: leader('.') " p. " target-counter(attr(href), page);
+                float: right;
+            } */
+
+            /* hack for leaders */
+
+            #list-toc-generated {
+                overflow-x: hidden;
+            }
+            #list-toc-generated .toc-element::after {
+                content: ".................................................................................................................................................";
+                float: left;
+                width: 0;
+                padding-left: 5px;
+                letter-spacing: 2px;
+            }
+            #list-toc-generated .toc-element {
+                display: flex;
+            }
+            #list-toc-generated .toc-element a::after {
+                position: absolute;
+                right: 0;
+                background-color: white;
+                padding-left: 6px;
+            }
+            #list-toc-generated .toc-element a {
+                right: 0;
+            }
+        }
+
+        .toc-ignore {
+            background: orange;
+        }
+    </style>
+
+    <style>
+        @media print {
+            .break-a {
+                break-after: page;
+            }
+        }
+        @page {
+            size: a4 portrait;
+            margin: 1in 1in;
+        }
+        @page body {
+            @top-center {
+                content: element(page-header);
+            }
+
+            @bottom-center {
+                content: element(page-footer);
+            }
+        }
+
+        .p-ba {
+            break-after: always;
+        }
+        .p-body {
+            page: body;
+
+            h2::before {
+                content: attr(data-before);
+            }
+        }
+        .p-p {
+            display: flow-root;
+            /* margin: 1em auto; */
+        }
+
+        .cover {
+            text-align: center;
+            margin-top: 2in;
+        }
+
+        body {
+            font-family: 'STIX Two Text', '思源宋体', Unifont;
+
+            counter-reset: ph2;
+            counter-reset: ph3;
+        }
+
+        code,
+        pre {
+            font-family: "Courier Prime", '等距更纱黑体 SC', Unifont !important;
+            white-space: pre-wrap !important;
+            /*line-break: anywhere !important;*/
+        }
+
+        .p-p pre:not(.whitespace-wrapper) {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+
+        #page-header {
+            position: running(page-header);
+
+            font-size: 50%;
+            text-align: right;
+
+            hr {
+                margin: 0;
+            }
+        }
+
+        #page-footer {
+            position: running(page-footer);
+        }
+        #page-footer::after {
+            content: counter(page);
+        }
+
+        .line-number {
+            user-select: none;
+            display: none;
+            vertical-align: baseline;
+            text-align: right;
+            color: rgba(27, 31, 35, .3);
+            padding: 0 10px;
+        }
+        table .line,
+        table .whitespace-wrapper {
+            white-space: pre-wrap;
+            white-space-collapse: preserve;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .pagedjs_pages>.pagedjs_page>.pagedjs_sheet>.pagedjs_pagebox>.pagedjs_area>div [data-split-to] {
+            border-bottom: unset;
+        }
+        .pagedjs_pages>.pagedjs_page>.pagedjs_sheet>.pagedjs_pagebox>.pagedjs_area>div [data-split-from] {
+            border-top: unset;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header id="page-header">
+        卢瑟帝国万岁
+        <hr>
+    </header>
+
+    <footer id="page-footer">
+
+    </footer>
+
+    <article id="root-article">
+        <header class="p-ba cover">
+            <h1>现代 C++ 题目</h1>
+            <p>卢瑟帝国</p>
+            <time id="authordate" datetime="2024-02-08">2024 年 2 月 0 日</time>
+        </header>
+
+        <script>
+            let date = new Date();
+            $('#authordate').text(date.getFullYear() + " 年 " + (date.getMonth() + 1) + " 月 " + date.getDate() + " 日");
+        </script>
+
+        <section class="break-a" id="my-toc">
+        </section>
+
+        <section class="p-p p-body">
+            <p>暂时只有 {{ sections | count }} 道题目，并无特别难度，有疑问可看<a href="https://www.bilibili.com/video/BV1Zj411r7eP">视频教程</a>或答案解析。</p>
+        </section>
+
+        {% for sechtml in sections %}
+        <section class="p-p p-body">
+            {{ sechtml | safe }}
+        </section>
+        {% endfor %}
+    </article>
+</body>
+
+</html>

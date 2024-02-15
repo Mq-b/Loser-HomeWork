@@ -1,0 +1,90 @@
+@media print {
+    #list-toc-generated {
+        list-style: none;
+    }
+
+    #list-toc-generated .toc-element a::after {
+        content: target-counter(attr(href), page);
+        float: right;
+    }
+
+    #list-toc-generated .toc-element-level-1 {
+        margin-top: 25px;
+        font-weight: bold;
+    }
+
+    #list-toc-generated .toc-element-level-2 {
+        margin-left: 25px;
+    }
+
+
+    /* target-text(attr(href), before) doesn't work for now, replace with counters (see below)*/
+    /* #list-toc-generated .toc-element a::before{
+        content: target-text(attr(href), before);
+    } */
+
+    /* counters */
+
+    #list-toc-generated {
+        counter-reset: counterTocLevel1;
+    }
+
+    #list-toc-generated .toc-element-level-1 {
+        counter-increment: counterTocLevel1;
+        counter-reset: counterTocLevel2;
+    }
+
+    #list-toc-generated .toc-element-level-1::before {
+        content: counter(counterTocLevel1) ". ";
+        padding-right: 5px;
+    }
+
+    #list-toc-generated .toc-element-level-2 {
+        counter-increment: counterTocLevel2;
+    }
+
+    #list-toc-generated .toc-element-level-2::before {
+        content: counter(counterTocLevel1) ". " counter(counterTocLevel2) ". ";
+        padding-right: 5px;
+    }
+
+    /*  leader() doesn't work for now, replace with the hack bellow */
+    /* #list-toc-generated .toc-element a::after{
+        content: leader('.') " p. " target-counter(attr(href), page);
+        float: right;
+    } */
+
+    /* hack for leaders */
+
+    #list-toc-generated {
+        overflow-x: hidden;
+    }
+
+    #list-toc-generated .toc-element::after {
+        content: ".................................................................................................................................................";
+        float: left;
+        width: 0;
+        padding-left: 5px;
+        letter-spacing: 2px;
+    }
+
+    #list-toc-generated .toc-element {
+        display: flex;
+    }
+
+    #list-toc-generated .toc-element a::after {
+        position: absolute;
+        right: 0;
+        background-color: white;
+        padding-left: 6px;
+    }
+
+    #list-toc-generated .toc-element a {
+        right: 0;
+    }
+
+}
+
+.toc-ignore {
+    background: orange;
+}
