@@ -1,13 +1,13 @@
-from typing import cast
-from marko.block import Heading, BlockElement, Document, LinkRefDef
-from marko.md_renderer import MarkdownRenderer
-from marko.inline import CodeSpan
-from marko.parser import Parser as MarkdownParser
-import sys
 import os
-
+import sys
 from subprocess import PIPE, Popen
+from typing import cast
+
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+from marko.block import BlockElement, Document, Heading, LinkRefDef
+from marko.inline import CodeSpan
+from marko.md_renderer import MarkdownRenderer
+from marko.parser import Parser as MarkdownParser
 
 srcdir = os.getcwd()
 resdir = os.path.dirname(sys.argv[0])

@@ -1,0 +1,98 @@
+name: PrintCSS
+
+on:
+  workflow_dispatch:
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      cache-hit: ${{ steps.cache.outputs.cache-hit }}
+    steps:
+      - uses: actions/cache/restore@v4
+        id: cache
+        with:
+          lookup-only: true
+          key: treesitter-cli
+          path: tree-sitter
+  build-tree-sitter:
+    needs: prepare
+    if: needs.prepare.outputs.cache-hit != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: lhw
+      - uses: actions/checkout@v4
+        with:
+          repository: tree-sitter/tree-sitter
+          path: tree-sitter
+      - name: Apply CLI patch
+        run: |
+          cd tree-sitter
+          git apply --check --apply ../lhw/0001-Suppress-HTML-header-and-footer-for-CLI-highlight.patch
+          git apply --check --apply ../lhw/0002-Reduce-lang_not_found-message.patch
+      - run: rustup toolchain install stable-x86_64-unknown-linux-gnu --profile minimal
+      - uses: Swatinem/rust-cache@v2
+      
+      - name: Build CLI
+        run: |
+          cargo build --release
+
+      - name: Save cache
+        uses: actions/cache/save@v4
+        with:
+          path: target/release/tree-sitter
+          key: treesitter-cli
+  
+  build-printcss:
+    needs: prepare
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          key: treesitter-cli
+          path: ~/tree-sitter/tree-sitter
+          fail-on-cache-miss: true
+      - name: Add tree-sitter to path
+        run: |
+          echo "$HOME/tree-sitter" >> $GITHUB_PATH
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '>=18'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install -r requirements.txt
+      
+      - name: Configure mit2html
+        run: |
+          pushd src/现代C++题目/
+          pushd mit2html
+          npm install
+          popd
+      - name: Configure pagedgen
+        run: |
+          pushd pagedgen
+          npm install
+          popd
+          popd
+      
+      - name: Generate HTML
+        run: |
+          python3 src/现代C++题目/generate.py
+      
+      - name: Generate PDF
+        run: |
+          node src/现代C++题目/pagedgen/cli.js generated.html -o generated.pdf
+      
+      - name: Update artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf
+          path: generated.pdf
+
+
+  
+
