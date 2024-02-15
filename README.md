@@ -22,9 +22,9 @@
 - [前言](#前言)
 - [`01` 实现管道运算符](#01-实现管道运算符)
   + [运行结果](#运行结果)
-  + [群友提交](#群友提交)
-  + [标准答案](#标准答案)
-  + [解析](#解析)
+  + [群友提交](#群友提交-0)
+  + [标准答案](#标准答案-0)
+  + [解析](#解析-0)
 - [`02` 实现自定义字面量 `_f`](#02-实现自定义字面量-_f)
   + [运行结果](#运行结果-1)
   + [群友提交](#群友提交-1)
@@ -64,7 +64,7 @@
   + [标准答案](#标准答案-9)
     - [`C++17` 写法](#c17-写法)
     - [`C++20` 写法](#c20-写法)
-  + [补充说明](#补充说明)
+  + [补充说明](#补充说明-0)
 - [`11` `emplace_back()` 的问题](#11-emplace_back-的问题)
   + [群友提交](#群友提交-10)
   + [标准答案](#标准答案-10)
@@ -139,7 +139,7 @@ int main(){
 
 - 难度：**★☆☆☆☆**
 
-<details>
+<details id="群友提交-0">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第01题)
@@ -199,7 +199,7 @@ int main(){
 
 </details>
 
-<details>
+<details id="标准答案-0">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -239,7 +239,7 @@ std::vector<int>& operator|(auto& v1, const auto& f) {
 
 </details>
 
-<details>
+<details id="解析-0">
     <summary style="font-size:150%">解析</summary>
 
 ### 解析
@@ -327,7 +327,7 @@ int main(){
 提示：C++11 用户定义字面量、C++20 format 库。
 难度：**★★☆☆☆**
 
-<details>
+<details id="群友提交-1">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第02题)
@@ -368,7 +368,7 @@ int main() {
 
 </details>
 
-<details>
+<details id="标准答案-1">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -381,7 +381,7 @@ constexpr auto operator""_f(const char* fmt, size_t) {
 
 </details>
 
-<details>
+<details id="解析-1">
     <summary style="font-size:150%">解析</summary>
 
 ### 解析
@@ -492,14 +492,14 @@ print("{}", f);// 结果为1/10
 
 ![图片](image/第03题/01展示.jpg)
 
-<details>
+<details id="群友提交-2">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第03题)
 
 </details>
 
-<details>
+<details id="标准答案-2">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -522,7 +522,7 @@ void print(std::string_view fmt,auto&&...args){
 
 </details>
 
-<details>
+<details id="解析-0">
     <summary style="font-size:150%">解析</summary>
 
 ### 解析
@@ -624,14 +624,14 @@ int main()
 
 ![图片](image/第04题/01展示.png)
 
-<details>
+<details id="群友提交-3">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第04题)
 
 </details>
 
-<details>
+<details id="标准答案-3">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -767,14 +767,14 @@ X()
 
 - 难度:**★★★★☆**（完全满足要求的情况下）
 
-<details>
+<details id="群友提交-4">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第05题)
 
 </details>
 
-<details>
+<details id="标准答案-4">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -840,14 +840,14 @@ int main() {
 
 - 难度:**★★★☆☆**
 
-<details>
+<details id="群友提交-5">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第06题)
 
 </details>
 
-<details>
+<details id="标准答案-5">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -922,14 +922,14 @@ new Exception异常....
 > 某些 IDE 或者平台可能会将打印的异常信息标为红色放到第一行，即
 > new Exception 异常.... 这句话也可能在第一行（一般终端运行不会，默认 vs 也无此功能）
 
-<details>
+<details id="群友提交-6">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第07题)
 
 </details>
 
-<details>
+<details id="标准答案-6">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -986,14 +986,14 @@ int main() {
 
 - 难度: **★★★☆☆**
 
-<details>
+<details id="群友提交-7">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第08题)
 
 </details>
 
-<details>
+<details id="标准答案-7">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -1062,14 +1062,14 @@ X
 
 提示：[**名字查找**](https://zh.cppreference.com/w/cpp/language/lookup)
 
-<details>
+<details id="群友提交-8">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第09题)
 
 </details>
 
-<details>
+<details id="标准答案-8">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -1162,14 +1162,14 @@ int main() {
 
 提示：[学习](https://akrzemi1.wordpress.com/2020/10/01/reflection-for-aggregates/)
 
-<details>
+<details id="群友提交-9">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第10题)
 
 </details>
 
-<details>
+<details id="标准答案-9">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -1578,7 +1578,7 @@ int main(){
 
 </details>
 
-<details>
+<details id="补充说明-0">
     <summary style="font-size:150%">补充说明</summary>
 
 ### 补充说明
@@ -1614,14 +1614,14 @@ int main(){
 
 - 难度:**★★☆☆☆**
 
-<details>
+<details id="群友提交-10">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第11题)
 
 </details>
 
-<details>
+<details id="标准答案-10">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -1744,7 +1744,7 @@ test end
 
 - 难度:**★★★☆☆**
 
-<details>
+<details id="群友提交-11">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第12题)
@@ -1774,7 +1774,7 @@ auto make_vector(auto&&... args) {
 
 </details>
 
-<details>
+<details id="标准答案-11">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -1937,14 +1937,14 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 
 - 难度:**★★★☆☆**
 
-<details>
+<details id="群友提交-12">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第13题)
 
 </details>
 
-<details>
+<details id="标准答案-12">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -2012,7 +2012,7 @@ int arr[] = {
 
 > **即使这种形式基本上没有任何的实际用途和价值，但是它能教会各位，让各位印象深刻，那也足够了。**
 
-<details>
+<details id="群友提交-13">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第14题)
@@ -2046,7 +2046,7 @@ int main() {
 
 </details>
 
-<details>
+<details id="标准答案-13">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -2267,14 +2267,14 @@ int main()
 - [C++语言的表达式模板：表达式模板的入门性介绍](https://blog.csdn.net/magisu/article/details/12964911)
 - [std::valarray](https://zh.cppreference.com/w/cpp/numeric/valarray) 在一些 STL 实现中使用了表达式模板
 
-<details>
+<details id="群友提交-14">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第15题)
 
 </details>
 
-<details>
+<details id="标准答案-14">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
@@ -2347,14 +2347,14 @@ int main() {
 
 - 难度：**★★☆☆☆**
 
-<details>
+<details id="群友提交-15">
     <summary style="font-size:150%">群友提交</summary>
 
 ### [群友提交](src/群友提交/第16题)
 
 </details>
 
-<details>
+<details id="标准答案-15">
     <summary style="font-size:150%">标准答案</summary>
 
 ### 标准答案
