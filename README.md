@@ -234,7 +234,7 @@ std::vector<int>& operator|(auto& v1, const auto& f) {
 很明显我们需要重载管道运算符 |，根据我们的调用形式 `v | f2 | f`, 这种链式的调用，以及根据给出运行结果，我们可以知道，重载函数应当返回 v 的引用，并且 v 会被修改。
 `v | f2` 调用 `operator |`，operator | 中使用 f2 遍历了 v 中的每一个元素，然后返回 v 的引用，再 | f。
 
-```c++
+```cpp
 template<typename U, typename F>
 requires std::regular_invocable<F, U&> //我们可以认为对模板形参U，F满足std::regular_invocable的约束
 ```
@@ -249,7 +249,7 @@ requires 表达式如同一个返回 bool 的函数，而 U 和 F 作为类型�
 
 而函数主体则极为简单
 
-```c++
+```cpp
 std::vector<U>& operator|(std::vector<U>& v1, const F f) {
     for (auto& i : v1) {
         f(i);
@@ -267,7 +267,7 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 
 对于使用模板的形式，我们可以使用 C++20 的简写函数模板；简而言之，在函数形参列表中 auto 占位符会为模板形参列表追加一个虚设的模板形参。最开始的模板形式可以写成
 
-```c++
+```cpp
 std::vector<int>& operator|(auto& v1, const auto& f) 
 ```
 
@@ -363,7 +363,7 @@ constexpr auto operator""_f(const char* fmt, size_t) {
 
 我们一步一步来：
 
-```c++
+```cpp
 void operator""_test(const char* str, std::size_t){
     std::cout << str << '\n';
 }
@@ -486,7 +486,7 @@ void print(std::string_view fmt,auto&&...args){
 
 实现一个 print 很简单，我们只要按第二题的思路来就行了，一个格式化字符串，用 std::string_view 做第一个形参，另外需要任意参数和个数，使用形参包即可。
 
-```c++
+```cpp
 void print(std::string_view fmt,auto&&...args){
     std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
 }
@@ -495,7 +495,7 @@ void print(std::string_view fmt,auto&&...args){
 此处我们没有显示声明模板形参，所以展开时不能使用以往的模板形参做完美转发的模板实参，但是根据形参包展开的规则。例
 `args...`展开成`args1,args2,args3...`,而上式展开成
 
-```c++
+```cpp
 std::forward<decltype(args1)>(args1),
 std::forward<decltype(args2)>(arsg2),
 std::forward<decltype(args3)>(args3),... 
@@ -508,7 +508,7 @@ std::forward<decltype(args3)>(args3),...
 **parse** 用来处理格式说明，并且设置相关的成员变量，对于本题我们不需要麻烦地实现此成员函数；<br/>
 我们选择继承 `std::formatter<char>` 的 **parse** 函数，独立实现 **format** 函数。如果不了解此处模板特化的语法，请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
 
-```c++
+```cpp
 template<>
 struct std::formatter<Frac> : std::formatter<char> {
     auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
