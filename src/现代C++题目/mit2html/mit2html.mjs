@@ -25,7 +25,7 @@ const markdown = markdownit({
             }
         };
 
-        return highlightCode(str, lang);
+        return highlightCode(str, lang).replace(/\n$/g, '');
         //return '';
     }
 });
