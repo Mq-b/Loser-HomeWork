@@ -28,7 +28,6 @@ jobs:
           repository: tree-sitter/tree-sitter
       - name: Apply CLI patch
         run: |
-          cd tree-sitter
           git apply --check --apply lhw/.github/0001-Suppress-HTML-header-and-footer-for-CLI-highlight.patch
           git apply --check --apply lhw/.github/0002-Reduce-lang_not_found-message.patch
       - run: rustup toolchain install stable-x86_64-unknown-linux-gnu --profile minimal
@@ -45,7 +44,7 @@ jobs:
           key: treesitter-cli
   
   build-printcss:
-    needs: prepare
+    needs: [prepare, build-tree-sitter]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
