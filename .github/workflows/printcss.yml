@@ -22,10 +22,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: lhw
+          repository: tree-sitter/tree-sitter
       - uses: actions/checkout@v4
         with:
-          repository: tree-sitter/tree-sitter
+          path: lhw
       - name: Apply CLI patch
         run: |
           git apply --check --apply lhw/.github/0001-Suppress-HTML-header-and-footer-for-CLI-highlight.patch
