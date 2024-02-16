@@ -63,14 +63,19 @@ jobs:
           mkdir -p ~/.config/tree-sitter
           cp .github/tree-sitter.json ~/.config/tree-sitter/config.json
       - uses: actions/cache@v4
+        id: cache-tsp
         with:
           key: treesitter-parsers
           path: |
             ~/.cache/tree-sitter/
             ~/tree-sitter-parsers/
       - name: Fetch tree-sitter parsers
+        if: steps.cache-tsp.outputs.cache-hit != 'true'
         run: |
           git clone --depth 1 --no-tags https://github.com/tree-sitter/tree-sitter-cpp.git ~/tree-sitter-parsers/tree-sitter-cpp
+      - name: Dump tree-sitter parsers
+        run: |
+          tree-sitter dump-languages
 
       - uses: actions/setup-node@v4
         with:
