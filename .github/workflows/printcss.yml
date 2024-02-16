@@ -14,7 +14,7 @@ jobs:
         with:
           lookup-only: true
           key: treesitter-cli
-          path: tree-sitter
+          path: ~/tree-sitter/tree-sitter
   build-tree-sitter:
     needs: prepare
     if: needs.prepare.outputs.cache-hit != 'true'
@@ -36,11 +36,13 @@ jobs:
       - name: Build CLI
         run: |
           cargo build --release
+          mkdir ~/tree-sitter
+          cp target/release/tree-sitter ~/tree-sitter/
 
       - name: Save cache
         uses: actions/cache/save@v4
         with:
-          path: target/release/tree-sitter
+          path: ~/tree-sitter/tree-sitter
           key: treesitter-cli
   
   build-printcss:
