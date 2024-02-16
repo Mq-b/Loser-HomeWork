@@ -8,23 +8,25 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script>
-        window,PagedConfig = window.PagedConfig || {};
-        window.PagedConfig.before = window.PagedConfig.before || function() {};
-        var originalBefore = window.PagedConfig.before;
-        window.PagedConfig = {
-            before: () => {
-                // See https://github.com/pagedjs/pagedjs/issues/45
-                originalBefore.apply(this);
+        {
+            window,PagedConfig = window.PagedConfig || {};
+            window.PagedConfig.before = window.PagedConfig.before || function() {};
+            let originalBefore = window.PagedConfig.before;
+            window.PagedConfig = {
+                before: () => {
+                    // See https://github.com/pagedjs/pagedjs/issues/45
+                    originalBefore.apply(this);
 
-                $("table .line").contents().filter(function () {
-                    return this.nodeType === 3;
-                }).wrap("<pre class=\"whitespace-wrapper\" style=\"display: inline;\"></pre>");
+                    $("table .line").contents().filter(function () {
+                        return this.nodeType === 3;
+                    }).wrap("<pre class=\"whitespace-wrapper\" style=\"display: inline;\"></pre>");
 
-                $('.p-body h2').each(function (i) {
-                    $(this).attr('data-before', (i + 1) + '. ');
-                });
-            },
-            auto: false
+                    $('.p-body h2').each(function (i) {
+                        $(this).attr('data-before', (i + 1) + '. ');
+                    });
+                },
+                auto: false
+            }
         }
     </script>
     <script src="{{ relresdir }}/pagedjs/dist/paged.polyfill.min.js"></script>
