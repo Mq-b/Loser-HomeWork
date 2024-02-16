@@ -109,14 +109,13 @@ jobs:
       
       - name: Generate PDF
         run: |
-          node src/现代C++题目/pagedgen/cli.js generated.html -o generated.pdf
+          node src/现代C++题目/pagedgen/cli.js generated.html -o homework_problemtext.pdf --additional-script src/现代C++题目/remove_details.js
+          node src/现代C++题目/pagedgen/cli.js generated.html -o homework_full.pdf --additional-script src/现代C++题目/unwrap_details.js
       
       - name: Update artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pdf
-          path: generated.pdf
-
-
-  
-
+          path: |
+            homework_problemtext.pdf
+            homework_full.pdf
