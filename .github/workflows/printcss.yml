@@ -51,14 +51,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/cache/restore@v4
         with:
           key: treesitter-cli
           path: ~/tree-sitter/tree-sitter
           fail-on-cache-miss: true
-      - name: Add tree-sitter to path
+      - name: Setup tree-sitter
         run: |
           echo "$HOME/tree-sitter" >> $GITHUB_PATH
+          mkdir -p ~/.config/tree-sitter
+          cp .github/tree-sitter.json ~/.config/tree-sitter/config.json
+      - uses: actions/cache@v4
+        with:
+          key: treesitter-parsers
+          path: |
+            ~/.cache/tree-sitter/
+            ~/tree-sitter-parsers/
+      - name: Fetch tree-sitter parsers
+        run: |
+          git clone --depth 1 --no-tags https://github.com/tree-sitter/tree-sitter-cpp.git ~/tree-sitter-parsers/tree-sitter-cpp
+
       - uses: actions/setup-node@v4
         with:
           node-version: '>=18'
