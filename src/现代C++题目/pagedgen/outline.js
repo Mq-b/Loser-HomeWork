@@ -31,6 +31,9 @@ async function parseOutline(page, tags, enableWarnings) {
         while (tagsToProcess.length > 0) {
             const tag = tagsToProcess.pop();
             const orderDepth = tags.indexOf(tag.tagName.toLowerCase());
+            if (!tag.id) {
+                tag.id = tag.attributes.getNamedItem('data-ref')?.value;
+            }
             const dest = encodeURIComponent(tag.id).replace(/%/g, "#25");
 
             // Add to link holder to register a destination
