@@ -74,6 +74,7 @@ jobs:
           popd
           pushd pagedgen
           npm install
+          npx playwright install chromium
           popd
           popd
       
