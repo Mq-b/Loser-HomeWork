@@ -47,6 +47,7 @@ jobs:
   
   build-printcss:
     needs: [prepare, build-tree-sitter]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
