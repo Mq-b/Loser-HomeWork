@@ -13,11 +13,13 @@ on:
     paths: 
       - README.md
       - "src/现代C\\+\\+题目/**"
+      - .github/workflows/printcss.yml
   pull_request:
     branches: [ "main" ]
     paths: 
       - README.md
       - "src/现代C\\+\\+题目/**"
+      - .github/workflows/printcss.yml
 
 jobs:
   prepare:
