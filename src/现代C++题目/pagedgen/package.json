@@ -1,0 +1,22 @@
+{
+  "name": "pagedgen",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "commander": "^12.0.0",
+    "html-entities": "^2.4.0",
+    "ora": "^8.0.1",
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.41.2",
+    "replace-ext": "^2.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0"
+  },
+  "type": "module"
+}

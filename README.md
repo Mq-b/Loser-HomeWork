@@ -17,7 +17,7 @@
 </div>
 
 <details>
-    <summary style="font-size:150%">目录</summary>
+    <summary>目录</summary>
 
 - [前言](#前言)
 - [`01` 实现管道运算符](#01-实现管道运算符)
@@ -140,7 +140,7 @@ int main(){
 - 难度：**★☆☆☆☆**
 
 <details id="群友提交-0">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第01题)
 
@@ -200,7 +200,7 @@ int main(){
 </details>
 
 <details id="标准答案-0">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -240,14 +240,14 @@ std::vector<int>& operator|(auto& v1, const auto& f) {
 </details>
 
 <details id="解析-0">
-    <summary style="font-size:150%">解析</summary>
+    <summary>解析</summary>
 
 ### 解析
 
 很明显我们需要重载管道运算符 |，根据我们的调用形式 `v | f2 | f`, 这种链式的调用，以及根据给出运行结果，我们可以知道，重载函数应当返回 v 的引用，并且 v 会被修改。
 `v | f2` 调用 `operator |`，operator | 中使用 f2 遍历了 v 中的每一个元素，然后返回 v 的引用，再 | f。
 
-```c++
+```cpp
 template<typename U, typename F>
 requires std::regular_invocable<F, U&> //我们可以认为对模板形参U，F满足std::regular_invocable的约束
 ```
@@ -262,7 +262,7 @@ requires 表达式如同一个返回 bool 的函数，而 U 和 F 作为类型�
 
 而函数主体则极为简单
 
-```c++
+```cpp
 std::vector<U>& operator|(std::vector<U>& v1, const F f) {
     for (auto& i : v1) {
         f(i);
@@ -280,7 +280,7 @@ std::vector<U>& operator|(std::vector<U>& v1, const F f) {
 
 对于使用模板的形式，我们可以使用 C++20 的简写函数模板；简而言之，在函数形参列表中 auto 占位符会为模板形参列表追加一个虚设的模板形参。最开始的模板形式可以写成
 
-```c++
+```cpp
 std::vector<int>& operator|(auto& v1, const auto& f) 
 ```
 
@@ -328,7 +328,7 @@ int main(){
 难度：**★★☆☆☆**
 
 <details id="群友提交-1">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第02题)
 
@@ -369,7 +369,7 @@ int main() {
 </details>
 
 <details id="标准答案-1">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -382,7 +382,7 @@ constexpr auto operator""_f(const char* fmt, size_t) {
 </details>
 
 <details id="解析-1">
-    <summary style="font-size:150%">解析</summary>
+    <summary>解析</summary>
 
 ### 解析
 
@@ -391,7 +391,7 @@ constexpr auto operator""_f(const char* fmt, size_t) {
 
 我们一步一步来：
 
-```c++
+```cpp
 void operator""_test(const char* str, std::size_t){
     std::cout << str << '\n';
 }
@@ -493,14 +493,14 @@ print("{}", f);// 结果为1/10
 ![图片](image/第03题/01展示.jpg)
 
 <details id="群友提交-2">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第03题)
 
 </details>
 
 <details id="标准答案-2">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -523,13 +523,13 @@ void print(std::string_view fmt,auto&&...args){
 </details>
 
 <details id="解析-0">
-    <summary style="font-size:150%">解析</summary>
+    <summary>解析</summary>
 
 ### 解析
 
 实现一个 print 很简单，我们只要按第二题的思路来就行了，一个格式化字符串，用 std::string_view 做第一个形参，另外需要任意参数和个数，使用形参包即可。
 
-```c++
+```cpp
 void print(std::string_view fmt,auto&&...args){
     std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
 }
@@ -538,7 +538,7 @@ void print(std::string_view fmt,auto&&...args){
 此处我们没有显示声明模板形参，所以展开时不能使用以往的模板形参做完美转发的模板实参，但是根据形参包展开的规则。例
 `args...`展开成`args1,args2,args3...`,而上式展开成
 
-```c++
+```cpp
 std::forward<decltype(args1)>(args1),
 std::forward<decltype(args2)>(arsg2),
 std::forward<decltype(args3)>(args3),... 
@@ -551,7 +551,7 @@ std::forward<decltype(args3)>(args3),...
 **parse** 用来处理格式说明，并且设置相关的成员变量，对于本题我们不需要麻烦地实现此成员函数；<br/>
 我们选择继承 `std::formatter<char>` 的 **parse** 函数，独立实现 **format** 函数。如果不了解此处模板特化的语法，请复习[模板特化](https://zh.cppreference.com/w/cpp/language/template_specialization)。
 
-```c++
+```cpp
 template<>
 struct std::formatter<Frac> : std::formatter<char> {
     auto format(const auto& frac, auto& ctx)const{//const修饰是必须的
@@ -625,14 +625,14 @@ int main()
 ![图片](image/第04题/01展示.png)
 
 <details id="群友提交-3">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第04题)
 
 </details>
 
 <details id="标准答案-3">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -768,14 +768,14 @@ X()
 - 难度:**★★★★☆**（完全满足要求的情况下）
 
 <details id="群友提交-4">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第05题)
 
 </details>
 
 <details id="标准答案-4">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -841,14 +841,14 @@ int main() {
 - 难度:**★★★☆☆**
 
 <details id="群友提交-5">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第06题)
 
 </details>
 
 <details id="标准答案-5">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -923,14 +923,14 @@ new Exception异常....
 > new Exception 异常.... 这句话也可能在第一行（一般终端运行不会，默认 vs 也无此功能）
 
 <details id="群友提交-6">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第07题)
 
 </details>
 
 <details id="标准答案-6">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -987,14 +987,14 @@ int main() {
 - 难度: **★★★☆☆**
 
 <details id="群友提交-7">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第08题)
 
 </details>
 
 <details id="标准答案-7">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -1063,14 +1063,14 @@ X
 提示：[**名字查找**](https://zh.cppreference.com/w/cpp/language/lookup)
 
 <details id="群友提交-8">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第09题)
 
 </details>
 
 <details id="标准答案-8">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -1163,14 +1163,14 @@ int main() {
 提示：[学习](https://akrzemi1.wordpress.com/2020/10/01/reflection-for-aggregates/)
 
 <details id="群友提交-9">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第10题)
 
 </details>
 
 <details id="标准答案-9">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -1579,7 +1579,7 @@ int main(){
 </details>
 
 <details id="补充说明-0">
-    <summary style="font-size:150%">补充说明</summary>
+    <summary>补充说明</summary>
 
 ### 补充说明
 
@@ -1615,14 +1615,14 @@ int main(){
 - 难度:**★★☆☆☆**
 
 <details id="群友提交-10">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第11题)
 
 </details>
 
 <details id="标准答案-10">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -1642,7 +1642,7 @@ error: new initializer expression list treated as compound expression [-fpermiss
 
 实际上是因为在 C++20 中增加了 “**括号形式的聚合初始化**”（用词并不准确，当字面意思凑合理解即可）。按照[文档](https://zh.cppreference.com/w/cpp/language/direct_initialization)的描述
 
->如果目标类型是（可能有 cv 限定）的 **聚合类**，则 **按聚合初始化** 中所述进行初始化，但允许窄化转换，不允许指派初始化器，不延长引用所绑定到的临时量的生存期，不进行花括号消除，并值初始化任何无初始化器的元素。
+> 如果目标类型是（可能有 cv 限定）的 **聚合类**，则 **按聚合初始化** 中所述进行初始化，但允许窄化转换，不允许指派初始化器，不延长引用所绑定到的临时量的生存期，不进行花括号消除，并值初始化任何无初始化器的元素。
 
 我们不需要关注那么多，我们用一段代码来演示：
 
@@ -1745,7 +1745,7 @@ test end
 - 难度:**★★★☆☆**
 
 <details id="群友提交-11">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第12题)
 
@@ -1775,7 +1775,7 @@ auto make_vector(auto&&... args) {
 </details>
 
 <details id="标准答案-11">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -1799,9 +1799,7 @@ constexpr auto make_vector(Args&&...args) {
 
 即：**为什么需要 `std::vector({})` 这种形式？如果我不这么做呢？只用 `()` 或者 `{}` 呢？有什么替代方式吗？**
 
-我们如果去掉外面的 `()` 进行编译，会发生一个**编译错误**，编译器提示我们是`static_assert` 中的 `requires` 表达式出错了，但是看不出是哪个错误。
-
-我们去掉 `requires` 表达式中的：
+我们如果去掉外面的 `()` 进行编译，会发生一个**编译错误**，编译器提示我们是 `static_assert` 中一个 `requires` 表达式的条件无法被满足：
 
 ```cpp
 {
@@ -1809,8 +1807,7 @@ constexpr auto make_vector(Args&&...args) {
 } -> std::same_as<std::vector<std::vector<int>>>;
 ```
 
-这段代码，发现就可以通过编译了。那么问题很简单了，就是：
-`make_vector(std::vector{1, 2, 3})` 这段代码无法得到 `std::vector<std::vector<int>>` 类型（前提是我们去掉了 `()` ）。
+那么问题很简单了，就是 `make_vector(std::vector{1, 2, 3})` 这段代码无法得到 `std::vector<std::vector<int>>` 类型（前提是我们去掉了 `()` ）。
 
 那么这个问题的本质是什么？
 
@@ -1938,14 +1935,14 @@ auto v2 = make_vector(std::vector{1,2,3});  // std::vector<int>
 - 难度:**★★★☆☆**
 
 <details id="群友提交-12">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第13题)
 
 </details>
 
 <details id="标准答案-12">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -2013,7 +2010,7 @@ int arr[] = {
 > **即使这种形式基本上没有任何的实际用途和价值，但是它能教会各位，让各位印象深刻，那也足够了。**
 
 <details id="群友提交-13">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第14题)
 
@@ -2047,7 +2044,7 @@ int main() {
 </details>
 
 <details id="标准答案-13">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -2268,14 +2265,14 @@ int main()
 - [std::valarray](https://zh.cppreference.com/w/cpp/numeric/valarray) 在一些 STL 实现中使用了表达式模板
 
 <details id="群友提交-14">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第15题)
 
 </details>
 
 <details id="标准答案-14">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
@@ -2348,14 +2345,14 @@ int main() {
 - 难度：**★★☆☆☆**
 
 <details id="群友提交-15">
-    <summary style="font-size:150%">群友提交</summary>
+    <summary>群友提交</summary>
 
 ### [群友提交](src/群友提交/第16题)
 
 </details>
 
 <details id="标准答案-15">
-    <summary style="font-size:150%">标准答案</summary>
+    <summary>标准答案</summary>
 
 ### 标准答案
 
