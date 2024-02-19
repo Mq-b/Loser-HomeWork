@@ -12,12 +12,12 @@ on:
     tags: ["v[0-9]+.[0-9]+.[0-9]+*"]
     paths: 
       - README.md
-      - src/现代C++题目/**
+      - "src/现代C\\+\\+题目/**"
   pull_request:
     branches: [ "main" ]
     paths: 
       - README.md
-      - src/现代C++题目/**
+      - "src/现代C\\+\\+题目/**"
 
 jobs:
   prepare:
