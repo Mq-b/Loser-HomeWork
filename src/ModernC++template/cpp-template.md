@@ -28,4 +28,4 @@ C++ 的模板是静态的，它不同于其他语言，C++ 的模板在编译期
 - 偏特化
 - 全特化
 
-## 建议学习现代C++模板教程：[视频](https://b23.tv/Ppq4Bsw)、[教案](https://github.com/Mq-b/Modern-Cpp-templates-tutorial)。
+## 建议学习现代C++模板教程：[视频](https://b23.tv/Ppq4Bsw)、[教案](https://github.com/Mq-b/Modern-Cpp-templates-tutorial)
