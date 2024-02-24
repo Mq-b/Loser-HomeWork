@@ -190,7 +190,7 @@ jobs:
       with:
         name: "Docs ${{ env.TAG_NAME }}"
         prerelease: ${{ env.PRERELEASE != '' }}
-        files: loser-homework-docs-nightly.tar.zst
+        files: loser-homework-pdf-${{ env.TAG_NAME }}.tar.zst
         tag_name: ${{ env.TAG_NAME }}
         draft: ${{ env.DRAFT != '' || null }}
 
