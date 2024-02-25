@@ -573,7 +573,7 @@ struct std::formatter<Frac> : std::formatter<char> {
 
 ## `04` 给定类模板修改，让其对每一个不同类型实例化有不同 ID
 
-日期：**`2023/7/25`** 出题人：**`Adttil`**
+日期：**`2023/7/25`** 出题人：[Adttil](https://github.com/Adttil)
 
 ```cpp
 #include<iostream>
