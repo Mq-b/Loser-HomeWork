@@ -14,6 +14,7 @@
 *.pygstyle
 *.pygtex
 *.toc
+*.pdf
 /check/target
 /check/Cargo.lock
 __pycache__
@@ -23,3 +24,4 @@ build
 .idea
 cmake-build-*
 .cache
+node_modules

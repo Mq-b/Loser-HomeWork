@@ -9,6 +9,6 @@ int b = 0;
 int main() {
     *const_cast<volatile int*>(&b - 1) = 100;
     *const_cast<volatile int*>(&b + 1) = 100;
-    std::atomic_flag{}.test_and_set();
+    std::atomic_thread_fence(std::memory_order_acq_rel);
     std::cout << ss::a << '\n';
 }
