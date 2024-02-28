@@ -79,14 +79,18 @@ int main()
             continue;
         }
 
-        
-        bool result = checkutf8(entry.path());
-        if (result) {
-            print("CHECKED {} ({})\n", entry.path().c_str(), mime);
-            ++success;
-        } else {
-            printerr("FAILURE {} ({})\n", entry.path().c_str(), mime);
-            ++failure;
+        try {
+            bool result = checkutf8(entry.path());
+            if (result) {
+                print("CHECKED {} ({})\n", entry.path().c_str(), mime);
+                ++success;
+            } else {
+                printerr("FAILURE {} ({})\n", entry.path().c_str(), mime);
+                ++failure;
+            }
+        catch(const std::exception& err){
+            printerr("ERROR {} ({})\n", entry.path().c_str(), mime);
+            printerr("{}", err.what());
         }
     }
 
