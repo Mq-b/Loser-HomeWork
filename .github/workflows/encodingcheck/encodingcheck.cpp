@@ -88,6 +88,7 @@ int main()
                 printerr("FAILURE {} ({})\n", entry.path().c_str(), mime);
                 ++failure;
             }
+        }
         catch(const std::exception& err){
             printerr("ERROR {} ({})\n", entry.path().c_str(), mime);
             printerr("{}", err.what());
