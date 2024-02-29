@@ -439,7 +439,7 @@ impl::Helper operator""_f(const char* s, std::size_t len) noexcept {
 }
 ```
 
-`operator""_f` 本身非常简单，只是用来把传入的参数（格式字符串）和长度，构造 `mpl::Helper` 对象再返回。`Helper` 类型使用了一个 `string_veiw` 作为数据成员，存储了格式字符串，以供后面格式化使用。
+`operator""_f` 本身非常简单，只是用来把传入的参数（格式字符串）和长度，构造 `impl::Helper` 对象再返回。`Helper` 类型使用了一个 `string_view` 作为数据成员，存储了格式字符串，以供后面格式化使用。
 
 **重点只在于 `operator()`。** 它是一个变参模板，用来接取我们传入的任意类型和个数的参数，然后返回格式化后的字符串。
 
