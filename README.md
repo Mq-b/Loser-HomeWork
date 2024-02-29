@@ -2276,17 +2276,6 @@ int main()
 
 ### 标准答案
 
-顾名思义，**表达式模板**指使用模板类表示表达式。表达式由**运算符**和**操作数**按照一定规律组合而成。
-
-观察题目中的表达式为 `a - b * c / d + e` 可知：
-
-1. 运算符：可以使用标准库中的通透的[**运算符函数对象**](https://zh.cppreference.com/w/cpp/utility/functional#.E9.80.9A.E9.80.8F.E5.87.BD.E6.95.B0.E5.AF.B9.E8.B1.A1)进行记录;
-2. 操作数：均为二元运算符，需要记录**左操作数**和**右操作数**;
-
-以 `a - b * c / d + e` 中的子表达式 `/` 为例，其运算符可以使用 `std::divides` ，左操作数为**表达式模板类对象** `b * c` ，右操作数为 `d` 。
-
-根据以上内容，通过在**重载运算符**生成**表达式模板类对象**，并在**表达式模板类**的 `operator[]` 中将**运算符函数对象**应用到**操作数**就可以简单的完成题目，示例代码如下：
-
 ```cpp
 template<typename F, typename L, typename R>
 struct vector_expr {
@@ -2315,6 +2304,17 @@ auto operator/(const auto& lhs, const auto& rhs) {
     return vector_expr{ std::divides{}, lhs, rhs };
 }
 ```
+
+顾名思义，**表达式模板**指使用模板类表示表达式。表达式由**运算符**和**操作数**按照一定规律组合而成。
+
+观察题目中的表达式为 `a - b * c / d + e` 可知：
+
+1. 运算符：可以使用标准库中的通透的[**运算符函数对象**](https://zh.cppreference.com/w/cpp/utility/functional#.E9.80.9A.E9.80.8F.E5.87.BD.E6.95.B0.E5.AF.B9.E8.B1.A1)进行记录;
+2. 操作数：均为二元运算符，需要记录**左操作数**和**右操作数**;
+
+以 `a - b * c / d + e` 中的子表达式 `/` 为例，其运算符可以使用 `std::divides` ，左操作数为**表达式模板类对象** `b * c` ，右操作数为 `d` 。
+
+根据以上内容，通过在**重载运算符**生成**表达式模板类对象**，并在**表达式模板类**的 `operator[]` 中将**运算符函数对象**应用到**操作数**就可以简单的完成题目。
 
 在以上代码中，使用**表达式模板**通过**惰性求值**将**运算符函数对象**应用到**操作数**，这就是范围库中 [`std::ranges::zip_transform_view`](https://zh.cppreference.com/w/cpp/ranges/zip_transform_view)(C++23)。
 
