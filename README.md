@@ -2287,7 +2287,7 @@ int main()
 
 根据以上内容，通过在**重载运算符**生成**表达式模板类对象**，并在**表达式模板类**的 `operator[]` 中将**运算符函数对象**应用到**操作数**就可以简单的完成题目，示例代码如下：
 
-```
+```cpp
 template<typename F, typename L, typename R>
 struct vector_expr {
     const F& func;
@@ -2320,7 +2320,7 @@ auto operator/(const auto& lhs, const auto& rhs) {
 
 将上述代码替换为以下内容，也可以正确执行：
 
-```
+```cpp
 auto operator+(const auto& lhs, const auto& rhs) {
     return std::ranges::zip_transform_view{ std::plus{}, lhs, rhs };
 }
