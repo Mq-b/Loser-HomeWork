@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 struct MyException :std::exception {
 	const char* data{};
