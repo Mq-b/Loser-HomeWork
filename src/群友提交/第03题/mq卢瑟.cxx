@@ -12,7 +12,7 @@ void print(std::string_view format_str, Args const&... args) {
 
 template<>
 struct std::formatter<Frac> : std::formatter<string> {
-    auto format(Frac const& f, format_context& ctx) const {
+    auto format(Frac const& f, auto& ctx) const {
         return std::format_to(ctx.out(), "{}/{}", f.a, f.b);
     }
 };
