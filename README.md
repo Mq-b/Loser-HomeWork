@@ -86,6 +86,7 @@
 - [`15` 表达式模板](#15-表达式模板)
   + [群友提交](#群友提交-14)
   + [标准答案](#标准答案-14)
+  + [解析](#解析-3)
 - [`16` 通透函数宏](#16-制造传递函数模板的宏)
   + [群友提交](#群友提交-15)
   + [标准答案](#标准答案-15)
@@ -2255,7 +2256,7 @@ int main()
 4.73472, 4.05709, 5.038, 5.08264, 5.73076, 5.18673,
 ```
 
-- 难度: 待定
+- 难度: **★★★☆☆**
 
 学习链接：
 
@@ -2275,6 +2276,82 @@ int main()
     <summary>标准答案</summary>
 
 ### 标准答案
+
+```cpp
+template<typename F, typename L, typename R>
+struct vector_expr {
+    const F& func;
+    const L& lhs;
+    const R& rhs;
+
+    std::size_t size() const {
+        return std::min(lhs.size(), rhs.size());
+    }
+    inline auto operator[](const size_t idx) const {
+        return func(lhs[idx], rhs[idx]);
+    }
+};
+
+auto operator+(const auto& lhs, const auto& rhs) {
+    return vector_expr{ std::plus{}, lhs, rhs };
+}
+auto operator-(const auto& lhs, const auto& rhs) {
+    return vector_expr{ std::minus{}, lhs, rhs };
+}
+auto operator*(const auto& lhs, const auto& rhs) {
+    return vector_expr{ std::multiplies{}, lhs, rhs };
+}
+auto operator/(const auto& lhs, const auto& rhs) {
+    return vector_expr{ std::divides{}, lhs, rhs };
+}
+```
+
+**表达式模板**是简化版的 `std::ranges::zip_transform_view`。
+
+优点：灵活，易用，可以充分利用编译器优化
+
+缺点：实现复杂
+
+</details>
+
+<details id="解析-3">
+    <summary>解析</summary>
+
+### 解析
+
+顾名思义，**表达式模板**指使用模板类表示表达式。表达式由**运算符**和**操作数**按照一定规律组合而成。
+
+观察题目中的表达式为 `a - b * c / d + e` 可知：
+
+1. 运算符：可以使用标准库中的通透的[**运算符函数对象**](https://zh.cppreference.com/w/cpp/utility/functional#.E9.80.9A.E9.80.8F.E5.87.BD.E6.95.B0.E5.AF.B9.E8.B1.A1)进行记录;
+2. 操作数：均为二元运算符，需要记录**左操作数**和**右操作数**;
+
+以 `a - b * c / d + e` 中的子表达式 `/` 为例，其运算符可以使用 `std::divides` ，左操作数为**表达式模板类对象** `b * c` ，右操作数为 `d` 。
+
+根据以上内容，通过在**重载运算符**生成**表达式模板类对象**，并在**表达式模板类**的 `operator[]` 中将**运算符函数对象**应用到**操作数**就可以简单的完成题目。
+
+在以上代码中，使用**表达式模板**通过**惰性求值**将**运算符函数对象**应用到**操作数**，这就是范围库中 [`std::ranges::zip_transform_view`](https://zh.cppreference.com/w/cpp/ranges/zip_transform_view)(C++23)。
+
+将上述代码替换为以下内容，也可以正确执行：
+
+```cpp
+auto operator+(const auto& lhs, const auto& rhs) {
+    return std::ranges::zip_transform_view{ std::plus{}, lhs, rhs };
+}
+auto operator-(const auto& lhs, const auto& rhs) {
+    return std::ranges::zip_transform_view{ std::minus{}, lhs, rhs };
+}
+auto operator*(const auto& lhs, const auto& rhs) {
+    return std::ranges::zip_transform_view{ std::multiplies{}, lhs, rhs };
+}
+auto operator/(const auto& lhs, const auto& rhs) {
+    return std::ranges::zip_transform_view{ std::divides{}, lhs, rhs };
+}
+```
+
+综上所述，本题的**表达式模板**就是简化版的 `std::ranges::zip_transform_view`。
+
+我们只需要为**表达式模板**增加**亿**点点细节，就可以自行实现范围库了！🥳🥳🥳
 
 </details>
 
