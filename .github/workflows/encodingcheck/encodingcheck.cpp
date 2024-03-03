@@ -25,7 +25,9 @@ constexpr void print(std::format_string<Args...> fmt, Args&&... args)
 template<class... Args>
 constexpr void printerr(std::format_string<Args...> fmt, Args&&... args)
 {
+    fflush(stderr);
     std::fputs(std::format(fmt, std::forward<decltype(args)>(args)...).c_str(), stderr);
+    fflush(stderr);
 }
 
 namespace fs = std::filesystem;
@@ -40,6 +42,10 @@ bool checkutf8(fs::path file)
     if (fstat(fd, &statbuf) != 0) {
         close(fd);
         throw fs::filesystem_error("fstat()", std::error_code{errno, std::system_category()});
+    }
+    if (statbuf.st_size == 0) {
+        close(fd);
+        return true;
     }
     auto ptr = static_cast<char*>(mmap(nullptr, statbuf.st_size, PROT_READ, MAP_PRIVATE, fd, 0));
     if (ptr == MAP_FAILED) {
@@ -92,6 +98,7 @@ int main()
         catch(const std::exception& err){
             printerr("ERROR {} ({})\n", entry.path().c_str(), mime);
             printerr("{}", err.what());
+            throw err;
         }
     }
 
