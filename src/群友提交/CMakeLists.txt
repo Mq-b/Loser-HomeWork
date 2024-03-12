@@ -7,7 +7,6 @@ include(CheckLoserHomeWork)
 set(CMAKE_CXX_STANDARD 26)
 
 if (MSVC)
-    set(CMAKE_EXPERIMENTAL_CXX_MODULE_CMAKE_API "aa1f7df0-828a-4fcd-9afc-2dc80491aca7") #for cmake 3.27
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /permissive-")
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /permissive-")
     add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
