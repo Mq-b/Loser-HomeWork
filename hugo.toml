@@ -1,5 +1,5 @@
-baseURL = 'https://example.org/'
-languageCode = 'en-us'
+baseURL = 'https://mq-b.github.io/Loser-HomeWork/'
+languageCode = 'zh-cn'
 title = 'Loser Homework'
 hasCJKLanguage = true
 enableGitInfo = true
@@ -47,3 +47,6 @@ enableGitInfo = true
 [params.docs]
     intLinkTooltip = true
     darkMode = true
+
+[params.social]
+github = "Mq-b/Loser-HomeWork"
