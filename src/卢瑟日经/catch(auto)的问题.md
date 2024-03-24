@@ -1,8 +1,7 @@
-+++
-title = "catch(auto) 的问题"
-type = "docs"
-draft = false
-+++
+---
+title: "catch(auto) 的问题"
+type: "docs"
+---
 
 这问题倒不是来自卢瑟帝国，而是别的群聊，国王也决定稍微收录一下。
 

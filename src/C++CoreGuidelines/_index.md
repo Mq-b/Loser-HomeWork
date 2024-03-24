@@ -1,4 +1,4 @@
-+++
-type = "docs"
-title = "C++ Core Guidelines"
-+++
+---
+type: "docs"
+title: "C++ Core Guidelines"
+---

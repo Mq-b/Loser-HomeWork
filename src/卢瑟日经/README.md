@@ -1,8 +1,8 @@
-+++
-type = "docs"
-title = "概述"
-weight = "1000"
-+++
+---
+type: "docs"
+title: "概述"
+weight: "1000"
+---
 
 一些常见的卢瑟问题。
 

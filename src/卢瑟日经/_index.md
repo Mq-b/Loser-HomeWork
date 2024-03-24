@@ -1,4 +1,4 @@
-+++
-type = "docs"
-title = "卢瑟日经"
-+++
+---
+type: "docs"
+title: "卢瑟日经"
+---

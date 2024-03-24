@@ -1,7 +1,7 @@
-+++
-title = "卢瑟作业"
-type = "docs"
-+++
+---
+title: "卢瑟作业"
+type: "docs"
+---
 
 {{% my_shortcode.inline %}}
 {{ readFile "README.md" }}
