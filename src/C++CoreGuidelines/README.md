@@ -1,4 +1,8 @@
-# 阅读须知
++++
+type = "docs"
+title = "阅读须知"
+weight = 20
++++
 
 本书我在很早之前就在 `github` 看过[翻译的版本](https://github.com/lynnboy/CppCoreGuidelines-zh-CN)，以及它的前身应该算作是开源社区的产物，而不是那本英文版的书（不过本书是根据英文版的书翻译的）。
 

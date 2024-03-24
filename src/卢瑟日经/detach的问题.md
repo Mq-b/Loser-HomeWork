@@ -1,4 +1,8 @@
-# detach 的问题
++++
+title = "detach 的问题"
+type = "docs"
+draft = false
++++
 
 ## 起因
 

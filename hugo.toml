@@ -1,0 +1,49 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Loser Homework'
+hasCJKLanguage = true
+enableGitInfo = true
+
+[security]
+    enableInlineShortcodes = true
+
+[[module.imports]]
+    path = "github.com/colinwilson/lotusdocs"
+    disable = false
+[[module.imports]]
+    path = "github.com/gohugoio/hugo-mod-bootstrap-scss/v5"
+    disable = false
+[[module.mounts]]
+    source = "content"
+    target = "content"
+[[module.mounts]]
+    source = 'src/卢瑟日经'
+    target = 'content/daily'
+[[module.mounts]]
+    source = "src/C++CoreGuidelines"
+    target = "content/cppcoreguidelines"
+[[module.mounts]]
+    source = "src/基础性C++题目"
+    target = "content/basics"
+[[module.mounts]]
+    source = 'static'
+    target = 'static'
+[[module.mounts]]
+    source = 'layouts'
+    target = 'layouts'
+[[module.mounts]]
+    source = 'data'
+    target = 'data'
+[[module.mounts]]
+    source = 'assets'
+    target = 'assets'
+[[module.mounts]]
+    source = 'i18n'
+    target = 'i18n'
+[[module.mounts]]
+    source = 'archetypes'
+    target = 'archetypes'
+
+[params.docs]
+    intLinkTooltip = true
+    darkMode = true

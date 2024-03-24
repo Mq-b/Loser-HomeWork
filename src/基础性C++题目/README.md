@@ -1,4 +1,8 @@
-# 基础性C++题目
++++
+title = "概述"
+type = "docs"
+weight = 100
++++
 
 纯基础，由 [Da'Inihlus](https://github.com/dynilath) 制作。
 
