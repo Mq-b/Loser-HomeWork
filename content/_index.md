@@ -1,5 +1,4 @@
-+++
-type = "docs"
-title = "Loser-Homework"
-+++
-
+---
+type: "docs"
+title: "Loser-Homework"
+---
