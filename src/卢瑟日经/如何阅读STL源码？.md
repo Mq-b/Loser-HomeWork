@@ -12,7 +12,7 @@
 
 你要看源码，就不可能不看模板，**你必须学习模板**，不需要会太多的元编程等等的玩意，但是基本的需要会。**而且源码推荐看越新的越好**。
 
-并且只建议看三种：**`MSVC STL`**、**`libstdc++`**、**`libc++`**，也就是对应了三大编译器，MSVC、gcc、clang。不要舍本逐末，你应该看的就是最常用最常见的实现代码，而且要是最简单的方式，比如在开发环境中就能直接跳转进去。
+并且只建议看三种：[**`MSVC STL`**](https://github.com/microsoft/STL)、[**`libstdc++`**](https://github.com/gcc-mirror/gcc/tree/master/libstdc%2B%2B-v3)、[**`libc++`**](https://github.com/llvm/llvm-project/tree/7ac7d418ac2b16fd44789dcf48e2b5d73de3e715/libcxx)，也就是对应了三大编译器，MSVC、gcc、clang。不要舍本逐末，你应该看的就是最常用最常见的实现代码，而且要是最简单的方式，比如在开发环境中就能直接跳转进去。
 
 这三个标准库中，`MSVC STL` 与 `libstdc++` 最为常见，clang 默认也是使用 `libstdc++`，**个人而言最推荐的是 `MSVC STL`** 的。
 
@@ -20,11 +20,11 @@
 
 ## 阅读现代的 `STL` 源码
 
-您都阅读源码了，相信也是有所追求，既然如此，自然越新越好，比如 MSVC STL。
+您都阅读源码了，相信也是有所追求，既然如此，自然越新越好，尤其 MSVC STL。
 
-> MSVC STL 很早之前就不支持 C++11 了，它的实现完全基于 **C++14**，出于某些原因 **C++17** 的一些库（如 [`invoke`](https://zh.cppreference.com/w/cpp/utility/functional/invoke)， _v 变量模板）被向后移植到了 **C++14** 模式，所以即使是 C++11 标准库设施，实现中可能也是使用到了 C++14、17 的东西。
+MSVC STL 很早之前就不支持 C++11 了，它的实现完全基于 **C++14**，出于某些原因 **C++17** 的一些库（如 [`invoke`](https://zh.cppreference.com/w/cpp/utility/functional/invoke)， _v 变量模板）被向后移植到了 **C++14** 模式，所以即使是 C++11 标准库设施，实现中可能也是使用到了 C++14、17 的东西。
 
-您至少要学习或具备 `C++17` 的知识。
+所以您至少要学习或具备 `C++17` 的知识才能阅读它的源码。
 
 ## 观感
 
@@ -44,6 +44,6 @@
 
 需要学习模板，这是必须的，建议学习[《现代C++模板教程》](https://mq-b.github.io/Modern-Cpp-templates-tutorial/)
 
-阅读现代的 STL 源码，这个是必须的。
+阅读**现代**的 STL 源码，这个是必须的。
 
 阅读观感这个因人而异了，反正我个人而言是更喜欢 MSVC STL。
