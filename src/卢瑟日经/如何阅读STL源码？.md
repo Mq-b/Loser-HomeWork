@@ -12,7 +12,7 @@
 
 你要看源码，就不可能不看模板，**你必须学习模板**，不需要会太多的元编程等等的玩意，但是基本的需要会。**而且源码推荐看越新的越好**。
 
-并且只建议看三种：[**`MSVC STL`**](https://github.com/microsoft/STL)、[**`libstdc++`**](https://github.com/gcc-mirror/gcc/tree/master/libstdc%2B%2B-v3)、[**`libc++`**](https://github.com/llvm/llvm-project/tree/7ac7d418ac2b16fd44789dcf48e2b5d73de3e715/libcxx)，也就是对应了三大编译器，MSVC、gcc、clang。不要舍本逐末，你应该看的就是最常用最常见的实现代码，而且要是最简单的方式，比如在开发环境中就能直接跳转进去。
+并且只建议看三种：[**`MSVC STL`**](https://github.com/microsoft/STL)、[**`libstdc++`**](https://github.com/gcc-mirror/gcc/tree/master/libstdc%2B%2B-v3)、[**`libc++`**](https://github.com/llvm/llvm-project/tree/7ac7d418ac2b16fd44789dcf48e2b5d73de3e715/libcxx)，也就是对应了三大编译器，MSVC、gcc、clang。不要舍近求远，你应该看的就是最常用最常见的实现代码，而且要是最简单的方式，比如在开发环境中就能直接跳转进去。
 
 这三个标准库中，`MSVC STL` 与 `libstdc++` 最为常见，clang 默认也是使用 `libstdc++`，**个人而言最推荐的是 `MSVC STL`** 的。
 
