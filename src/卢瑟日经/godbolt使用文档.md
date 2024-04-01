@@ -118,10 +118,28 @@ int main(int argc, char* argv[]) {
 https://godbolt.org/z/P8jxh4M47
 ```
 
-## 多文件以及多编译器运行结果
+## 多文件以及多编译器测试展示
+
+一个 godbolt 网页中可以有多个代码文件，乃至多个编译器测试运行结果。
+
+一个代码文件对应多个编译器测试运行结果：
+
+![godbolt一个代码关联多个编译器测试](../../image/卢瑟日经/godbolt一个代码文件关联多个编译器测试.gif)
+
+分享链接：
+
+```txt
+https://godbolt.org/z/sjeqdxKc7
+```
+
+如果要同时展示多段代码或者比较，那就按照之前的教程点击最左上角的 **Add -> Source Editor** 得到了一个可以编辑的文本界面，然后像上面一样 **Add new -> Execution Only** 即可创建出一个执行单元，设置编译器执行。
 
 ## 引入开源三方库
 
 ## CMake 项目模板
+
+## Complier 控件的众多作用
+
+## MSVC 的特殊性
 
 ## 总结
