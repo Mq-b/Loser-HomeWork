@@ -30,11 +30,11 @@ MSVC STL 很早之前就不支持 C++11 了，它的实现完全基于 **C++14**
 
 我本人对于 libstdc++ 那种规范是深恶痛绝，一行代码不能超过 80 个字符，一堆莫名其妙的格式，我们来对比一下就好了：（主题：OneDarkPro 字体：Cascadia Code SemiBold 字号：16）
 
-![MSVC STL](/image/卢瑟日经/MSVC-STL.png)
+![MSVC STL](../../image/卢瑟日经/MSVC-STL.png)
 
 字体：Menlo 字号：16
 
-![libstdc++](/image/卢瑟日经/libstdc++.png)
+![libstdc++](../../image/卢瑟日经/libstdc++.png)
 
 嗯... 或许因为我的主题和美化做的太好了，不晓得各位能不能感觉。
 

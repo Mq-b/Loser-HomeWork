@@ -36,11 +36,11 @@ https://godbolt.org/z/41eET6e5v
 
 ![godbolt3](../../image/卢瑟日经/godbolt3.png)
 
-点击左上角的 **Add -> Source Editor** 得到了一个可以编辑的文本界面，可以放上自己的代码
+我们点击左上角的 **Add -> Source Editor** 得到了一个可以编辑的文本界面，可以放上自己的代码。
+
+然后点击新建出来的这个代码编辑页的 **Add new -> Execution Only** 即可创建出一个执行单元，它与我们这个当前的文件关联，默认编译这个文件中的代码。
 
 ![godbolt4](../../image/卢瑟日经/godbolt4.png)
-
-点击新建出来的这个代码编辑页的 **Add new -> Execution Only** 即可创建出一个执行单元，它与我们这个当前的文件关联，默认编译这个文件中的代码。
 
 我们也可以控件的 `A` ，比如左上角那个，设置代码的字体大小，然后写好代码，一个最基础的编译测试，就做好了：
 
@@ -61,3 +61,67 @@ https://godbolt.org/z/scYjWvfjT
 ```
 
 链接几乎是永久的，不用担心失效。
+
+## 调整布局与主题设置
+
+我们可以随意控制自己创建出的界面的字体大小和占据的位置：
+
+![使用godbolt_gif](../../image/卢瑟日经/godbolt使用.gif)
+
+当然，我们也可以设置自己喜欢的主题：
+
+最上方，**More -> Settings -> Site theme**
+
+![godbolt主题设置](../../image/卢瑟日经/godbolt主题设置.gif)
+
+## 标准输入与命令行参数传递
+
+```cpp
+#include <iostream>
+
+int main(){
+    int n = 0;
+    std::cin>> n;
+    std::cout<< n <<'\n';
+}
+```
+
+这样一段代码，如何让它在 godbolt 上运行并设置标准输入呢？很简单：
+
+![godbolt标准输入](../../image/卢瑟日经/godbolt标准输入.gif)
+
+分享链接：
+
+```txt
+https://godbolt.org/z/66Knd31oq
+```
+
+---
+
+```cpp
+#include <iostream>
+
+int main(int argc, char* argv[]) {
+    for (int i = 1; i < argc; ++i) {
+        std::cout << argv[i] << ' ';
+    }
+}
+```
+
+这样一段代码，我们如何通过 godbolt 传递给程序参数呢？很简单：
+
+![godbolt输入命令参数](../../image/卢瑟日经/godbolt输入命令参数.gif)
+
+分享链接：
+
+```txt
+https://godbolt.org/z/P8jxh4M47
+```
+
+## 多文件以及多编译器运行结果
+
+## 引入开源三方库
+
+## CMake 项目模板
+
+## 总结
