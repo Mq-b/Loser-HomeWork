@@ -14,6 +14,7 @@
   - [同步、异步、阻塞](src/卢瑟日经/同步、异步、阻塞.md)
   - [为什么优先成员初始化器](src/卢瑟日经/为什么优先成员初始化器.md)
   - [重载operator=要不要检查自赋值？](src/卢瑟日经/重载operator=要不要检查自赋值？.md)
+  - [godbolt使用文档](src/卢瑟日经/godbolt使用文档.md)
   - [C&C++伪规则和错误的看法](src/卢瑟日经/C&C++伪规则和错误的看法.md)
   - [catch(auto)的问题](src/卢瑟日经/catch(auto)的问题.md)
   - [detach的问题](src/卢瑟日经/detach的问题.md)
