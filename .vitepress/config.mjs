@@ -37,11 +37,11 @@ export default defineConfig({
               { text: '同步、异步、阻塞', link: daily_path + '同步、异步、阻塞' },
               { text: '为什么优先成员初始化器', link: daily_path + '为什么优先成员初始化器' },
               { text: '重载operator=要不要检查自赋值？', link: daily_path + '重载operator=要不要检查自赋值？' },
-              { text: 'godbolt使用文档', link: daily_path + 'godbolt使用文档' },
               { text: 'C&C++伪规则和错误的看法', link: daily_path + 'C&C++伪规则和错误的看法' },
               { text: 'catch(auto)的问题', link: daily_path + 'catch(auto)的问题' },
               { text: 'detach的问题', link: daily_path + 'detach的问题' },
               { text: '如何阅读STL源码？', link: daily_path + '如何阅读STL源码？' },
+              { text: 'godbolt使用文档', link: daily_path + 'godbolt使用文档' },
             ]
           },
           {
