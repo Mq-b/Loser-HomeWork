@@ -25,6 +25,5 @@ build
 cmake-build-*
 .cache
 node_modules
-/public
-/resources
-go.sum
+.vitepress/cache/
+.vitepress/dist/
