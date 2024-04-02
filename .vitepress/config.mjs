@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress';
-import { repo_name, repo_url } from './theme/params';
+import { repo_base, repo_url, repo_name, icon_url } from './theme/params';
 import footnote_plugin from 'markdown-it-footnote';
 
 const guildline_path = '/src/C++CoreGuidelines/';
@@ -8,10 +8,6 @@ const basic_path = '/src/基础性C++题目/'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Loser HomeWork",
-  head: [['link', { rel: 'icon', href: repo_name + '/cpp.svg' }]],
-  rewrites: { 'README.md': 'index.md' },
-  base: repo_name + '/',
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     sidebar: [
@@ -49,7 +45,7 @@ export default defineConfig({
             ]
           },
           {
-            text: 'C++CoreGuidelines',
+            text: '基础性C++题目与答案',
             link: basic_path + 'README.md',
             collapsed: true,
             items: [
@@ -61,13 +57,12 @@ export default defineConfig({
         ]
       },
     ],
-    logo: '/icon.svg',
+    logo: icon_url,
     editLink: {
       pattern: repo_url + 'blob/main/:path',
       text: '在 GitHub 上编辑此页面'
     },
     socialLinks: [{ icon: 'github', link: repo_url }],
-
     search: {
       provider: 'local',
       options: {
@@ -81,12 +76,16 @@ export default defineConfig({
     },
     returnToTopLabel: '回到顶端',
   },
+
+  rewrites: { 'README.md': 'index.md' },
+  base: repo_base + '/',
+  title: repo_name,
+  head: [['link', { rel: 'icon', href: repo_base + icon_url }]],
+  cleanUrls: true,
+  ignoreDeadLinks: true,
   markdown: {
     config(md) {
       md.use(footnote_plugin);
     }
   },
-
-  cleanUrls: true,
-  ignoreDeadLinks: true,
 })

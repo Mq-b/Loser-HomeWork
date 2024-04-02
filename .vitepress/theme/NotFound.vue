@@ -7,14 +7,14 @@
 
 <script setup>
 import { useRouter, useData } from 'vitepress';
-import { repo_name, repo_url } from './params';
+import { repo_base, repo_url } from './params';
 
 const data = useData();
 data.page.value.title = '跳转 GitHub 中...';
 
 const router = useRouter();
-const to = repo_url + 'blob/main' + router.route.path.substring(repo_name.length);
-// location.replace(to);
+const to = repo_url + 'blob/main' + router.route.path.substring(repo_base.length);
+location.replace(to);
 </script>
 
 <style scoped>

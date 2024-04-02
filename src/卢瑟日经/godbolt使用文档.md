@@ -42,7 +42,7 @@ https://godbolt.org/z/41eET6e5v
 
 ![godbolt4](../../image/卢瑟日经/godbolt4.png)
 
-我们也可以控件的 `A` ，比如左上角那个，设置代码的字体大小，然后写好代码，一个最基础的编译测试，就做好了：
+我们也可以点击 `A` ，左上角那个，设置代码的字体大小，然后写好代码，一个最基础的编译测试，就做好了：
 
 ![godbolt5](../../image/卢瑟日经/godbolt5.png)
 
@@ -167,15 +167,85 @@ godbolt 支持常见语言的项目模板，只需要点击网页最上方的 **
 
 ![godbolt打开CMake项目模板](../../image/卢瑟日经/godbolt打开CMake项目模板.gif)
 
-然后按照正常的 CMake 用法即可，摸索一下即可。
+然后按照正常的 CMake 用法，摸索一下即可。
 
 引入三方库，设置主题，字体大小等，并无什么区别。
 
 ## Complier 控件的众多作用与设置
 
+这个控件的用途就比较复杂了，它也可以像我们最初创建的 Execution Only 一样执行代码，不过功能还远不止如此。
+
+### 创建 Complier
+
+![godbolt创建Complier](../../image/卢瑟日经/godbolt创建Complier.gif)
+
+创建还是很简单的，需要特别注意的是，默认没有标准输出，需要打开 Output 的 **Execute the code** 选项。
+
+Complier **不支持传递标准输入以及命令行参数**，不过引入开源三方库还是和前面的没区别。如：
+
+```txt
+https://godbolt.org/z/K55Mh9j96
+```
+
+并且如你所见，创建 Complier 之后会显示我们代码生成的 intel 风格汇编。如果你喜欢 at&t 风格，可以点击 Output ，关闭默认的 **intel asm syntax** 选项。
+
+### 查看名字重整名后的符号
+
+```cpp
+#include <iostream>
+
+int a = 0;
+
+namespace ss{
+    int a = 0;
+}
+
+int main(){
+    std::cout<<a<<'\n';
+}
+```
+
+这样一段代码，我们如何查看 `a` 和 `ss::a` 的实际符号呢？
+
+只需要点击 Output，关闭默认的 Demangle identifiers 选项即可：
+
+![godbolt查看名字重整名的符号](../../image/卢瑟日经/godbolt查看名字重整名的符号.gif)
+
+[Itanium ABI](https://itanium-cxx-abi.github.io/cxx-abi/abi.html) 上变量 ss::a 的重整名为 _ZN2ss1aE，全局变量 a 则无变化。分享链接：
+
+```txt
+https://godbolt.org/z/cGE17r378
+```
+
+如果要测试多个编译器，那无非就是创建多个 Complier 即可。
+
+如果你对重整名符号有疑问，请移步 [loser homework](https://github.com/Mq-b/Loser-HomeWork#14-%E4%BB%A5%E7%89%B9%E6%AE%8A%E6%96%B9%E6%B3%95%E4%BF%AE%E6%94%B9%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E4%B8%AD%E5%A3%B0%E6%98%8E%E7%9A%84%E5%AF%B9%E8%B1%A1)。
+
+### 查看预处理后的代码
+
+```cpp
+#define max(a,b) (a)>(b)?(a):(b)
+#define N 100
+
+int main(){
+    int arr[N]{};
+    max(1,2);
+}
+```
+
+想要查看这样一段代码的预处理后的结果，非常简单，添加 gcc 的编译选项 **`-E`** 即可：
+
+![godbolt查看预处理后的代码](../../image/卢瑟日经/godbolt查看预处理后的代码.gif)
+
+分享链接：
+
+```txt
+https://godbolt.org/z/xjGYh6zaE
+```
+
 ## MSVC 的特殊性
 
-如果你想测试 MSVC 编译器，没有问题，godbolt 支持，但是这是受限的，因为你没有办法看到 MSVC 的标准输出，只能看它是否可以通过编译。并且 Add new -> Execution Only 创建的可执行单元是无法选择 MSVC 编译器的，必须是 **Add new -> Complier**。
+如果你想测试 MSVC 编译器，没有问题，godbolt 支持，但是这是受限的：Add new -> Execution Only 创建的可执行单元是无法选择 MSVC 编译器的，必须是 **Add new -> Complier**。并且  Complier 你也没有办法看到 MSVC 的标准输出，只能看它是否可以通过编译或者查看符号、生成的汇编之类的
 
 > 据传是曾经 MSVC 出了 bug 然后一直就这样了。
 
