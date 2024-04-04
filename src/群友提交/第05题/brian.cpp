@@ -27,7 +27,7 @@ struct scope_guard {
       * @brief https://en.cppreference.com/w/cpp/utility/functional/invoke
       * invoke： 如果\p func 是成员函数， 则\p ...args 的第一个参数是对应的对象(\p &,* )
       */
-      std::invoke(std::forward<F>(func), args...);
+      std::invoke(std::forward<F>(func), std::forward<A>(args)...);
     };
   }
   ~scope_guard() { gc(); }
