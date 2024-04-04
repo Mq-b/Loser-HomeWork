@@ -28,4 +28,3 @@ node_modules
 /public
 /resources
 go.sum
-cmake-build
