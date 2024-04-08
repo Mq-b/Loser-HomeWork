@@ -4,6 +4,8 @@
 
 godbolt 支持几乎市面上所有的编程语言以及主流编译器，不过**本文档使用 C++ 进行使用讲解**。
 
+> **其实这个网站的名字叫做 Compiler Explorer，godbolt 是作者的名字，不过不管叫什么也不影响。**
+
 ## 打开 godbolt
 
 每个人打开 godbolt 的布局样子可能完全不一样。
@@ -245,9 +247,9 @@ https://godbolt.org/z/xjGYh6zaE
 
 ## MSVC 的特殊性
 
-如果你想测试 MSVC 编译器，没有问题，godbolt 支持，但是这是受限的：Add new -> Execution Only 创建的可执行单元是无法选择 MSVC 编译器的，必须是 **Add new -> Complier**。并且  Complier 你也没有办法看到 MSVC 的标准输出，只能看它是否可以通过编译或者查看符号、生成的汇编之类的
+如果你想测试 MSVC 编译器，没有问题，godbolt 支持，但是这是受限的：Add new -> Execution Only 创建的可执行单元是无法选择 MSVC 编译器的，必须是 **Add new -> Complier**。并且 Complier 你也没有办法看到 MSVC 运行输出结果，**只能看它是否可以通过编译**以及查看生成的汇编的信息之类的。
 
-> 据传是曾经 MSVC 出了 bug 然后一直就这样了。
+> 据传是曾经 MSVC 出了 bug ，然后选择 MSVC 编译器就不会再**运行**了程序了，只会编译而已。
 
 分享链接：
 
