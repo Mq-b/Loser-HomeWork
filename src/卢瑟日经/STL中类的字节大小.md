@@ -94,13 +94,13 @@ struct _Thrd_t { // thread identifier for Win32
 
 ```cpp
 private:
-    id				_M_id;
+    id            _M_id;
 ```
 
 id 就是 libstdc++ 实现的 [`std::thread::id`](https://github.com/gcc-mirror/gcc/blob/master/libstdc%2B%2B-v3/include/bits/std_thread.h#L92-L120)，那么问题继续，这个 `std::thread::id` 类型又是保有了什么数据成员呢？
 
 ```cpp
-native_handle_type	_M_thread;
+native_handle_type  _M_thread;
 ```
 
 它只保有了这样一个成员，`native_handle_type` 是定义的别名，它是：
