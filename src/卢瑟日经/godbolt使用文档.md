@@ -30,23 +30,17 @@ https://godbolt.org/z/41eET6e5v
 
 ## 初级使用
 
-我们直接将其全部删除，你自己重新创建，点击上方控件的❌：
+我们直接将其全部删除，再自己重新创建，点击上方控件的❌：
 
-![godbolt2](../../image/卢瑟日经/godbolt2.png)
-
-然后就变成：
-
-![godbolt3](../../image/卢瑟日经/godbolt3.png)
+![godbot删除控件](../../image/卢瑟日经/godbolt删除控件.gif)
 
 我们点击左上角的 **Add -> Source Editor** 得到了一个可以编辑的文本界面，可以放上自己的代码。
 
 然后点击新建出来的这个代码编辑页的 **Add new -> Execution Only** 即可创建出一个执行单元，它与我们这个当前的文件关联，默认编译这个文件中的代码。
 
-![godbolt4](../../image/卢瑟日经/godbolt4.png)
-
 我们也可以点击 `A` ，左上角那个，设置代码的字体大小，然后写好代码，一个最基础的编译测试，就做好了：
 
-![godbolt5](../../image/卢瑟日经/godbolt5.png)
+![godbolt删除控件](../../image/卢瑟日经/godbolt创建控件.gif)
 
 我们也可以选择别的编译器，或者增加一些别的编译选项：
 
