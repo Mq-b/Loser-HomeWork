@@ -19,14 +19,14 @@ struct std::formatter<Frac, char> {
 		return it;
 	}
 	template<class Fmtcontext>
-	auto format(::Frac f, Fmtcontext& ctx) {
+	auto format(::Frac f, Fmtcontext& ctx)const {
 		return format_to(ctx.out(), "{}/{}", f.a, f.b);
 	}
 };
 
 template<typename...Args>
 auto print(std::string_view s,Args&&...args) {
-	std::cout << std::vformat(s,std::make_format_args((std::forward<Args>(args))...)) << '\n';
+	std::cout << std::vformat(s,std::make_format_args(std::forward<Args>(args)...)) << '\n';
 }
 
 int main() {
