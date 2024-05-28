@@ -43,6 +43,7 @@ export default defineConfig({
               { text: '如何阅读STL源码？', link: daily_path + '如何阅读STL源码？' },
               { text: 'godbolt使用文档', link: daily_path + 'godbolt使用文档' },
               { text: 'STL中类的字节大小', link: daily_path + 'STL中类的字节大小' },
+              { text: `形参包展开有6个点？`, link: daily_path + `形参包展开有6个点？`}
             ]
           },
           {
