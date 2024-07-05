@@ -7,9 +7,9 @@
 
 [![modern cpp](https://img.shields.io/badge/code-Modern%20C++-blue)](https://learn.microsoft.com/zh-cn/cpp/cpp/welcome-back-to-cpp-modern-cpp)
 [![cpp2b](https://img.shields.io/badge/std-C++20/23/26-yello)](https://zh.cppreference.com/w/cpp/compiler_support)
-[![gcc](https://img.shields.io/badge/compiler-GCC13-white)](https://gcc.gnu.org/onlinedocs/13.2.0/)
+[![gcc](https://img.shields.io/badge/compiler-GCC14-white)](https://gcc.gnu.org/onlinedocs/14.1.0/)
 [![msvc](https://img.shields.io/badge/compiler-MSVC19.37-white)](https://learn.microsoft.com/zh-cn/cpp/cpp)
-[![clang](https://img.shields.io/badge/compiler-clang17-white)](https://releases.llvm.org/17.0.1/tools/clang/docs/)
+[![clang](https://img.shields.io/badge/compiler-clang18-white)](https://releases.llvm.org/18.1.8/tools/clang/docs/)
 
 </div>
 <div id="img" align=center>
