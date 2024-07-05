@@ -9,7 +9,7 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Get checker hash
@@ -34,7 +34,7 @@ jobs:
           cd .github/workflows/encodingcheck
           mkdir build && cd build
 
-          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-13 -DCMAKE_CXX_COMPILER=g++-13 -DBUILD_ENCODINGCHECK=true ..
+          cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=gcc-14 -DCMAKE_CXX_COMPILER=g++-14 -DBUILD_ENCODINGCHECK=true ..
           cmake --build . -t encodingcheck -j
       - name: Check
         run: .github/workflows/encodingcheck/build/encodingcheck
