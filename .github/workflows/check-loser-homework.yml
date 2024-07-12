@@ -70,8 +70,8 @@ jobs:
 
           - name: Clang-17
             os: ubuntu-24.04
-            cxx_compiler: clang++-18
-            c_compiler: clang-18
+            cxx_compiler: clang++-17
+            c_compiler: clang-17
             cxx_flags: -stdlib=libc++
             container: ghcr.io/${{ needs.prepare.outputs.docker_namespaces }}/clang17
             shell: bash
@@ -87,7 +87,7 @@ jobs:
     name: check in ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     container:
-      image: ${{ matrix.container}}
+      image: ${{ matrix.container }}
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
