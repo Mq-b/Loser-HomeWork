@@ -61,17 +61,17 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: GCC-13
-            os: ubuntu-latest
-            cxx_compiler: g++-13
-            c_compiler: gcc-13
+          - name: GCC-14
+            os: ubuntu-24.04
+            cxx_compiler: g++-14
+            c_compiler: gcc-14
             shell: bash
             use-ninja: true
 
           - name: Clang-17
-            os: ubuntu-latest
-            cxx_compiler: clang++-17
-            c_compiler: clang-17
+            os: ubuntu-24.04
+            cxx_compiler: clang++-18
+            c_compiler: clang-18
             cxx_flags: -stdlib=libc++
             container: ghcr.io/${{ needs.prepare.outputs.docker_namespaces }}/clang17
             shell: bash
