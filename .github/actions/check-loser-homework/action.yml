@@ -24,7 +24,7 @@ runs:
       if: inputs.use-ninja == 'true'
     - uses: actions/setup-python@v5
       with:
-        python-version: '3.12.4'
+        python-version: '3.8'
     # https://github.com/actions/setup-python/issues/719
     #    cache: 'pip'
     - run: python3 -m pip install -r requirements.txt
