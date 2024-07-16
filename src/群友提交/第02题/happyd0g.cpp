@@ -8,7 +8,7 @@ class formator {
 public:
     formator(const char* str):_inner_str(str) {}
     auto operator () (auto&&... args) {
-        return std::vformat(_inner_str, std::make_format_args(std::forward<decltype(args)>(args)...));
+        return std::vformat(_inner_str, std::make_format_args(args...));
     }
 private:
     const char* _inner_str;

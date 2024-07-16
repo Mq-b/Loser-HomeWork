@@ -10,7 +10,7 @@ namespace impl {
         Helper(const char* s, std::size_t len): s(s, len) {}
         template <typename... Args>
         std::string operator()(Args&&... args) const {
-            return std::vformat(s, std::make_format_args(std::forward<Args>(args)...));
+            return std::vformat(s, std::make_format_args(args...));
         }
     };
 } // namespace impl

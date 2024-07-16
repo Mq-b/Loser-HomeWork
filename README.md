@@ -347,7 +347,7 @@ namespace impl {
         Helper(const char* s, std::size_t len): s(s, len) {}
         template <typename... Args>
         std::string operator()(Args&&... args) const {
-            return std::vformat(s, std::make_format_args(std::forward<Args>(args)...));
+            return std::vformat(s, std::make_format_args(args...));
         }
     };
 } // namespace impl
@@ -376,7 +376,7 @@ int main() {
 
 ```cpp
 constexpr auto operator""_f(const char* fmt, size_t) {
-    return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(std::forward<T>(Args)...)); };
+    return[=]<typename... T>(T&&... Args) { return std::vformat(fmt, std::make_format_args(Args...)); };
 }
 ```
 
@@ -431,7 +431,7 @@ namespace impl {
         Helper(const char* s, std::size_t len): s(s, len) {}
         template <typename... Args>
         std::string operator()(Args&&... args) const {
-            return std::vformat(s, std::make_format_args(std::forward<Args>(args)...));
+            return std::vformat(s, std::make_format_args(args...));
         }
     };
 } // namespace impl
@@ -513,7 +513,7 @@ struct std::formatter<Frac>:std::formatter<char>{
     }
 };
 void print(std::string_view fmt,auto&&...args){
-    std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
+    std::cout << std::vformat(fmt, std::make_format_args(args...));
 }
 ```
 
@@ -532,20 +532,11 @@ void print(std::string_view fmt,auto&&...args){
 
 ```cpp
 void print(std::string_view fmt,auto&&...args){
-    std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
+    std::cout << std::vformat(fmt, std::make_format_args(args...));
 }
 ```
 
-此处我们没有显示声明模板形参，所以展开时不能使用以往的模板形参做完美转发的模板实参，但是根据形参包展开的规则。例
-`args...`展开成`args1,args2,args3...`,而上式展开成
-
-```cpp
-std::forward<decltype(args1)>(args1),
-std::forward<decltype(args2)>(arsg2),
-std::forward<decltype(args3)>(args3),... 
-```
-
-这样我们对每个应用到的参数用 decltype 取他的类型再作为完美转发的模板参数。这样调用 `vformat`,返回 string,可以使用 cout 直接输出。
+这样调用 `vformat`,返回 string,可以使用 cout 直接输出。
 
 而关于自定义 `std::formatter` 特化，我们需要知道的是：想要自定义 **std::formatter** 模板特化需要提供两个函数，**parse** 和 **format**。
 

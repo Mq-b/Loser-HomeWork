@@ -7,7 +7,7 @@ struct Frac {
 
 template<typename... Args>
 void print(std::string_view format_str, Args const&... args) {
-    std::cout << std::vformat(format_str, std::make_format_args(std::forward<decltype(args)>(args)...));
+    std::cout << std::vformat(format_str, std::make_format_args(args...));
 }
 
 template<>
