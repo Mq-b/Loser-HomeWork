@@ -4,7 +4,7 @@
 
 void print(const char* s, auto&&... vars)
 {
-    std::cout << std::vformat(s, std::make_format_args(std::forward<decltype(vars)>(vars)...));
+    std::cout << std::vformat(s, std::make_format_args(vars...));
 }
 
 struct Frac

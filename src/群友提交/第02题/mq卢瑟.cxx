@@ -6,7 +6,7 @@ constexpr auto operator""_f(const char* str, size_t)
 {
     return [=]<typename... T>(T&& ...args)
     {
-        return std::vformat(str, std::make_format_args(std::forward<T>(args)...));
+        return std::vformat(str, std::make_format_args(args...));
     };
 }
 

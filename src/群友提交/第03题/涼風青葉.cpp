@@ -16,7 +16,7 @@ struct std::formatter<Frac> : std::formatter<char> {
 
 template<typename T, typename ...Args>
 void print(const T &fmt, Args &&...args) {
-    std::cout << std::vformat(fmt, std::make_format_args(std::forward<Args>(args)...));
+    std::cout << std::vformat(fmt, std::make_format_args(args...));
 }
 
 int main() {

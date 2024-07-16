@@ -16,7 +16,7 @@
         }
     };
     void print(std::string_view fmt,auto&&...args){
-        std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
+        std::cout << std::vformat(fmt, std::make_format_args(args...));
     }
 \end{minted}
 
@@ -32,26 +32,10 @@
     framesep=2mm,
     breaklines]{c++}
     void print(std::string_view fmt,auto&&...args){
-        std::cout << std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...));
+        std::cout << std::vformat(fmt, std::make_format_args(args...));
     }
 \end{minted}
 
-由于使用了 C++20 简写函数模板，此处的完美转发就只能使用 decltype，显得有点诡异，其实很合理
-
-展开的形式无非就是：
-
-\begin{minted}[mathescape,	
-    linenos,
-    numbersep=5pt,
-    gobble=2,
-    frame=lines,
-    framesep=2mm,
-    breaklines]{c++}
-    std::forward<decltype(args1)>(args1),
-    std::forward<decltype(args2)>(arsg2),
-    std::forward<decltype(args3)>(args3),... 
-\end{minted}
-
-这两个格式化函数没必要再介绍，和第第二题的作用一样，很简单的调库。
+这里实现策略使用了 C++20 简写函数模板。这两个格式化函数没必要再介绍，和第二题的作用一样，很简单的调库。
 
 \clearpage

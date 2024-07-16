@@ -23,7 +23,7 @@ struct std::formatter<Frac, CharT> : std::formatter<int, CharT>
 
 void print(const char* fmt, auto&& ...frac)
 {
-    std::cout<< std::vformat(fmt,std::make_format_args(std::forward<decltype(frac)>(frac)...));
+    std::cout<< std::vformat(fmt,std::make_format_args(frac...));
 }
 
 int main()

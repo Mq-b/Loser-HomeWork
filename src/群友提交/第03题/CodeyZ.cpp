@@ -26,7 +26,7 @@ struct std::formatter<Frac, char> {
 
 template<typename...Args>
 auto print(std::string_view s,Args&&...args) {
-	std::cout << std::vformat(s,std::make_format_args(std::forward<Args>(args)...)) << '\n';
+	std::cout << std::vformat(s,std::make_format_args(args...)) << '\n';
 }
 
 int main() {
