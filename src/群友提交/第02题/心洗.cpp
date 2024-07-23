@@ -29,7 +29,7 @@ auto operator ""_f(const char* text, size_t)
 auto operator ""_f(const char* text, size_t)
 {
     return [text](auto&&... args) {
-        return std::vformat(text, std::make_format_args(std::forward<decltype(args)>(args)...));
+        return std::vformat(text, std::make_format_args(args...));
         };
 }
 #endif

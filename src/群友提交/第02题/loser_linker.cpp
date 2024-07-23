@@ -10,7 +10,7 @@ struct FormatterStream {
 
     template<typename... Args>
     std::string operator()(Args&&... args) {
-        return std::vformat(fmt_, std::make_format_args(std::forward<Args>(args)...));
+        return std::vformat(fmt_, std::make_format_args(args...));
     }
 
     std::string fmt_;

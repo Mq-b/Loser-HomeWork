@@ -14,7 +14,7 @@ struct std::formatter<Frac> : std::formatter<int> {
 };
 
 void print(const char* str, auto&& ... args) {
-    std::cout << std::vformat(str, std::make_format_args(std::forward<decltype(args)>(args)...));
+    std::cout << std::vformat(str, std::make_format_args(args...));
 } 
 
 int main()

@@ -16,7 +16,7 @@ struct std::formatter<Frac, CharT> : std::formatter<int, CharT> {
 
 constexpr void print(const char* fmt, auto&&... args)
 {
-    std::fputs(std::vformat(fmt, std::make_format_args(std::forward<decltype(args)>(args)...)).c_str(), stdout);
+    std::fputs(std::vformat(fmt, std::make_format_args(args...)).c_str(), stdout);
 }
 
 int main()

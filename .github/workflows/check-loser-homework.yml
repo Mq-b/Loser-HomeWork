@@ -61,15 +61,15 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: GCC-13
-            os: ubuntu-latest
-            cxx_compiler: g++-13
-            c_compiler: gcc-13
+          - name: GCC-14
+            os: ubuntu-24.04
+            cxx_compiler: g++-14
+            c_compiler: gcc-14
             shell: bash
             use-ninja: true
 
           - name: Clang-17
-            os: ubuntu-latest
+            os: ubuntu-24.04
             cxx_compiler: clang++-17
             c_compiler: clang-17
             cxx_flags: -stdlib=libc++
@@ -87,7 +87,7 @@ jobs:
     name: check in ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     container:
-      image: ${{ matrix.container}}
+      image: ${{ matrix.container }}
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}

@@ -21,7 +21,7 @@ void print(auto&& text, auto&&... args)
 {
     std::cout << std::vformat(
         std::forward<decltype(text)>(text),
-        std::make_format_args(std::forward<decltype(args)>(args)...));
+        std::make_format_args(args...));
 }
 
 int main()

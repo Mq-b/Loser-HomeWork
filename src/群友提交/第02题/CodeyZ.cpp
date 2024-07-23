@@ -10,8 +10,8 @@ public:
     display(const char* s) :m_s(s) {}
 
     template<typename...Args>
-    auto operator()(Args...args) {
-        return std::vformat(m_s, std::make_format_args(std::forward<Args>(args)...));
+    auto operator()(Args&&...args) {
+        return std::vformat(m_s, std::make_format_args(args...));
     }
 };
 
