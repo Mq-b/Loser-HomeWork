@@ -106,7 +106,7 @@ d2.name();
 
 `d.name` 也就是把 `d` 传入给父类模板成员函数 `name`，`auto&&` 被推导为 `D1&`，顾名思义”***显式***“对象形参，非常的简单直观。
 
-> [运行](https://godbolt.org/z/WW59PqEd3)测试。
+> [运行](https://godbolt.org/z/G3353M8YG)测试。
 
 ## CRTP 的好处
 
