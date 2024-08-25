@@ -85,6 +85,7 @@ C++23 引入了**显式对象形参**，让我们的 `CRTP` 的形式也出现�
 >     void f(this const X& self){}
 > };
 > ```
+>
 > 它也支持模板（可以直接 `auto` 而无需再 `template<typename>`），也支持各种修饰，如：`this X self`、`this X& self`、`this const X& self`、`this X&& self`、`this auto&& self`、`const auto& self` ... 等等。
 
 ```cpp
