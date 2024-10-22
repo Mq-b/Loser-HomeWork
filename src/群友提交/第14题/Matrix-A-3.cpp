@@ -1,3 +1,4 @@
+//!msvc
 #include<iostream>
 #include<atomic>
 
