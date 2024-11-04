@@ -1,8 +1,25 @@
-# `make`、`cmake`、`apt` 包管理，编译配置等问题
+# C++ 包管理，编译构建配置等问题
 
 我们 C++ 程序员在开发中经常需要处理构建下载包与三方库的问题，我们以最常见的 Linux 发行版 Ubuntu 和 windows 为例，进行介绍。
 
-如标题所言，我们将介绍 `make`、`apt`、`cmake`。
+## `which` & `Get-Command`
+
+如果我们想要查找一些可以在终端直接使用的程序的路径，比如 `gcc`、`cmake`、`git` 这种，我们可以使用 `which` 命令查看，通常都是在 `/usr/bin/`：
+
+```shell
+root@Mq-B:/usr/local/include# which cmake
+/usr/bin/cmake
+```
+
+如果是 window，可以使用 `Get-Command`：
+
+```powershell
+PS C:\Users\Administrator> Get-Command cmake
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Application     cmake.exe                                          3.30.0.0   D:\CMake\bin\cmake.exe
+```
 
 ## `make`
 
@@ -42,6 +59,35 @@ dpkg -L [package]
 
 使用 Ubuntu 系统，在开发当中几乎一定会使用它。
 
+## `qmake`
+
+`qmake` 是 Qt 默认的构建系统（Qt6 后默认 CMake），使用后缀为 `.pro` 的文件定义构建过程。它能够生成适用于不同构建系统的文件，包括 `Makefile` 和 `Ninja` 文件。
+
+与 CMake 不同的是，qmake 在 Linux 和 Windows 平台上均默认生成 Makefile。在 Linux 中，可以直接使用 `make` 命令构建项目，而在 Windows 中，可以使用 **`nmake`**。
+
+> `nmake` 是 msvc 工具链的一部分。如果你在使用 [MinGW](https://www.mingw-w64.org/) 工具链，则可以使用 GNU Make (**make**) 来构建项目
+
+通常的操作步骤如下：
+
+```shell
+mkdir build       # 创建构建目录
+cd build          # 进入构建目录
+qmake ..          # 生成 Makefile
+make              # 编译构建项目（Windows 可使用 nmake）
+```
+
+## `msbuild`
+
+`msbuild` 是 Microsoft 提供的构建工具，看到这个名字你或许很陌生，但是谈起 Visual Studio 的 `.sln` 解决方案文件和 `.vcxproj` 项目文件，你应该就会很熟悉了。msbuild 是 Visual Studio 中的核心构建引擎，用于编译和打包各种类型的项目。我们平时在 Visual Studio 图形界面中进行的各种项目设置，都是写到那些配置文件中，而当你点击绿色的运行按钮时，其实就是自动执行了我们的 msbuild 命令来构建我们的项目。
+
+```powershell
+msbuild MyProject.vcxproj /p:Configuration=Release
+```
+
+```powershell
+msbuild MyProject.sln /p:Configuration=Release
+```
+
 ## `cmake`
 
 `CMake` 是一个跨平台的自动化构建系统，它使用 `CMakeLists.txt` 文件来定义构建过程。CMake 可以生成 Makefile、msbuild、ninja 等各种其他构建系统所需的文件。基本用法如下：
@@ -72,26 +118,7 @@ make install               # 安装编译好的程序或库
 
 我们极其不推荐
 
-## `which` & `Get-Command`
-
-如果我们想要查找一些可以在终端直接使用的程序的路径，比如 `gcc`、`cmake`、`git` 这种，我们可以使用 `which` 命令查看，通常都是在 `/usr/bin/`：
-
-```shell
-root@Mq-B:/usr/local/include# which cmake
-/usr/bin/cmake
-```
-
-如果是 window，可以使用 `Get-Command`：
-
-```powershell
-PS C:\Users\Administrator> Get-Command cmake
-
-CommandType     Name                                               Version    Source
------------     ----                                               -------    ------
-Application     cmake.exe                                          3.30.0.0   D:\CMake\bin\cmake.exe
-```
-
-## 强调
+### 强调
 
 以上提到的 `/usr/lib/x86_64-linux-gnu`、`/usr/include`、`/usr/local/lib`、`/usr/local/include` 都是 Linux 系统默认的查找路径，理论上来说只需要添加链接选项，而库路径和 include 路径我们都可以**无需设置**，直接使用库。
 
@@ -103,7 +130,7 @@ g++ -o my_logger my_logger.cpp -lspdlog
 
 增加一个链接选项即可，qmake、cmake 都类似，无需额外设置 include 路径或库路径。
 
-## CMake 的 `PackageConfig.cmake` 文件
+### CMake 的 `PackageConfig.cmake` 文件
 
 绝大多数的 C++ 第三方库会提供 `PackageConfig.cmake` 文件（有时也称为 `<PackageName>Config.cmake`），这个文件的主要目的是简化库的查找和链接过程。使用这种文件有以下几个优点：
 
@@ -127,7 +154,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Widgets)
 
 > 当然了，前提是你当前的设置能找到 Qt 的那些 PackageConfig.cmake 文件。 vs 的话安装 Qt 插件设置路径，就能直接如此。
 
-## 使用 CMake 编译构建安装引入 `spdlog`
+### 使用 CMake 编译构建安装引入 `spdlog`
 
 这实际很简单：
 
