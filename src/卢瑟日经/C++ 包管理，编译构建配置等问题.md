@@ -80,7 +80,9 @@ make              # 编译构建项目（Windows 可使用 nmake）
 
 ## `msbuild`
 
-`msbuild` 是 Microsoft 提供的构建工具，看到这个名字你或许很陌生，但是谈起 Visual Studio 的 `.sln` 解决方案文件和 `.vcxproj` 项目文件，你应该就会很熟悉了。msbuild 是 Visual Studio 中的核心构建引擎，用于编译和打包各种类型的项目。我们平时在 Visual Studio 图形界面中进行的各种项目设置，都是写到那些配置文件中，而当你点击绿色的运行按钮时，其实就是自动执行了我们的 msbuild 命令来构建我们的项目。
+`msbuild` 是 Microsoft 提供的构建工具，看到这个名字你或许很陌生，但是谈起 Visual Studio 的 `.sln` 解决方案文件和 `.vcxproj` 项目文件，你应该就会很熟悉了。
+
+msbuild 是 Visual Studio 中的核心构建引擎，用于编译和打包各种类型的项目。我们平时在 Visual Studio 图形界面中进行的各种项目设置，都是写到那些配置文件中，**而当你点击绿色的运行按钮时，其实就是自动执行了我们的 msbuild 命令来构建我们的项目**。
 
 ```powershell
 msbuild MyProject.vcxproj /p:Configuration=Release
@@ -89,6 +91,75 @@ msbuild MyProject.vcxproj /p:Configuration=Release
 ```powershell
 msbuild MyProject.sln /p:Configuration=Release
 ```
+
+手动使用 `msbuild` 命令的好处在于，它能清晰地显示我们传递给编译器的编译链接选项。例如：
+
+```powershell
+PS D:\project\test_msbuild\test1> msbuild .\test1.sln
+适用于 .NET Framework MSBuild 版本 17.11.2+c078802d4
+生成启动时间为 2024/11/4 18:34:48。
+
+节点 1 上的项目“D:\project\test_msbuild\test1\test1.sln”(默认目标)。
+ValidateSolutionConfiguration:
+  正在生成解决方案配置“Debug|x64”。
+项目“D:\project\test_msbuild\test1\test1.sln”(1)正在节点 1 上生成“D:\project\test_msbuild\test1\test1.vcxproj”(2) (默认 目标)。
+PrepareForBuild:
+  正在创建目录“test1\x64\Debug\”。
+  已启用结构化输出。编译器诊断的格式设置将反映错误层次结构。有关详细信息，请参阅 https://aka.ms/cpp/structured-output。
+  正在创建目录“D:\project\test_msbuild\test1\x64\Debug\”。
+  正在创建目录“test1\x64\Debug\test1.tlog\”。
+InitializeBuildStatus:
+  正在创建“test1\x64\Debug\test1.tlog\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+  正在对“test1\x64\Debug\test1.tlog\unsuccessfulbuild”执行 Touch 任务。
+VcpkgTripletSelection:
+  Using triplet "x64-windows" from "D:\vcpkg-master\installed\x64-windows\"
+  Using normalized configuration "Debug"
+ClCompile:
+  D:\visual studio 2022\VC\Tools\MSVC\14.41.34120\bin\HostX64\x64\CL.exe /c /I"D:\vcpkg-master\installed\x64-windows\in
+  clude" /ZI /JMC /nologo /W3 /WX- /diagnostics:column /sdl /Od /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc
+   /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /permissive- /Fo"test1\x64\Debug\\" /Fd"test1\x64\Deb
+  ug\vc143.pdb" /external:W3 /Gd /TP /FC /errorReport:queue /utf-8 test1.cpp
+  test1.cpp
+Link:
+  D:\visual studio 2022\VC\Tools\MSVC\14.41.34120\bin\HostX64\x64\link.exe /ERRORREPORT:QUEUE /OUT:"D:\project\test_msb
+  uild\test1\x64\Debug\test1.exe" /INCREMENTAL /ILK:"test1\x64\Debug\test1.ilk" /NOLOGO /LIBPATH:"D:\vcpkg-master\insta
+  lled\x64-windows\debug\lib" /LIBPATH:"D:\vcpkg-master\installed\x64-windows\debug\lib\manual-link" kernel32.lib user3
+  2.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp3
+  2.lib "D:\vcpkg-master\installed\x64-windows\debug\lib\*.lib" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='fal
+  se'" /manifest:embed /DEBUG /PDB:"D:\project\test_msbuild\test1\x64\Debug\test1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYN
+  AMICBASE /NXCOMPAT /IMPLIB:"D:\project\test_msbuild\test1\x64\Debug\test1.lib" /MACHINE:X64 test1\x64\Debug\test1.obj
+  test1.vcxproj -> D:\project\test_msbuild\test1\x64\Debug\test1.exe
+AppLocalFromInstalled:
+  pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\vcpkg-master\scripts\buildsystems\msbuild\applocal.ps1" "D:\pro
+  ject\test_msbuild\test1\x64\Debug\test1.exe" "D:\vcpkg-master\installed\x64-windows\debug\bin" "test1\x64\Debug\test1
+  .tlog\test1.write.1u.tlog" "test1\x64\Debug\vcpkg.applocal.log"
+  'pwsh.exe' is not recognized as an internal or external command,
+  operable program or batch file.
+  命令“pwsh.exe -ExecutionPolicy Bypass -noprofile -File "D:\vcpkg-master\scripts\buildsystems\msbuild\applocal.ps1" "D:\
+  project\test_msbuild\test1\x64\Debug\test1.exe" "D:\vcpkg-master\installed\x64-windows\debug\bin" "test1\x64\Debug\te
+  st1.tlog\test1.write.1u.tlog" "test1\x64\Debug\vcpkg.applocal.log"”已退出，代码为 9009。
+  "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -ExecutionPolicy Bypass -noprofile -File "D:\vcpkg-master
+  \scripts\buildsystems\msbuild\applocal.ps1" "D:\project\test_msbuild\test1\x64\Debug\test1.exe" "D:\vcpkg-master\inst
+  alled\x64-windows\debug\bin" "test1\x64\Debug\test1.tlog\test1.write.1u.tlog" "test1\x64\Debug\vcpkg.applocal.log"
+FinalizeBuildStatus:
+  正在删除文件“test1\x64\Debug\test1.tlog\unsuccessfulbuild”。
+  正在对“test1\x64\Debug\test1.tlog\test1.lastbuildstate”执行 Touch 任务。
+已完成生成项目“D:\project\test_msbuild\test1\test1.vcxproj”(默认目标)的操作。
+
+已完成生成项目“D:\project\test_msbuild\test1\test1.sln”(默认目标)的操作。
+
+
+已成功生成。
+    0 个警告
+    0 个错误
+
+已用时间 00:00:01.30
+PS D:\project\test_msbuild\test1> cd .\x64\Debug\
+PS D:\project\test_msbuild\test1\x64\Debug> .\test1.exe
+Hello msbuild!
+```
+
+**`ClCompile`** 和 **`Link`** 阶段清晰地展示了我们传递给 `cl.exe` 的编译和链接参数
 
 ## `cmake`
 
