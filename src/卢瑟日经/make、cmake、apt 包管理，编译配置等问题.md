@@ -1,65 +1,107 @@
 # `make`、`cmake`、`apt` 包管理，编译配置等问题
 
-## `make install`
+我们 C++ 程序员在开发中经常需要处理构建下载包与三方库的问题，我们以最常见的 Linux 发行版 Ubuntu 和 windows 为例，进行介绍。
+
+如标题所言，我们将介绍 `make`、`apt`、`cmake`。
+
+## `make`
+
+`make` 是一个自动化构建工具，通常与 Makefile 配合使用。Makefile 中定义了如何编译和链接程序的规则。通过运行 make 命令，make 命令会读取 Makefile，自动执行编译和链接的步骤。基本用法如下：
+
+```shell
+make              # 根据当前目录下的 Makefile 编译项目
+make clean        # 清理编译生成的文件
+make install      # 安装编译好的程序或库
+```
+
+- 优点：使用人群多，简单易用。
 
 `make install` 通常将我们编译好的库安装到 `/usr/local/lib` 路径下，头文件则是：`/usr/local/include`。
 
 当然，这个路径可以根据 makefile 的编写而自定义，我们说的是通常编译库的情况。
 
-## `apt install`
+make 是 GNU 工具链中不可或缺的一环，在 Linux 平台中几乎必不可少，不过过于古老，现在可以考虑采用 [**`Ninja`**](https://ninja-build.org/)。
 
-`apt install` 通常会将库安装在 `/usr/lib/x86_64-linux-gnu` 中，头文件则是：`/usr/include`。
+## `apt`
 
-我们可以使用命令查看其安装位置：
+`apt` 是一个用于 Debian 和 Ubuntu 系列 Linux 发行版的包管理工具。它提供了简单的方法来安装、更新和删除软件包。基本用法包括：
+
+```shell
+sudo apt update              # 更新软件包列表
+sudo apt install [package]   # 安装指定的软件包
+sudo apt remove [package]    # 卸载指定的软件包
+```
+
+安装的库通常位于 `/usr/lib/x86_64-linux-gnu`，头文件位于 `/usr/include`。使用以下命令可以查看某个包的安装位置：
 
 ```shell
 dpkg -L [package]
 ```
 
-## `cmake --install`
+- 优点：apt 可以自动处理依赖关系，并且从官方源中安装软件相对安全和可靠。
 
-`cmake --install` 类似于 `make install`，不过它是基于 cmake，而后者是基于 makefile。
+使用 Ubuntu 系统，在开发当中几乎一定会使用它。
 
-也就是通常我们会：
+## `cmake`
 
-```cmake
-mkdir build
-cd build
-cmake ..
-cmake --build .
-cmake --install .
-```
-
-而使用 Makefile 的流程则是：
+`CMake` 是一个跨平台的自动化构建系统，它使用 `CMakeLists.txt` 文件来定义构建过程。CMake 可以生成 Makefile、msbuild、ninja 等各种其他构建系统所需的文件。基本用法如下：
 
 ```shell
-mkdir build
-cd build
-cmake ..
-make
-make install
+mkdir build                # 创建构建目录
+cd build                   # 进入构建目录
+cmake ..                   # 配置项目，生成构建文件（Linux 下通常为 makefile，Windows 下通常为 msbuild）
+cmake --build .            # 编译项目
+cmake --install .          # 安装编译好的程序或库
 ```
+
+使用 Makefile 的流程通常是：
+
+```shell
+mkdir build                # 创建构建目录
+cd build                   # 进入构建目录
+cmake ..                   # 生成 Makefile（只当 cmake 是生成 makefile 的工具）
+make                       # 编译项目
+make install               # 安装编译好的程序或库
+```
+
+- 优点：CMake 提供了跨平台支持，能够生成多种构建系统的文件，简化了项目的移植和构建过程。
 
 - `cmake ..` 在 Linux 平台默认会生成 Makefile，make 是基于这些 Makefile 来进行构建的
 
 这两种方法的最终目标都是构建和安装软件，`cmake --install` 提供了一种更通用的方法，因为它不依赖于具体的构建系统（Makefile、Ninja 等），而是直接通过 CMake 的安装机制来处理。
 
+我们极其不推荐
 
-查找安装目录。
+## `which` & `Get-Command`
 
-## `which`
-
-
-如果是一些程序，比如 `gcc`、`cmake`、`git` 这种，我们可以使用 `which` 命令查看，通常都是在 `/usr/bin/`：
+如果我们想要查找一些可以在终端直接使用的程序的路径，比如 `gcc`、`cmake`、`git` 这种，我们可以使用 `which` 命令查看，通常都是在 `/usr/bin/`：
 
 ```shell
 root@Mq-B:/usr/local/include# which cmake
 /usr/bin/cmake
 ```
 
+如果是 window，可以使用 `Get-Command`：
+
+```powershell
+PS C:\Users\Administrator> Get-Command cmake
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Application     cmake.exe                                          3.30.0.0   D:\CMake\bin\cmake.exe
+```
+
 ## 强调
 
-这些都是 Linux 系统的查找路径，理论上来说只需要添加链接选项，库路径和 include 路径我们都可以无需设置，直接使用库。
+以上提到的 `/usr/lib/x86_64-linux-gnu`、`/usr/include`、`/usr/local/lib`、`/usr/local/include` 都是 Linux 系统默认的查找路径，理论上来说只需要添加链接选项，而库路径和 include 路径我们都可以**无需设置**，直接使用库。
+
+假设你已经配置好 `spdlog` 并放入到查找目录，可以直接：
+
+```shell
+g++ -o my_logger my_logger.cpp -lspdlog
+```
+
+增加一个链接选项即可，qmake、cmake 都类似，无需额外设置 include 路径或库路径。
 
 ## CMake 的 `PackageConfig.cmake` 文件
 
@@ -73,6 +115,7 @@ root@Mq-B:/usr/local/include# which cmake
    find_package(<PackageName> REQUIRED)
    target_link_libraries(${PROJECT_NAME} PRIVATE <PackageName>::<PackageName>)
    ```
+
 这样就能完成库的引入，无需手动设置路径。
 
 比如 Qt 只需要两行 CMake 就能引入：
@@ -99,9 +142,11 @@ cmake --install .
 ```
 
 > 默认构建为 Debug 产物，如果需要 Release，则在 build 改成：
+>
 >```shell
 > cmake --build . --config Release --parallel
 >```
+>
 > 如果是 windows，执行 install 会要求你有 Release 和 Debug 两个版本，Linux 系统无此问题。
 
 最后的 install 的输出会显示我们的库被安装在哪，其实和 make install 没什么区别。
@@ -185,7 +230,7 @@ cmake --build.
 
 ![编译输出执行](../../image/卢瑟日经/cmake_test01.png)
 
-### 建议 windows 配置
+### 建议 windows 的 CMake 构建配置
 
 由于 `cmake --install .` 默认放到 `C:\Program Files (x86)` 目录下，所以我们建议通常指明安装位置，定义我们的库存放的地方。
 
