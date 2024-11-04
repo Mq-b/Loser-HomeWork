@@ -76,6 +76,8 @@ qmake ..          # 生成 Makefile
 make              # 编译构建项目（Windows 可使用 nmake）
 ```
 
+另外 window 下 Qt 官方的 IDE QtCreator 默认的构建工具是 [`jom`](https://wiki.qt.io/Jom)，而非 `nmake`。
+
 ## `msbuild`
 
 `msbuild` 是 Microsoft 提供的构建工具，看到这个名字你或许很陌生，但是谈起 Visual Studio 的 `.sln` 解决方案文件和 `.vcxproj` 项目文件，你应该就会很熟悉了。msbuild 是 Visual Studio 中的核心构建引擎，用于编译和打包各种类型的项目。我们平时在 Visual Studio 图形界面中进行的各种项目设置，都是写到那些配置文件中，而当你点击绿色的运行按钮时，其实就是自动执行了我们的 msbuild 命令来构建我们的项目。
