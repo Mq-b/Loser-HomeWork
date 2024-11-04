@@ -375,3 +375,65 @@ d-----         2024/9/28     12:02                fmt_x64-windows
 d-----         2024/9/20     18:30                SFML-2.6.1-windows-vc17-64-bit
 d-----         2024/11/1     18:30                spdlog
 ```
+
+
+
+## `Ninja`
+
+[Ninja](https://ninja-build.org/) 是一个小型构建系统，专注于速度。它与其他构建系统的主要区别在于两个方面：它旨在由更高层次的构建系统生成输入文件，并且旨在尽可能快速地执行构建。Ninja构建文件是人类可读的，但不是特别方便手写。Ninja 通常被嵌入到功能更加强大的构建系统当中，如 CMake，可以由 CMake 生成 Ninja。
+
+我们还是以 spdlog 项目的构建为例，我们可以使用 `-G` 选项指明生成 Ninja 文件：
+
+```shell
+PS D:\project\spdlog\build> cmake .. -G Ninja
+-- The CXX compiler identification is Clang 18.1.3 with GNU-like command-line
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: D:/LLVM/bin/clang++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Build spdlog: 1.14.1
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - not found
+-- Check if compiler accepts -pthread
+-- Check if compiler accepts -pthread - no
+-- Found Threads: TRUE
+-- Build type: Debug
+-- Generating example(s)
+-- Generating install
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/project/spdlog/build
+```
+
+我们可以选择直接输入 Ninja 进行编译构建，如同 Linux 平台 `cmake ..` 后直接 `make` 一样。
+
+```shell
+PS D:\project\spdlog\build> Ninja
+[10/10] Linking CXX executable example\example.exe
+```
+
+默认是 Debug 模式。
+
+> Ninja 本身无法直接选择 Debug 或 Release 构建类型，因为它是一个低级别的构建执行工具
+
+```shell
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
+```
+
+然后再 Ninja 构建即可。
+
+不过显然我们无需这样做，我们最好的做法是直接：
+
+```shell
+cmake .. -G Ninja
+cmake --build . --config Debug --parallel
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
+cmake --build . --config Release --parallel
+```
+
+没办法，必须多次运行 `cmake..` 生成需要的 Ninja 文件，这点比较特殊。
