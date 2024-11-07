@@ -428,10 +428,9 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
 不过显然我们无需这样做，我们最好的做法是直接：
 
 ```shell
-cmake .. -G Ninja
+cmake .. -G "Ninja Multi-Config"
 cmake --build . --config Debug --parallel
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release --parallel
 ```
 
-没办法，必须多次运行 `cmake..` 生成需要的 Ninja 文件，这点比较特殊。
+若不指定构建类型，则采用默认构建类型，一般为 Debug 。
