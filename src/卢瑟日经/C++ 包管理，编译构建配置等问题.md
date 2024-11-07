@@ -429,7 +429,8 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
 
 ```shell
 cmake .. -G "Ninja Multi-Config"
-cmake --build . # 采用默认模式，一般为 Debug 模式
-cmake --build . --config Debug # 采用 Debug 模式
-cmake --build . --config Release # 采用 Release 模式
+cmake --build . --config Debug --parallel
+cmake --build . --config Release --parallel
 ```
+
+若不指定构建类型，则采用默认构建类型，一般为 Debug 。
