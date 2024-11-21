@@ -11,15 +11,20 @@ root@Mq-B:/usr/local/include# which cmake
 /usr/bin/cmake
 ```
 
-如果是 window，可以使用 `Get-Command`：
+如果是 windows，powershell 可以使用 `Get-Command`、`where.exe`：
 
 ```powershell
-PS C:\Users\Administrator> Get-Command cmake
+PS C:\Users\A1387> Get-Command cmake
 
 CommandType     Name                                               Version    Source
 -----------     ----                                               -------    ------
-Application     cmake.exe                                          3.30.0.0   D:\CMake\bin\cmake.exe
+Application     cmake.exe                                          3.25.2.0   D:\CLion 2023.1.4\bin\cmake\win\x64\bin\cmake.exe
+
+PS C:\Users\A1387> where.exe cmake
+D:\CLion 2023.1.4\bin\cmake\win\x64\bin\cmake.exe
 ```
+
+> CMD 终端直接使用 **`where`** 即可。powershell 终端要强调 `.exe` 是因为 where 这个名字被用作另一个东西的别名了。
 
 ## `make`
 
@@ -428,9 +433,10 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
 不过显然我们无需这样做，我们最好的做法是直接：
 
 ```shell
-cmake .. -G "Ninja Multi-Config"
+cmake .. -G Ninja
 cmake --build . --config Debug --parallel
+cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release --parallel
 ```
 
-若不指定构建类型，则采用默认构建类型，一般为 Debug 。
+没办法，必须多次运行 `cmake..` 生成需要的 Ninja 文件，这点比较特殊。
