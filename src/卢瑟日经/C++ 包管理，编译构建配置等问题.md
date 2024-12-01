@@ -433,10 +433,15 @@ cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
 不过显然我们无需这样做，我们最好的做法是直接：
 
 ```shell
-cmake .. -G Ninja
+cmake .. -G "Ninja Multi-Config"
 cmake --build . --config Debug --parallel
-cmake -G Ninja -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release --parallel
 ```
 
-没办法，必须多次运行 `cmake..` 生成需要的 Ninja 文件，这点比较特殊。
+> Ninja 会自动并行构建（根据系统的 CPU 核心数量自动决定），此处 `--parallel` 选项是冗余的。不过若是想限制使用的 CPU 核心数也可以
+>
+> ```bash
+> cmake --build . --config Debug --parallel 4  # 使用 4 个并行任务
+> ```
+
+若不指定构建类型，则会采用默认构建类型，一般为 Debug 。
