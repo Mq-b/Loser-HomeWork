@@ -41,3 +41,16 @@ inline my_class& get_my_class_instance(){
 > Windows 中打包的 Release 程序你可能会注意到没有 `.lib` 文件，这是因为 `.lib` 仅在程序编译和链接时需要。生成了可执行文件后，符号信息已被记录，`.lib` 文件就没有什么实际用途了。
 
 而 Linux 的 `.so` 动态库直接存储符号表信息。编译链接时，链接器会直接解析 `.so` 文件，查找符号定义；运行时再加载对应的 `.so` 文件提供实际实现。
+
+
+> ### 参考
+
+- <https://zh.cppreference.com/w/cpp/language/inline>
+
+- <https://zh.cppreference.com/w/cpp/language/storage_duration#.E9.9D.99.E6.80.81.E5.9D.97.E5.8F.98.E9.87.8F>
+
+- <https://learn.microsoft.com/zh-cn/windows/win32/dlls/about-dynamic-link-libraries>
+
+- <https://learn.microsoft.com/zh-cn/windows/win32/dlls/dynamic-link-library-creation>
+
+- <https://docs.kernel.org/livepatch/module-elf-format.html>
