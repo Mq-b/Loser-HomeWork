@@ -42,15 +42,31 @@ inline my_class& get_my_class_instance(){
 
 而 Linux 的 `.so` 动态库直接存储符号表信息。编译链接时，链接器会直接解析 `.so` 文件，查找符号定义；运行时再加载对应的 `.so` 文件提供实际实现。
 
-
-> ### 参考
+## 参考
 
 - <https://zh.cppreference.com/w/cpp/language/inline>
 
+    >在内联函数中,
+    >
+    > + 所有函数定义中的函数局部静态对象在所有翻译单元间共享（它们都指代相同的在某一个翻译单元中定义的对象）。
+
 - <https://zh.cppreference.com/w/cpp/language/storage_duration#.E9.9D.99.E6.80.81.E5.9D.97.E5.8F.98.E9.87.8F>
+
+    > + 如果多个线程试图同时初始化同一静态局部变量，那么初始化严格发生一次（类似的行为也可对任意函数以 [`std::call_once`](https://zh.cppreference.com/w/cpp/thread/call_once) 来达成）。
 
 - <https://learn.microsoft.com/zh-cn/windows/win32/dlls/about-dynamic-link-libraries>
 
+    >在 DLL 中调用函数有两种方法：
+    >
+    > + 在*加载时动态链接*中，模块显式调用导出的 DLL 函数，就像它们是本地函数一样。 这要求将模块与包含函数的 DLL 的导入库链接。 导入库为系统提供加载 DLL 所需的信息，并在加载应用程序时查找导出的 DLL 函数。
+    > + 在*运行时动态链接*中，模块使用 [`LoadLibrary`](https://learn.microsoft.com/zh-cn/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibrarya) 或 [`LoadLibraryEx`](https://learn.microsoft.com/zh-cn/windows/win32/api/libloaderapi/nf-libloaderapi-loadlibraryexa) 函数在**运行时加载 DLL**。 加载 DLL 后，模块调用 [`GetProcAddress`](https://learn.microsoft.com/zh-cn/windows/win32/api/libloaderapi/nf-libloaderapi-getprocaddress) 函数以获取导出的 DLL 函数的地址。该模块使用 `GetProcAddress` 返回的函数指针调用导出的 DLL 函数。这样就不需要导入库了。
+
 - <https://learn.microsoft.com/zh-cn/windows/win32/dlls/dynamic-link-library-creation>
+
+    > **创建导入库**
+    > 导入库 (`.lib`) 文件包含链接器解析对导出 DLL 函数的外部引用所需的信息，以便系统可以在运行时找到指定的 DLL 和导出的 DLL 函数。 生成 DLL 时，可以为 DLL 创建导入库。
+    >
+    > **使用导入库**
+    > 例如，要调用 CreateWindow 函数，必须将代码链接到导入库 `User32.lib`。 这是因为 CreateWindow 驻留在名为 `User32.dll` 的系统 DLL 中，并且 `User32.lib` 是导入库，用于将代码中的调用解析为 `User32.dll` 中的导出函数。 链接器将创建一个表，其中包含每个函数调用的地址。 加载 DLL 时，将修复对 DLL 中的函数的调用。 当系统正在初始化进程时，由于该进程依赖于该 DLL 中的导出函数，因此它会加载 `User32.dll`，并会更新函数地址表中的条目。 对 CreateWindow 的所有调用都会调用从 `User32.dll` 中导出的函数。
 
 - <https://docs.kernel.org/livepatch/module-elf-format.html>
