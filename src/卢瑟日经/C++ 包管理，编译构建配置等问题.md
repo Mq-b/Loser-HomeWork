@@ -253,6 +253,11 @@ cmake --install .
 >```
 >
 > 如果是 windows，执行 install 会要求你有 Release 和 Debug 两个版本，Linux 系统无此问题。
+> 某些库的 install 默认并不会安装 Debug 版本，那就只能显式：
+>
+>```shell
+> cmkae --install . --config Debug
+>```
 
 最后的 install 的输出会显示我们的库被安装在哪，其实和 make install 没什么区别。
 
@@ -345,8 +350,12 @@ cmake --build.
 cmake .. -DCMAKE_INSTALL_PREFIX="D:\lib\spdlog"
 cmake --build . --config Debug --parallel
 cmake --build . --config Release --parallel
-cmake --install .
+cmake --install . # 默认 Release
+cmkae --install . --config Debug
 ```
+
+> 如果一开始 `cmake ..` 忘记设置 install 路径，也可以在 `cmake --install` 时添加 `--prefix` 选项设置。
+> Debug 或者 Release 不只是生成库二进制产物的事，还有 `PackageConfig.cmake` 的 Debug 版的文件，所以建议都运行一遍。
 
 然后 cmake 中定义一个变量即可，也就是：
 
