@@ -66,9 +66,7 @@ g++ .\test.cpp -o test
 
 > [!TIP]
 >
-> Linux 可以使用 `locale` 命令查看，Windows 使用 [`chcp`](https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/chcp)。
->
-> 由于我的 Windows 系统开启了全局 `utf-8`，chcp 得到的会是 `65001`。
+> Linux 可以使用 `locale` 命令查看，Windows 使用 `[System.Text.Encoding]::Default`。
 
 那么*执行字符集*呢？还是那句话，只要没有显式设置，就会遵循系统的默认区域设置，也是 `utf-8`。
 
