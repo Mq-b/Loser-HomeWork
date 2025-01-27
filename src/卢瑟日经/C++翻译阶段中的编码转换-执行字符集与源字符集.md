@@ -56,7 +56,7 @@ g++ .\test.cpp -o test
 
 我告诉各位，当你看到这种类似的符号，就是**解码失败**，由于字符集不匹配或在解析过程中出现了问题，导致无法正确显示原本的字符。
 
-根据 cppreference 文档中翻译阶段的：[阶段 5：确定字符串字面量的公共编码](.E9.98.B6.E6.AE.B5_5.EF.BC.9A.E7.A1.AE.E5.AE.9A.E5.AD.97.E7.AC.A6.E4.B8.B2.E5.AD.97.E9.9D.A2.E9.87.8F.E7.9A.84.E5.85.AC.E5.85.B1.E7.BC.96.E7.A0.81)；
+根据 cppreference 文档中翻译阶段的：[阶段 5：确定字符串字面量的公共编码](https://zh.cppreference.com/w/cpp/language/translation_phases#.E9.98.B6.E6.AE.B5_5.EF.BC.9A.E7.A1.AE.E5.AE.9A.E5.AD.97.E7.AC.A6.E4.B8.B2.E5.AD.97.E9.9D.A2.E9.87.8F.E7.9A.84.E5.85.AC.E5.85.B1.E7.BC.96.E7.A0.81)；
 
 我们可以知道：**字符字面量、字符串字面量中的所有字符从*源字符集*转换为*执行字符集***。
 
@@ -66,7 +66,9 @@ g++ .\test.cpp -o test
 
 > [!TIP]
 >
-> Linux 可以使用 `locale` 命令查看，Windows 使用 `[System.Text.Encoding]::Default`。
+> Linux 可以使用 `locale` 命令查看，Windows （PowerShell）使用 `[System.Text.Encoding]::Default`。
+>
+> 如果是普通的中国大陆区域的 windows 系统，会看到 “**简体中文（GB2312）**”，设置了全局 utf-8 则是：**Unicode (UTF-8)**
 
 那么*执行字符集*呢？还是那句话，只要没有显式设置，就会遵循系统的默认区域设置，也是 `utf-8`。
 
