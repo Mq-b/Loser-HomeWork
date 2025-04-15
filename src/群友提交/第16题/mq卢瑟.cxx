@@ -15,8 +15,3 @@ int main() {
     const auto result = foo(BY_NAME(std::min), 2, 3);
     std::cout << result << '\n';
 }
-
-int main() {
-    const auto result = foo(BY_NAME(std::min), 2, 3);
-    std::cout << result << '\n';
-}
