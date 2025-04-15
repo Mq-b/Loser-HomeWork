@@ -122,7 +122,7 @@ Repository name（仓库名） 必须写，用默认也行， Description（说�
 
 ## 总结
 
-你不要和我聊你没 GitHub 账号，没下载 vscode，自己整。
+你不要和我聊你没 GitHub 账号，没下载 vscode，自行下载。
 
 还有令牌之类的事情，自己整。
 
