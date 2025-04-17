@@ -29,7 +29,7 @@ struct Y{int a; std::string s; char c;};
 // 定义所要猜测的聚合体类型 T 中的可能的成员类型，不一定是精确的
 // 但是 T 中所有的成员类型一定要在下面的列表中出现至少一次
 // T 中不能包含聚合体成员
-// possi 不一定是 possibilities::tl，可以是任意的类型列表，但是不能出现非类型模板参数
+// possi 不一定是 possibilities::tl，可以是任意的类型列表，但是不能出现常量模板参数
 using possi = possibilities::tl<int, double, char, std::string,
 /*无关类型*/bool, long, float, unsigned char, /.../std::vector<std::string>>;
 
