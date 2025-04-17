@@ -1,9 +1,9 @@
 # How to make a PR
 
 - [How to make a PR](#how-to-make-a-pr)
-  - [网页直接操作](#网页直接操作)
-  - [复制到本地操作](#复制到本地操作)
-  - [总结](#总结)
+  + [网页直接操作](#网页直接操作)
+  + [复制到本地操作](#复制到本地操作)
+  + [总结](#总结)
 
 我们以一个[卢瑟的仓库](https://github.com/OpenTritium/Snowflakes)为例。
 
