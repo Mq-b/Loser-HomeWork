@@ -61,19 +61,19 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: GCC-14
+          - name: GCC-14 #TODO: use GCC-15
             os: ubuntu-24.04
             cxx_compiler: g++-14
             c_compiler: gcc-14
             shell: bash
             use-ninja: true
 
-          - name: Clang-17
+          - name: Clang-21
             os: ubuntu-24.04
-            cxx_compiler: clang++-17
-            c_compiler: clang-17
+            cxx_compiler: clang++-21
+            c_compiler: clang-21
             cxx_flags: -stdlib=libc++
-            container: ghcr.io/${{ needs.prepare.outputs.docker_namespaces }}/clang17
+            container: ghcr.io/${{ needs.prepare.outputs.docker_namespaces }}/clang21
             shell: bash
             use-ninja: true
 

@@ -22,8 +22,8 @@ jobs:
     strategy:
       matrix:
         include:
-          - name: 'ghcr.io/${{github.repository}}/clang17'
-            dockerfile: '.github/docker/clang17/dockerfile'
+          - name: 'ghcr.io/${{github.repository}}/clang21'
+            dockerfile: '.github/docker/clang21/dockerfile'
     steps:
       - uses: actions/checkout@v4
       - name: Publish to Registry
