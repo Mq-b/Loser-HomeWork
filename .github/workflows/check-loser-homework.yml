@@ -67,6 +67,7 @@ jobs:
             c_compiler: gcc-14
             shell: bash
             use-ninja: true
+            setup-python: true
 
           - name: Clang-21
             os: ubuntu-24.04
@@ -84,6 +85,7 @@ jobs:
             c_compiler: cl
             shell: pwsh
             use-ninja: true
+            setup-python: true
 
     name: check in ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
@@ -129,4 +131,4 @@ jobs:
             -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
           shell: ${{ matrix.shell }}
           use-ninja: ${{ matrix.use-ninja }}
-          setup-python: ${{ matrix.setup-python || 'true' }}
+          setup-python: ${{ matrix.setup-python }}
