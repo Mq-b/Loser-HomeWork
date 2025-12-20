@@ -29,10 +29,10 @@ runs:
     - uses: actions/setup-python@v5
       if: inputs.setup-python == 'true'
       with:
-        python-version: '3.8'
+        python-version: '3.12'
     # https://github.com/actions/setup-python/issues/719
     #    cache: 'pip'
-    - run: python3 -m pip install -r requirements.txt
+    - run: python3 -m pip install -r requirements.txt --break-system-packages
       shell: ${{ inputs.shell }}
 
     - name: Configure CMake
