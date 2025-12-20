@@ -76,6 +76,7 @@ jobs:
             container: ghcr.io/${{ needs.prepare.outputs.docker_namespaces }}/clang21
             shell: bash
             use-ninja: true
+            setup-python: false
 
           - name: MSVC
             os: windows-2022
@@ -128,3 +129,4 @@ jobs:
             -DCMAKE_CXX_FLAGS="${{ matrix.cxx_flags }}"
           shell: ${{ matrix.shell }}
           use-ninja: ${{ matrix.use-ninja }}
+          setup-python: ${{ matrix.setup-python || 'true' }}

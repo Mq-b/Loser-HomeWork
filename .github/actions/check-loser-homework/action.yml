@@ -16,13 +16,18 @@ inputs:
   use-ninja:
     description: 'use ninja to build'
     required: false
-    default: true
+    default: 'true'
+  setup-python:
+    description: 'setup python environment'
+    required: false
+    default: 'true'
 runs:
   using: "composite"
   steps: 
     - uses: seanmiddleditch/gha-setup-ninja@master
       if: inputs.use-ninja == 'true'
     - uses: actions/setup-python@v5
+      if: inputs.setup-python == 'true'
       with:
         python-version: '3.8'
     # https://github.com/actions/setup-python/issues/719
