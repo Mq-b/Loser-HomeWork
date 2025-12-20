@@ -1,4 +1,4 @@
-//!gcc !clang
+//!check-run
 #include <iostream>
 
 // 可算是一种新思路？直接检查能否结构化绑定而非检查能否聚合初始化。
